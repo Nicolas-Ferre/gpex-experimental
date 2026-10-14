@@ -9,10 +9,12 @@ Create functional specifications for a given change.
 
 ## Workflow
 
-1. If existing, delete `tmp/specs.md` file without reading it.
+1. If `./tmp/specs.md` exists (don't read it), ask user to confirm if the file can be deleted.
+    1. If yes, delete it.
+    2. Else stop.
 2. Ask all open questions one by one on topics defined below. Make them easy to read and as visual
    as possible (diagrams, GPEx code snippets, ...).
-3. Save specifications in `tmp/specs.md` following the template defined below.
+3. Save specifications in `./tmp/specs.md` following the template defined below.
 4. Stop and don't implement anything.
 
 ## Questions
@@ -26,10 +28,10 @@ following topics:
 - Error handling.
 - Security when necessary.
 
-The change should be thought with ISO/IEC 25019:2023 standard in mind to maximize quality,
+The change should be thought with ISO/IEC 25010:2023 standard in mind to maximize quality,
 especially the following categories:
 
-- Functional efficiency.
+- Functional suitability.
 - Compatibility.
 - Interaction capability.
 - Security.

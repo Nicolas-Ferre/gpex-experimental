@@ -9,10 +9,10 @@ Split a specification file in more granular PR steps.
 
 ## Workflow
 
-1. Read `tmp/specs.md` file.
-2. Propose the most possible granular steps.
-    1. If user agrees with steps, then generate `SPECS_step<step number>.md` files which specializes
-       function specifications to each step.
+1. Read `./tmp/specs.md` file.
+2. Propose the most possible granular steps respecting next section.
+    1. If user agrees with steps, then generate `./tmp/specs-step<step number>.md` files which
+       specializes function specifications to each step.
     2. If user disagrees with steps, then rework with them until they agree.
 3. Stop and don't implement anything.
 
