@@ -11,7 +11,8 @@ Create functional specifications for a given change.
 
 1. If `./tmp/specs.md` exists (don't read it), ask user if they want to refine the existing
    specifications or start over.
-    1. If user wants to start over, then delete the file without reading its content.
+    1. If user wants to start over, then delete the file without reading its content to avoid being
+       biased.
     2. Else, read the file.
 2. Ask all open questions one by one on topics defined below. Make them easy to read and as visual
    as possible (diagrams, GPEx code snippets, ...).
