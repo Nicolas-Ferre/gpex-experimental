@@ -9,13 +9,15 @@ Create functional specifications for a given change.
 
 ## Workflow
 
-1. If `./tmp/specs.md` exists (don't read it), ask user to confirm if the file can be deleted.
-    1. If yes, delete it.
-    2. Else stop.
+1. If `./tmp/specs.md` exists (don't read it), ask user if they want to refine the existing
+   specifications or start over.
+    1. If user wants to start over, then delete the file without reading its content.
+    2. Else, read the file.
 2. Ask all open questions one by one on topics defined below. Make them easy to read and as visual
    as possible (diagrams, GPEx code snippets, ...).
 3. Save specifications in `./tmp/specs.md` following the template defined below.
-4. Stop and don't implement anything.
+4. Let user know that they can refine the specifications if needed.
+5. Stop and don't implement anything.
 
 ## Questions
 
@@ -74,6 +76,7 @@ Remove the section if not relevant.
 Any real security risks identified for the new change in a table with the following columns:
 
 - Risk
+- Reproduction
 - Mitigation
 
 ## Out of scope

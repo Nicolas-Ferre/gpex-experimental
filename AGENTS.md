@@ -10,4 +10,4 @@ entirely on the GPU side.
 
 ## Misc
 
-- Some of the `gh` commands are interactive, so use `--json` when possible.  
+- Some of the `gh` commands are interactive, so use `--json` when possible.

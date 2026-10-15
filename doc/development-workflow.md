@@ -9,8 +9,12 @@ This file describes the workflow performed by a human developer for each new cha
 - If the task is complex and should be split in multiple issues:
     - Run `gpex-split` AI skill (generally `/gpex-split`).
         - A specification file is obtained for each agreed step.
-- For each step:
+- For each step (or the full specifications if not split):
     - Create a GitHub issue with functional specifications in description
-    - Add a warning on top of tge description as long as specifications are not fully reviewed.
+    - Add a warning on top of the description as long as specifications are not fully reviewed:
+      ```markdown
+      > [!WARNING]  
+      > TO REVIEW
+      ```
     - Carefully review and refine specifications (`gpex-specify` skill can be reused if needed).
-    - Create new GitHub issues for good candidates from "Out of scope" section.
+    - Create new GitHub issues from "Out of scope" section when relevant.
