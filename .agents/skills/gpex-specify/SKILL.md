@@ -29,9 +29,9 @@ following topics:
 - Expected behavior.
 - All edge cases.
 - Error handling.
-- Security when necessary.
+- Security.
 
-The change should be thought with ISO/IEC 25010:2023 standard in mind to maximize quality,
+The change should also take into account ISO/IEC 25010:2023 standard to maximize quality,
 especially the following categories:
 
 - Functional suitability.
@@ -57,28 +57,18 @@ Detailed specifications in an easy-to-read and visual way, for example:
 - GPEx code snippets.
 - ...
 
-This section can be split in subsections for each major aspect of the change.
+This section can be split into subsections for each major aspect of the change.
 
 ## Diagnostics
 
 Remove the section if not relevant.
 
-One subsection per error case introduced by the change, with for each case:
+One subsection per error case introduced by the change, and for each case:
 
 - Trigger condition
 - Result on user side
 
-Code or/and diagnostic snippets can be used to illustrate each case when possible.
-
-## Security
-
-Remove the section if not relevant.
-
-Any real security risks identified for the new change in a table with the following columns:
-
-- Risk
-- Reproduction
-- Mitigation
+Code and/or diagnostic snippets can be used to illustrate each case when possible.
 
 ## Out of scope
 
