@@ -26,7 +26,10 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v7.0.1
         with:
-          fetch-depth: ${{ steps.fetch-depth.outputs.depth }}
+          fetch-depth: 1
+
+      - name: Check out repository head
+        run: git fetch origin ${{ github.base_ref }}
 
       - name: Install editorconfig-checker
         uses: editorconfig-checker/action-editorconfig-checker@v3.0.0
