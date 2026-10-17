@@ -34,7 +34,7 @@ jobs:
           ./scripts/fetch_git_origin.sh
           echo "sha=$(git rev-parse FETCH_HEAD)" >> "$GITHUB_OUTPUT"
         env:
-          DIFF_BASE: ${{ github.base_ref || github.event.before }}
+          DIFF_BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
 
       - name: Install editorconfig-checker
         uses: editorconfig-checker/action-editorconfig-checker@v3.0.0
