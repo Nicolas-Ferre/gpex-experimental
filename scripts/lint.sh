@@ -26,6 +26,7 @@ run() {
 }
 
 status=0
-run git diff FETCH_HEAD --check || status=$?
+diff_base=${BASE_REF:-FETCH_HEAD}
+run git diff "$diff_base" --check || status=$?
 run editorconfig-checker || status=$?
 exit "$status"

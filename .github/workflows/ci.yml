@@ -29,7 +29,10 @@ jobs:
           fetch-depth: 1
 
       - name: Fetch diff base
-        run: ./scripts/fetch_git_origin.sh
+        id: diff-base
+        run: |
+          ./scripts/fetch_git_origin.sh
+          echo "sha=$(git rev-parse FETCH_HEAD)" >> "$GITHUB_OUTPUT"
         env:
           DIFF_BASE: ${{ github.base_ref || github.event.before }}
 
@@ -41,4 +44,4 @@ jobs:
       - name: Run linters
         run: ./scripts/lint.sh
         env:
-          BASE_REF: ${{ github.base_ref }}
+          BASE_REF: ${{ steps.diff-base.outputs.sha }}
