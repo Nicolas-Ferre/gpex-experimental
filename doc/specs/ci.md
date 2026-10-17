@@ -5,6 +5,6 @@ This file contains all specifications related to the CI workflow located at
 
 ## Decisions
 
-| Description                                          | Reason                                                    |
-|------------------------------------------------------|-----------------------------------------------------------|
-| Pin third-party actions using their full version tag | Commit SHAs don't trigger security alerts with Dependabot |
+| Description                                                                       | Reason                                                                              |
+|-----------------------------------------------------------------------------------|-------------------------------------------------------------------------------------|
+| Pin every action to a full commit SHA, with the version tag in a trailing comment | Safer in case of retagging, and Dependabot version updates still follow the comment |
