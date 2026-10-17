@@ -13,17 +13,19 @@ run() {
     local output status=0
     output=$("$@" 2>&1) || status=$?
     if [[ -n "$output" ]]; then
-        echo " -----"
-        printf '%s\n' "$output" | sed 's/^/| /'
-        echo " -----"
+        echo "-----"
+        printf '%s\n' "$output"
+        echo "-----"
     fi
     if [[ "$status" -eq 0 ]]; then
         echo "✓ $*"
     else
         echo "✗ $*"
-        return "$status"
     fi
+    return "$status"
 }
 
-run git diff FETCH_HEAD --check
-run editorconfig-checker
+status=0
+run git diff FETCH_HEAD --check || status=$?
+run editorconfig-checker || status=$?
+exit "$status"

@@ -15,7 +15,7 @@ This part is done when a change is not purely technical.
     - Create a GitHub issue with functional specifications in description
     - Add a warning on top of the description as long as specifications are not fully reviewed:
       ```markdown
-      > [!WARNING]  
+      > [!WARNING]
       > TO REVIEW
       ```
     - Carefully review and refine specifications (`gpex-specify` skill can be reused if needed).
