@@ -5,7 +5,7 @@ This file describes the recommended development environment setup on macOS machi
 ## Tools
 
 ```shell
-brew install editorconfig-checker  
+brew install editorconfig-checker
 ```
 
 ## RustRover plugins
