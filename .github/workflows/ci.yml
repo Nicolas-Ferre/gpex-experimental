@@ -28,8 +28,10 @@ jobs:
         with:
           fetch-depth: 1
 
-      - name: Check out repository head
-        run: git fetch origin ${{ github.base_ref }}
+      - name: Fetch diff base
+        run: ./scripts/fetch_git_origin.sh
+        env:
+          DIFF_BASE: ${{ github.base_ref || github.event.before }}
 
       - name: Install editorconfig-checker
         uses: editorconfig-checker/action-editorconfig-checker@v3.0.0
