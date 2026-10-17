@@ -1,7 +1,7 @@
 # CI specifications
 
 This file contains all specifications related to the CI workflow located at
-`.github/workflows/ci.yml`.
+`.github/workflows/ci.yml` that cannot be deduced from the file.
 
 ## Decisions
 

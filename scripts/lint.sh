@@ -26,6 +26,11 @@ run() {
 }
 
 status=0
-run git diff "${BASE_REF:-origin/main}" --check || status=$?
+if [[ -n "${BASE_REF:-}" ]]; then
+    diff_base=$BASE_REF
+else
+    diff_base=$(git merge-base HEAD origin/main)
+fi
+run git diff "$diff_base" --check || status=$?
 run editorconfig-checker || status=$?
 exit "$status"

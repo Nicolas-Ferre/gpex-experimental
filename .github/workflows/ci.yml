@@ -27,8 +27,8 @@ jobs:
       - name: Fetch diff base
         id: diff-base
         run: |
-          ./scripts/fetch_git_origin.sh
-          echo "sha=$(git rev-parse FETCH_HEAD)" >> "$GITHUB_OUTPUT"
+          sha=$(./scripts/fetch_git_origin.sh)
+          echo "sha=$sha" >> "$GITHUB_OUTPUT"
         env:
           DIFF_BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
 
