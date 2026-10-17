@@ -11,3 +11,4 @@ entirely on the GPU side.
 ## Misc
 
 - Some of the `gh` commands are interactive, so use `--json` when possible.
+- Run `scripts/lint.sh` before finishing any change task.
