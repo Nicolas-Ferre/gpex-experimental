@@ -26,4 +26,5 @@ Here are relevant folders and files:
 ## Misc
 
 - Some of the `gh` commands are interactive, so use `--json` when possible.
-- Run `scripts/lint.sh` before finishing any change task.
+- Run the following configured checks before finishing any change task:
+    - `scripts/lint.sh`
