@@ -15,8 +15,8 @@ Review the changes of the current branch (compared to `main` branch, uncommitted
 
 Run these steps in order:
 
-1. If there is no change in the current branch, stop.
-2. If existing, delete `./tmp/review-findings-accepted.md` without reading it to avoid bias.
+1. If existing, delete `./tmp/review-findings-accepted.md` without reading it to avoid bias.
+2. If there is no change in the current branch (uncommitted changes included), stop.
 3. Run every review sub-agent in parallel. Pass the user request before they start.
 4. Once all sub-agents are done, write in `./tmp/review-findings-accepted.md` only the found issues
    the following way:

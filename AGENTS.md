@@ -25,9 +25,10 @@ Here are relevant folders and files:
 
 ## Writing style
 
-Any documentation or comment written must follow these rules:
+Any documentation, comment or answer you write must follow these rules:
 
 - Be as concise as possible.
+- Be straight to the point.
 - Be readable and easily understandable by a human.
 - Be clear for anyone that has not checked repository content and code.
 - Do not duplicate information.
