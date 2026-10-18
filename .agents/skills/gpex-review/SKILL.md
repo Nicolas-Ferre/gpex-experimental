@@ -9,8 +9,7 @@ description: Perform extensive code review.
 
 ## Task
 
-Review the changes of the current branch (compared to `main` branch, uncommitted changes included),
-except if a different review scope is requested.
+Review the changes of the current branch (compared to `main` branch, uncommitted changes included).
 
 ## Workflow
 
@@ -18,7 +17,7 @@ Run these steps in order:
 
 1. If there is no change in the current branch, stop.
 2. If existing, delete `./tmp/review-findings-accepted.md` without reading it to avoid bias.
-3. Run the review sub-agents defined later.
+3. Run every review sub-agent in parallel. Pass the user request before they start.
 4. Once all sub-agents are done, write in `./tmp/review-findings-accepted.md` only the found issues
    the following way:
    ```markdown
@@ -29,11 +28,11 @@ Run these steps in order:
       ...
    ```
    Don't hesitate to illustrate the findings with snippets to make it easier to understand.
-   Pass user request if present to each sub-agent so that they have more context.
 5. Based on found issues, append in `./tmp/review-improvements-delayed.md` all missing deterministic
-   checkers that could have prevented the found issues (if not already present in the file).
-   Indicate how to put in place these checks (example of existing tool, need to create a dedicated
-   script, ...).
+   checkers that could have prevented the found issues (if not already present in the file). These
+   checkers must:
+    - be fully deterministic and not rely on AI.
+    - generalizes well (they are not put in place for specific edge cases)
 6. Run the judge sub-agent.
 
 ## Review sub-agents
@@ -44,8 +43,7 @@ The sub-agents must return the full list of findings.
 
 ### Bug detection
 
-- Check all bugs related to the current branch changes.
-- Do not miss any bug.
+- Find all real bugs, do not miss any.
 - Take into account the following ISO/IEC 25010:2023 product-quality:
     - Reliability.
     - Security.
@@ -103,8 +101,9 @@ The independent judge reads `./tmp/review-findings-accepted.md`, and applies a j
 finding:
 
 - If the judge accepts the finding, it is kept in `./tmp/review-findings-accepted.md`.
-- If the judge refuses the finding, it is appended in `./tmp/review-findings-refused.md` (if not
-  already present in the file) with the refusal reason.
+- If the judge refuses the finding, remove it from `./tmp/review-findings-accepted.md` and append it
+  to `./tmp/review-findings-refused.md` with the refusal reason, unless that reason is already
+  there.
 - If the judge corrects a finding, it is modified in `./tmp/review-findings-accepted.md`.
 
 It refuses a finding when it is:

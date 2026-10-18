@@ -15,15 +15,16 @@ Implement a change while focusing as much as possible on quality.
 
 1. If no change is provided by the user, stop.
 2. If there are uncommitted changes, ask confirmation that the skill can continue.
-3. Run a sub-agent to plan changes and return the plan.
-4. Run a sub-agent to apply the plan, including configured checks defined in `./AGENTS.md`.
-5. Run `gpex-simplify` skill.
-6. Run 2 times the following:
+3. If existing, delete `./tmp/review-findings-refused.md` without reading it to avoid bias.
+4. Run a sub-agent to plan changes and return the plan.
+5. Run a sub-agent to apply the plan, including configured checks defined in `./AGENTS.md`.
+6. Run `gpex-simplify` skill.
+7. Run 2 times the following:
     1. Run `gpex-review` skill and provide the request provided by the user as a reference.
     2. Stop this loop if `./tmp/review-findings-accepted.md` doesn't contain any finding.
     3. Run a sub-agent to apply findings in `./tmp/review-findings-accepted.md`.
     4. Run `gpex-simplify` skill.
-7. If the previous loop is not stopped because no finding is found:
+8. If the previous loop is not stopped because no finding is found:
     1. Run `gpex-review` skill and provide the request provided by the user as a reference.
     2. Make `./tmp/review-findings-accepted.md` high level enough so that it is not needed to read
        the code to understand the findings and their implications.
