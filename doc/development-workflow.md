@@ -27,7 +27,7 @@ This part is done when a change is not purely technical.
     - To implement an issue: `/gpex-implement <issue URL>`
     - To implement from specification file: `/gpex-implement specifications from <file path>`
     - To implement simple change: `/gpex-implement <description of the changes>`
-2. Review `tmp/implement-decisions.md` to ensure taken decisions are correct.
+2. Review `./tmp/implement-decisions.md` to ensure taken decisions are correct.
     - If not, go back to step 1 and provide modifications to perform.
 3. Review `./tmp/review-improvements-delayed.md` and create necessary GitHub issues.
 4. Review `./tmp/review-findings-refused.md` to ensure all refusals make sense.

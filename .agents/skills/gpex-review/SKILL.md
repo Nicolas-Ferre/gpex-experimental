@@ -1,6 +1,6 @@
 ---
 name: gpex-review
-description: Perform extensive code review of the current branch.
+description: Perform extensive code review.
 ---
 
 ## Preconditions
@@ -9,7 +9,8 @@ description: Perform extensive code review of the current branch.
 
 ## Task
 
-Review the changes of the current branch (compared to `main` branch, uncommitted changes included).
+Review the changes of the current branch (compared to `main` branch, uncommitted changes included),
+except if a different review scope is requested.
 
 ## Workflow
 
@@ -30,7 +31,9 @@ Run these steps in order:
    Don't hesitate to illustrate the findings with snippets to make it easier to understand.
    Pass user request if present to each sub-agent so that they have more context.
 5. Based on found issues, append in `./tmp/review-improvements-delayed.md` all missing deterministic
-   checks and tools that could have prevented the found issues (if not already present in the file).
+   checkers that could have prevented the found issues (if not already present in the file).
+   Indicate how to put in place these checks (example of existing tool, need to create a dedicated
+   script, ...).
 6. Run the judge sub-agent.
 
 ## Review sub-agents
@@ -43,6 +46,10 @@ The sub-agents must return the full list of findings.
 
 - Check all bugs related to the current branch changes.
 - Do not miss any bug.
+- Take into account the following ISO/IEC 25010:2023 product-quality:
+    - Reliability.
+    - Security.
+    - Safety.
 
 ### Architecture review
 
@@ -51,6 +58,14 @@ Challenge the architecture and verify whether:
 - the solution is future-proof and will not cause issues with future changes in the project
 - the solution generalizes well and avoids uncovered edge cases
 - the solution is not unnecessarily complicated
+
+Also, review the current change against the following ISO/IEC 25010:2023 product-quality
+characteristic:
+
+- Functional suitability.
+- Compatibility.
+- Maintainability at the level of the architecture.
+- Flexibility.
 
 ### Tests review
 
@@ -75,19 +90,12 @@ Check local code quality issues, such as:
 - not up-to-date documentation
 - typos or weird formulations
 
-### ISO/IEC 25010:2023 compliance
+Also, review the current change against the following ISO/IEC 25010:2023 product-quality
+characteristic:
 
-Review the current change against every ISO/IEC 25010:2023 product-quality characteristic:
-
-- Functional suitability.
 - Performance efficiency.
-- Compatibility.
+- Maintainability at the level of the code.
 - Interaction capability.
-- Reliability.
-- Security.
-- Maintainability.
-- Flexibility.
-- Safety.
 
 ## Judge sub-agent
 
@@ -102,6 +110,7 @@ finding:
 It refuses a finding when it is:
 
 - Already applied.
+- Incorrect.
 - Present in `./tmp/review-findings-refused.md`.
 - Formatting the configured checks (see `./AGENTS.md`) already accept, or wording that does not
   change meaning.

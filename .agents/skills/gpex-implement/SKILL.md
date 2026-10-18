@@ -17,10 +17,8 @@ Implement a change while focusing as much as possible on quality.
 2. If there are uncommitted changes, ask confirmation that the skill can continue.
 3. Run a sub-agent to plan changes and return the plan.
 4. Run a sub-agent to apply the plan, including configured checks defined in `./AGENTS.md`.
-5. Run 2 times the following:
-    1. Run `gpex-simplify` skill.
-    2. Stop this loop if the skill didn't apply any simplification.
-6. Run 3 times the following:
+5. Run `gpex-simplify` skill.
+6. Run 2 times the following:
     1. Run `gpex-review` skill and provide the request provided by the user as a reference.
     2. Stop this loop if `./tmp/review-findings-accepted.md` doesn't contain any finding.
     3. Run a sub-agent to apply findings in `./tmp/review-findings-accepted.md`.
@@ -34,7 +32,7 @@ Implement a change while focusing as much as possible on quality.
 ## Rules
 
 - Any decision taken by this skill or any inner skill that is not provided by the user should be
-  documented in `tmp/implement-decisions.md`, and user should be notified at the end of the skill
+  documented in `./tmp/implement-decisions.md`, and user should be notified at the end of the skill
   running that the file is not empty. Only decisions impacting the following should be documented:
     - behavior
     - public interface

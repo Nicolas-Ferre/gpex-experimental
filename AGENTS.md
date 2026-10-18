@@ -23,6 +23,16 @@ Here are relevant folders and files:
 - Number prefix at the start of a branch corresponds to the GitHub issue ID
 - Branch can either correspond to the whole issue or to a sub-part of the issue
 
+## Writing style
+
+Any documentation or comment written must follow these rules:
+
+- Be as concise as possible.
+- Be readable and easily understandable by a human.
+- Be clear for anyone that has not checked repository content and code.
+- Do not duplicate information.
+- Do not repeat what code is clearly doing.
+
 ## Misc
 
 - Some of the `gh` commands are interactive, so use `--json` when possible.
