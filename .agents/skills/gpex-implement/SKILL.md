@@ -13,12 +13,12 @@ Implement a change autonomously.
 
 ## Workflow
 
-1. Delete `./tmp/implement-decisions.md` if existing.
-2. Delete `./tmp/implement-plan.md` if existing.
-3. Explore changes and create a detailed plan in `./tmp/implement-plan.md` for all possible
-   simplifications.
-4. Run a sub-agent to judge the plan independently and edit `./tmp/implement-plan.md`.
-5. Apply the agreed plan from `./tmp/implement-plan.md`.
+1. If no change is provided, stop.
+2. Delete `./tmp/implement-decisions.md` if existing.
+3. Delete `./tmp/implement-plan.md` if existing.
+4. Explore changes and create a detailed plan of the requested change in `./tmp/implement-plan.md`.
+5. Run a sub-agent to judge the plan independently and edit `./tmp/implement-plan.md`.
+6. Apply the agreed plan from `./tmp/implement-plan.md`.
 
 ## Taken decisions
 
@@ -37,6 +37,7 @@ Only decisions impacting the following should be documented:
 
 Always apply the following conventions:
 
+- Always implement the simplest possible solution, don't over-engineer.
 - Follow existing coding style and naming in the repository.
 - Apply Single Responsibility Principle.
 - Make configured checks pass at the end of the implementation (see `./AGENTS.md`)
