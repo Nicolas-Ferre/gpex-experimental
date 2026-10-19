@@ -33,7 +33,7 @@ Run these steps in order:
    checkers must:
     - be fully deterministic and not rely on AI.
     - generalizes well (they are not put in place for specific edge cases)
-6. Run the judge sub-agent.
+6. Run the judgment step.
 
 ## Review sub-agents
 
@@ -95,9 +95,9 @@ characteristic:
 - Maintainability at the level of the code.
 - Interaction capability.
 
-## Judge sub-agent
+## judgment step
 
-The independent judge reads `./tmp/review-findings-accepted.md`, and applies a judgment on each
+This step reads `./tmp/review-findings-accepted.md`, and applies a judgment on each
 finding:
 
 - If the judge accepts the finding, it is kept in `./tmp/review-findings-accepted.md`.

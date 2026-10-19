@@ -1,6 +1,6 @@
 ---
 name: gpex-implement
-description: Implement a change with the best possible quality.
+description: Implement a change.
 ---
 
 ## Preconditions
@@ -9,34 +9,37 @@ description: Implement a change with the best possible quality.
 
 ## Task
 
-Implement a change while focusing as much as possible on quality.
+Implement a change autonomously.
 
 ## Workflow
 
-1. If no change is provided by the user, stop.
-2. If there are uncommitted changes, ask confirmation that the skill can continue.
-3. If existing, delete `./tmp/review-findings-accepted.md` without reading it to avoid bias.
-4. If existing, delete `./tmp/review-findings-refused.md` without reading it to avoid bias.
-5. Run a sub-agent to plan changes and return the plan.
-6. Run a sub-agent to apply the plan, including configured checks defined in `./AGENTS.md`.
-7. Run `gpex-simplify` skill.
-8. Run 2 times the following:
-    1. Run `gpex-review` skill and provide the request provided by the user as a reference.
-    2. Stop this loop if `./tmp/review-findings-accepted.md` doesn't contain any finding.
-    3. Run a sub-agent to apply findings in `./tmp/review-findings-accepted.md`.
-    4. Run `gpex-simplify` skill.
-9. If the previous loop is not stopped because no finding is found:
-    1. Run `gpex-review` skill and provide the request provided by the user as a reference.
-    2. Make `./tmp/review-findings-accepted.md` high level enough so that it is not needed to read
-       the code to understand the findings and their implications.
-    3. Don't apply findings and let user review the file `./tmp/review-findings-accepted.md`.
+1. Delete `./tmp/implement-decisions.md` if existing.
+2. Delete `./tmp/implement-plan.md` if existing.
+3. Explore changes and create a detailed plan in `./tmp/implement-plan.md` for all possible
+   simplifications.
+4. Run a sub-agent to judge the plan independently and edit `./tmp/implement-plan.md`.
+5. Apply the agreed plan from `./tmp/implement-plan.md`.
 
-## Rules
+## Taken decisions
 
-- Any decision taken by this skill or any inner skill that is not provided by the user should be
-  documented in `./tmp/implement-decisions.md`, and user should be notified at the end of the skill
-  running that the file is not empty. Only decisions impacting the following should be documented:
-    - behavior
-    - public interface
-    - security
-    - safety
+Any decision taken by this skill or an inner sub-agent that is not provided by the user should be
+documented in `./tmp/implement-decisions.md`, and user should be notified at the end of the skill
+running that the file is not empty.
+
+Only decisions impacting the following should be documented:
+
+- behavior
+- public interface
+- security
+- safety
+
+## Conventions
+
+Always apply the following conventions:
+
+- Follow existing coding style and naming in the repository.
+- Apply Single Responsibility Principle.
+- Make configured checks pass at the end of the implementation (see `./AGENTS.md`)
+- Add code comments only when strictly required: document only the "why" and details that cannot be
+  understood from the code only, never "what" the code is doing. Always favor code readability and
+  improvements over adding a comment. Only exception is for public interfaces such as libraries.

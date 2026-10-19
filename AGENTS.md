@@ -32,7 +32,6 @@ Any documentation, comment or answer you write must follow these rules:
 - Be readable and easily understandable by a human.
 - Be clear for anyone that has not checked repository content and code.
 - Do not duplicate information.
-- Do not repeat what code is clearly doing.
 
 ## Misc
 
