@@ -27,7 +27,8 @@ Run these steps in order:
       <brief details and short snippet(s) of the proposed fix>
       ...
    ```
-   Don't hesitate to illustrate the findings with snippets to make it easier to understand.
+   Do not mix multiple issues in the same finding.
+   Illustrate the findings with snippets when possible to make it easier to understand.
 5. Based on found issues, append in `./tmp/review-improvements-delayed.md` all missing deterministic
    checkers that could have prevented the found issues (if not already present in the file). These
    checkers must:
@@ -77,14 +78,13 @@ Check for missing tests, for example related to:
 
 Check local code quality issues, such as:
 
-- Single Responsibility Principle that is not correctly applied
-- Code comments that explain the "what" (which is already clarified by the code itself) instead of
-  the "why". "Code as documentation" principle is favored.
 - readability/maintainability issues
 - inconsistent styling
 - bad practices
 - performance improvements
 - not followed conventions defined in `AGENTS.md` files
+- not followed conventions defined in `Conventions` section from `gpex-implement` skill (don't run
+  this skill)
 - not up-to-date documentation
 - typos or weird formulations
 

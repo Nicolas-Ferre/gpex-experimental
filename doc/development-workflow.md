@@ -34,8 +34,8 @@ For the moment, the implementation workflow is flexible, but always uses the fol
 - `gpex-review` skill that doesn't require any argument. To be run after any change.
     - Apply findings by invoking `./gpex-implement findings in ./tmp/review-findings-accepted.md`
 
-In addition to generated code, several files must be manually reviewed to improve development
-workflow, skills and quality checks:
+In addition to generated code, several files must be manually reviewed after each skill run to
+improve development workflow, skills and quality checks:
 
 | File                                   | Description                                                       | Producer skill                        |
 |----------------------------------------|-------------------------------------------------------------------|---------------------------------------|
