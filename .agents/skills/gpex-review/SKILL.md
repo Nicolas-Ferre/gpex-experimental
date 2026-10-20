@@ -9,14 +9,15 @@ description: Perform extensive code review.
 
 ## Task
 
-Review the changes of the current branch (compared to `main` branch, uncommitted changes included).
+Review the changes of the current branch since its merge base with `origin/main` (uncommitted and
+untracked changes included).
 
 ## Workflow
 
 Run these steps in order:
 
 1. If existing, delete `./tmp/review-findings-accepted.md` without reading it to avoid bias.
-2. If there is no change in the current branch (uncommitted changes included), stop.
+2. If there is no change in the current branch (uncommitted and untracked changes included), stop.
 3. Run every review sub-agent in parallel. Pass the user request before they start.
 4. Once all sub-agents are done, write in `./tmp/review-findings-accepted.md` only the found issues
    the following way:
@@ -28,19 +29,22 @@ Run these steps in order:
       ...
    ```
    Do not mix multiple issues in the same finding.
+   Merge findings describing the same issue into one entry, listing all sub-agent names.
    Illustrate the findings with snippets when possible to make it easier to understand.
-5. Based on found issues, append in `./tmp/review-improvements-delayed.md` all missing deterministic
-   checkers that could have prevented the found issues (if not already present in the file). These
-   checkers must:
+   If there is no finding, stop.
+5. Run the judgment step (not in a sub-agent).
+6. Based on accepted findings, append in `./tmp/review-improvements-delayed.md` all missing
+   deterministic checkers that could have prevented the found issues (if not already present in the
+   file). These checkers must:
     - be fully deterministic and not rely on AI.
-    - generalizes well (they are not put in place for specific edge cases)
-6. Run the judgment step.
+    - generalize well (they are not put in place for specific edge cases).
 
 ## Review sub-agents
 
 Each subsection corresponds to a sub-agent to run during review.
 
-The sub-agents must return the full list of findings.
+The sub-agents must not modify any file, must not read `./tmp/review-findings-*.md`, and must
+return the full list of findings.
 
 ### Bug detection
 
@@ -59,7 +63,7 @@ Challenge the architecture and verify whether:
 - the solution is not unnecessarily complicated
 
 Also, review the current change against the following ISO/IEC 25010:2023 product-quality
-characteristic:
+characteristics:
 
 - Functional suitability.
 - Compatibility.
@@ -89,13 +93,13 @@ Check local code quality issues, such as:
 - typos or weird formulations
 
 Also, review the current change against the following ISO/IEC 25010:2023 product-quality
-characteristic:
+characteristics:
 
 - Performance efficiency.
 - Maintainability at the level of the code.
 - Interaction capability.
 
-## judgment step
+## Judgment step
 
 This step reads `./tmp/review-findings-accepted.md`, and applies a judgment on each
 finding:
@@ -109,7 +113,7 @@ It refuses a finding when it is:
 
 - Already applied.
 - Incorrect.
-- Present in `./tmp/review-findings-refused.md`.
+- Present in `./tmp/review-findings-refused.md` and its refusal reason still applies.
 - Formatting the configured checks (see `./AGENTS.md`) already accept, or wording that does not
   change meaning.
 - A rename that is a preference between two clear names. Keep a rename when the current name makes

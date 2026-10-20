@@ -9,8 +9,8 @@ description: Simplify the changes done on the current branch.
 
 ## Task
 
-Simplify the changes of the current branch (compared to `main` branch, uncommitted changes
-included).
+Simplify the changes of the current branch since its merge base with `origin/main` (uncommitted
+and untracked changes included).
 
 ## Workflow
 
