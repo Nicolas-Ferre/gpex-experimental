@@ -102,8 +102,7 @@ finding:
 
 - If the judge accepts the finding, it is kept in `./tmp/review-findings-accepted.md`.
 - If the judge refuses the finding, remove it from `./tmp/review-findings-accepted.md` and append it
-  to `./tmp/review-findings-refused.md` with the refusal reason, unless that reason is already
-  there.
+  to `./tmp/review-findings-refused.md` with the refusal reason.
 - If the judge corrects a finding, it is modified in `./tmp/review-findings-accepted.md`.
 
 It refuses a finding when it is:
