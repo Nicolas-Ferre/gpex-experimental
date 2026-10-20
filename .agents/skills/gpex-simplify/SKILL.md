@@ -15,8 +15,9 @@ and untracked changes included).
 ## Workflow
 
 1. Run `git fetch origin main`.
-2. Run `gpex-implement` skill to apply only simplifications meeting the acceptance criteria below.
-   If none qualifies, make no change.
+2. List the simplifications meeting the acceptance criteria below, limited to the changes of the
+   current branch. If none qualifies, stop.
+3. Run `gpex-implement` skill with this list as the change.
 
 ## Simplification acceptance
 

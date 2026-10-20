@@ -20,7 +20,8 @@ Run these steps in order:
 2. If existing, delete `./tmp/review-findings-accepted.md` without reading it to avoid bias.
 3. If there is no change in the current branch (uncommitted and untracked changes included), stop.
 4. Get the user request from the skill arguments or conversation, else from the GitHub issue
-   matching the branch number prefix (`gh issue view <id> --json title,body`). Run every review
+   matching the branch number prefix (`gh issue view <id> --json title,body`). If none is found,
+   or the branch covers only part of the issue, ask the user for the scope. Run every review
    sub-agent in parallel, passing it the user request.
 5. Once all sub-agents are done, write in `./tmp/review-findings-accepted.md` only the found issues
    the following way:
