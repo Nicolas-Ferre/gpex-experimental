@@ -16,10 +16,13 @@ untracked changes included).
 
 Run these steps in order:
 
-1. If existing, delete `./tmp/review-findings-accepted.md` without reading it to avoid bias.
-2. If there is no change in the current branch (uncommitted and untracked changes included), stop.
-3. Run every review sub-agent in parallel. Pass the user request before they start.
-4. Once all sub-agents are done, write in `./tmp/review-findings-accepted.md` only the found issues
+1. Run `git fetch origin main`.
+2. If existing, delete `./tmp/review-findings-accepted.md` without reading it to avoid bias.
+3. If there is no change in the current branch (uncommitted and untracked changes included), stop.
+4. Get the user request from the skill arguments or conversation, else from the GitHub issue
+   matching the branch number prefix (`gh issue view <id> --json title,body`). Run every review
+   sub-agent in parallel, passing it the user request.
+5. Once all sub-agents are done, write in `./tmp/review-findings-accepted.md` only the found issues
    the following way:
    ```markdown
    1. [<sub-agent name>] **<first finding>**
@@ -32,8 +35,8 @@ Run these steps in order:
    Merge findings describing the same issue into one entry, listing all sub-agent names.
    Illustrate the findings with snippets when possible to make it easier to understand.
    If there is no finding, stop.
-5. Run the judgment step (not in a sub-agent).
-6. Based on accepted findings, append in `./tmp/review-improvements-delayed.md` all missing
+6. Run the judgment step (not in a sub-agent).
+7. Based on accepted findings, append in `./tmp/review-improvements-delayed.md` all missing
    deterministic checkers that could have prevented the found issues (if not already present in the
    file). These checkers must:
     - be fully deterministic and not rely on AI.
@@ -120,5 +123,5 @@ It refuses a finding when it is:
   a reader get something wrong, or miss something.
 - A comment that restates the code. A comment that records a non-obvious constraint can be kept.
 - An edit to code the change does not need to touch.
-- A remedy whose only form is a new test runner, linter, or dependency. They should be appended in
+- A remedy whose only form is a new test runner, linter, or dependency. Append this remedy to
   `./tmp/review-improvements-delayed.md` if not already there.
