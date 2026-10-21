@@ -6,12 +6,12 @@ This file describes the workflow performed by a human developer for each new cha
 
 This part is done when a change is not purely technical.
 
-- Run `gpex-specify` AI skill (generally `/gpex-specify <change description>`).
+1. Run `gpex-specify` AI skill (generally `/gpex-specify <change description>`).
     - Developer is interviewed by AI to obtain full functional specifications.
-- If the task is complex and should be split into multiple issues:
+2. If the task is complex and should be split into multiple issues:
     - Run `gpex-split` AI skill (generally `/gpex-split`).
         - A specification file is obtained for each agreed step.
-- For each step (or the full specifications if not split):
+3. For each step (or the full specifications if not split):
     - Create a GitHub issue with functional specifications in description
     - Add a warning on top of the description as long as specifications are not fully reviewed:
       ```markdown
@@ -20,3 +20,26 @@ This part is done when a change is not purely technical.
       ```
     - Carefully review and refine specifications (`gpex-specify` skill can be reused if needed).
     - Create new GitHub issues from "Out of scope" section when relevant.
+
+## Implementation
+
+For the moment, the implementation workflow is flexible, but always uses the following skills:
+
+- `gpex-implement` skill. Invocation depends on the context:
+    - To implement an issue: `/gpex-implement <issue URL>`
+    - To implement from specification file: `/gpex-implement specifications from <file path>`
+    - To implement simple change: `/gpex-implement <description of the changes>`
+- `gpex-simplify` skill that doesn't require any argument. To be ideally run after
+  implementation, and after having fixed all review findings.
+- `gpex-review` skill that doesn't require any argument. To be run after any change.
+    - Apply findings by invoking `/gpex-implement findings in ./tmp/review-findings-accepted.md`
+
+In addition to generated code, several files must be manually reviewed after each skill run to
+improve development workflow, skills and quality checks:
+
+| File                                   | Description                                                       | Producer skill                        |
+|----------------------------------------|-------------------------------------------------------------------|---------------------------------------|
+| `./tmp/implement-decisions.md`         | Decisions taken by AI during an implementation                    | `gpex-implement` and  `gpex-simplify` |
+| `./tmp/review-improvements-delayed.md` | Any deterministic check that could be enforced in the CI workflow | `gpex-review`                         |
+| `./tmp/review-findings-refused.md`     | Any review finding rejected by the AI                             | `gpex-review`                         |
+| `./tmp/review-findings-accepted.md`    | Any review finding accepted by the AI                             | `gpex-review`                         |
