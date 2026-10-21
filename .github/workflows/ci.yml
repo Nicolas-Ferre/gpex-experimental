@@ -14,25 +14,28 @@ concurrency:
   group: ci-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+
+env:
+  MAX_PR_SIZE: 300
+
 jobs:
 
   check-pr-size:
     name: Check PR size
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-24.04
-    permissions:
-      pull-requests: write # Add size label and comment
     steps:
-      - uses: CodelyTV/pr-size-labeler@19c335e7695ba922de938806dd129f0a9b992644 # v1.12.0
-        with:
-          xs_max_size: '10'
-          s_max_size: '50'
-          m_max_size: '150'
-          l_max_size: '300'
-          fail_if_xl: 'true'
-          message_if_xl: >
-            This PR exceeds the maximum size of 300 changed lines.
-            Please split it into smaller PRs.
+      - name: Check PR size
+        run: |
+          size=$((ADDITIONS + DELETIONS))
+          echo "PR size: $size changed lines (additions + deletions)"
+          if (( size > MAX_PR_SIZE )); then
+            echo "::error::PR has $size changed lines (max $MAX_PR_SIZE). Please split it into smaller PRs."
+            exit 1
+          fi
+        env:
+          ADDITIONS: ${{ github.event.pull_request.additions }}
+          DELETIONS: ${{ github.event.pull_request.deletions }}
 
   lint:
     name: Lint
