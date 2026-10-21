@@ -29,7 +29,7 @@ jobs:
         run: |
           size=$((ADDITIONS + DELETIONS))
           echo "PR size: $size changed lines (additions + deletions)"
-          if (( size > MAX_PR_SIZE )); then
+          if (( size >= MAX_PR_SIZE )); then
             echo "::error::PR has $size changed lines (max $MAX_PR_SIZE). Please split it into smaller PRs."
             exit 1
           fi
