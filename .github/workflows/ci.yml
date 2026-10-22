@@ -2,7 +2,8 @@ name: CI
 
 on:
   workflow_dispatch: { }
-  pull_request: { }
+  pull_request:
+    types: [opened, synchronize, reopened, edited]
   push:
     branches:
       - main
@@ -14,15 +15,11 @@ concurrency:
   group: ci-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
-
-env:
-  MAX_PR_SIZE: 300
-
 jobs:
 
   check-pr-size:
     name: Check PR size
-    if: github.event_name == 'pull_request'
+    if: github.event_name == 'pull_request' && (github.event.action != 'edited' || github.event.changes.base)
     runs-on: ubuntu-24.04
     steps:
       - name: Check PR size
@@ -34,11 +31,13 @@ jobs:
             exit 1
           fi
         env:
+          MAX_PR_SIZE: 300
           ADDITIONS: ${{ github.event.pull_request.additions }}
           DELETIONS: ${{ github.event.pull_request.deletions }}
 
   lint:
     name: Lint
+    if: github.event.action != 'edited' || github.event.changes.base
     runs-on: ubuntu-24.04
     steps:
       - name: Check out repository
