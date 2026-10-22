@@ -1,0 +1,32 @@
+name: CI - PR size
+
+on:
+  pull_request:
+    types: [ opened, synchronize, reopened, edited ]
+
+env:
+  MAX_PR_SIZE: 300
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check-pr-size:
+    name: Check PR size
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Check PR size
+        run: |
+          size=$((ADDITIONS + DELETIONS))
+          echo "PR size: $size changed lines (additions + deletions)"
+          if (( size >= MAX_PR_SIZE )); then
+            echo "::error::PR has $size changed lines (should be lower than $MAX_PR_SIZE). Please split it into smaller PRs."
+            exit 1
+          fi
+        env:
+          ADDITIONS: ${{ github.event.pull_request.additions }}
+          DELETIONS: ${{ github.event.pull_request.deletions }}

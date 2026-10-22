@@ -11,7 +11,7 @@ Here are relevant folders and files:
 .
 ├── README.md
 ├── .editorconfig
-├── .github/workflows/ci.yml     # CI workflow run for each PR
+├── .github/workflows/          # CI workflows run for each PR
 ├── doc/
 │   └── specs/                   # Specifications for the different parts of the repository
 └── scripts/
