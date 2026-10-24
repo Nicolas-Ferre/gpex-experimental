@@ -41,8 +41,10 @@ specifications instead of code changes, focused on the content itself (the form 
 ignoring code-only checks. Also check that:
 
 - There is no duplicated information or ambiguity.
+- Sections do not contradict each other.
 - `### Testing` covers every case of the functional design and the edge cases.
 - `### Architecture` and `### Module interactions` match real files and the existing organization.
-- Listed libraries exists and present no risk or better alternative.
+- Listed libraries exist on their registry with the stated version, and present no risk or better
+  alternative.
 
 You can question certain decisions if it makes sense.
