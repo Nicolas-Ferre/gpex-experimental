@@ -32,7 +32,7 @@ following topics, skipping the ones not relevant to the change:
 - All edge cases.
 - Error handling.
 - Each section of the specification template below.
-- Libraries, checked against:
+- Libraries, checked on their package registry (existence, latest stable version) against:
     - License compatibility with the project license (ask the user if the project has none).
     - Maintenance and popularity.
     - Security.
