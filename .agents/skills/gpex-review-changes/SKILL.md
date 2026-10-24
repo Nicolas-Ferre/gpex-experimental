@@ -14,14 +14,16 @@ untracked changes included).
 
 ## Workflow
 
+The branch label is the output of `git branch --show-current`, or `(detached HEAD)` when empty.
+
 Run these steps in order:
 
 1. Run `git fetch origin main`.
 2. If existing, delete `./tmp/review-changes-findings-accepted.md` without reading it to avoid
    bias.
-3. If `./tmp/review-changes-findings-refused.md` exists, read only its first line and delete
-   the file without reading the rest when the line is not `Branch: <current branch>` or HEAD is
-   detached (`git branch --show-current` is empty).
+3. If `./tmp/review-changes-findings-refused.md` exists, read only its first line (`head -n 1`).
+   If the branch label is `(detached HEAD)` or that line is not `Branch: <branch label>`, delete
+   the file without reading the rest.
 4. If there is no change in the current branch (uncommitted and untracked changes included), stop.
 5. Get the user request from the skill arguments or conversation, else from the GitHub issue
    matching the branch number prefix (`gh issue view <id> --json title,body`). If none is found,
@@ -115,8 +117,7 @@ finding:
 - If the judge accepts the finding, it is kept in `./tmp/review-changes-findings-accepted.md`.
 - If the judge refuses the finding, remove it from `./tmp/review-changes-findings-accepted.md` and
   append it to `./tmp/review-changes-findings-refused.md` with the refusal reason. When creating
-  this file, start it with a `Branch: <current branch>` line (`Branch: (detached HEAD)` if HEAD is
-  detached) followed by an empty line.
+  this file, start it with a `Branch: <branch label>` line followed by an empty line.
 - If the judge corrects a finding, it is modified in `./tmp/review-changes-findings-accepted.md`.
 
 It refuses a finding when it is:
