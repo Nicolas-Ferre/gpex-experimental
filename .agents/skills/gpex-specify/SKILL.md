@@ -33,7 +33,7 @@ following topics, skipping the ones not relevant to the change:
 - Error handling.
 - Each section of the specification template below.
 - Libraries, checked against:
-    - License compatibility with the project.
+    - License compatibility with the project license (ask the user if the project has none).
     - Maintenance and popularity.
     - Security.
 - ISO/IEC 25010:2023 standard categories:
@@ -55,6 +55,10 @@ following topics, skipping the ones not relevant to the change:
 Short description of the change to perform, without entering into details.
 
 ## Functional design
+
+### <Major aspect of the change>
+
+Expected behavior of this aspect of the change.
 
 ### Breaking changes
 
@@ -82,27 +86,30 @@ Code and/or diagnostic snippets can be used to illustrate each case when possibl
 
 ### Architecture
 
-Folders and their scope, only as deep as needed by the change:
+Folders, files and their scope, only as deep as needed by the change:
 
 ```text
 src/
-├── lexer       # adds `@` token (changed)
-├── parser      # builds AST from tokens (new)
-└── codegen     # generates WGSL from AST (changed)
+├── lexer.rs        # adds `@` token (changed)
+├── parser          # builds AST from tokens (new)
+├── codegen.rs      # generates WGSL from AST (changed)
+└── optimizer.rs    # merged into codegen (removed)
 ```
 
-Only folders containing children and leaves are listed, never files. Leaves have no folder or file
-suffix, because this is determined during implementation.
+Only parent folders and leaves are listed. Existing leaves keep their real name (e.g. `lexer.rs`).
+New leaves have no folder or file suffix, as this is decided at implementation.
 
 ### Module interactions
 
-Dependency direction between the architecture folders and leaves, edges labeled with passed data,
-new or changed links using thick arrows (`==>`):
+Data flow between the architecture folders and leaves (arrow from producer to consumer), edges
+labeled with passed data, new or changed links using thick arrows (`==>`), removed links using
+dotted arrows (`-.->`):
 
 ```mermaid
 graph LR
   lexer -- tokens --> parser
   parser == AST ==> codegen
+  parser -. AST .-> optimizer
 ```
 
 Each main data structure described in one line, without fields:
@@ -145,12 +152,12 @@ Measurable targets, only for performance-sensitive changes:
 ````
 
 Design sections are written in an easy-to-read and visual way (short bullet points, Mermaid
-diagrams, GPEx code snippets, ...), and can start with free subsections for each major aspect of
+diagrams, GPEx code snippets, ...). Both can start with free subsections for each major aspect of
 the change, placed before the predefined ones.
 
 Remove every section and subsection that is not relevant (e.g. `## Functional design` for a
 refactoring, `## Technical design` for a documentation-only change). Only record the chosen design,
 not rejected alternatives.
 
-Avoid duplicating information across the specifications as much as possible, and avoid unnecessary
-verbosity without losing information.
+Avoid duplicating information across the specifications as much as possible (test cases in
+`### Testing` excepted), and avoid unnecessary verbosity without losing information.

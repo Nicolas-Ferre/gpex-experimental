@@ -4,7 +4,8 @@ This file describes the workflow performed by a human developer for each new cha
 
 ## Specification
 
-This part is done for all changes, including purely technical ones.
+This part is done for all changes (functional or purely technical), except simple changes
+implemented directly (see "Implementation").
 
 1. Run `gpex-specify` AI skill (generally `/gpex-specify <change description>`).
     - Developer is interviewed by AI to obtain full functional and technical specifications.
