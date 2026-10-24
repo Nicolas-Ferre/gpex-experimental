@@ -16,8 +16,8 @@ Split a specification file into more granular PR steps.
     1. If it doesn't exist, stop and inform the user.
 3. Propose steps as described below.
     1. If user agrees with steps, then generate `./tmp/specs-step<step number starting from "1">.md`
-       files which specialize functional specifications to each step. No requirement should be
-       dropped during the split.
+       files which specialize specifications to each step. No information should be dropped during
+       the split.
     2. If user disagrees with steps, then rework with them until they agree.
 4. Stop and don't implement anything.
 

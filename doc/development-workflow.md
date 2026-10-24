@@ -2,17 +2,17 @@
 
 This file describes the workflow performed by a human developer for each new change to perform.
 
-## Functional specification
+## Specification
 
-This part is done when a change is not purely technical.
+This part is done for all changes, including purely technical ones.
 
 1. Run `gpex-specify` AI skill (generally `/gpex-specify <change description>`).
-    - Developer is interviewed by AI to obtain full functional specifications.
+    - Developer is interviewed by AI to obtain full functional and technical specifications.
 2. If the task is complex and should be split into multiple issues:
     - Run `gpex-split` AI skill (generally `/gpex-split`).
         - A specification file is obtained for each agreed step.
 3. For each step (or the full specifications if not split):
-    - Create a GitHub issue with functional specifications in description
+    - Create a GitHub issue with specifications in description
     - Add a warning on top of the description as long as specifications are not fully reviewed:
       ```markdown
       > [!WARNING]
