@@ -119,7 +119,7 @@ It refuses a finding when it is:
 - Incorrect.
 - Present in `./tmp/review-findings-refused.md` and its refusal reason still applies.
 - Formatting the configured checks (see `./AGENTS.md`) already accept, or wording that does not
-  change meaning.
+  change meaning (except if this is a clear simplification or deduplication).
 - A rename that is a preference between two clear names. Keep a rename when the current name makes
   a reader get something wrong, or miss something.
 - A comment that restates the code. A comment that records a non-obvious constraint can be kept.

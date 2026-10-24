@@ -16,7 +16,8 @@ Create functional and technical specifications for a given change.
     2. Else, read the file.
 2. Ask all open questions one by one on topics defined below. Make them easy to read and as visual
    as possible (diagrams, GPEx code snippets, ...). Prefer defining functional specifications before
-   technical ones.
+   technical ones. Before asking technical questions, explore the codebase. Each technical question
+   proposes options, including a recommended one consistent with the existing organization.
 3. Save specifications in `./tmp/specs.md` following the template defined below.
 4. Let user know that they can refine the specifications if needed.
 5. Stop and don't implement anything.
@@ -24,7 +25,7 @@ Create functional and technical specifications for a given change.
 ## Questions
 
 Ask all necessary questions to fully align with user on the change to perform, especially on the
-following topics:
+following topics, skipping the ones not relevant to the change:
 
 - Scope.
 - Expected behavior.
@@ -35,6 +36,8 @@ following topics:
 - Module interactions.
 - Testing.
 - Platform support.
+- Safety and resources.
+- Performance.
 - Libraries, checked against:
     - License compatibility with the project.
     - Maintenance and popularity.
@@ -59,26 +62,12 @@ Short description of the change to perform, without entering into details.
 
 ## Functional design
 
-Remove the section if not relevant (e.g. for a refactoring).
-
-Detailed specifications in an easy-to-read and visual way, for example:
-
-- Short bullet points.
-- Mermaid diagrams.
-- GPEx code snippets.
-- ...
-
-This section can be split into subsections for each major aspect of the change, before the next
-subsections specified below.
-
 ### Breaking changes
 
 Each break of existing behavior (CLI, language syntax, file formats) with its migration path:
 
-```markdown
 - `gpex run --file x` replaced by `gpex run x`
   Migration: remove `--file`
-```
 
 ### Diagnostics
 
@@ -91,18 +80,6 @@ Code and/or diagnostic snippets can be used to illustrate each case when possibl
 
 ## Technical design
 
-Remove the section if not relevant (e.g. for a documentation-only change).
-
-Detailed specifications in an easy-to-read and visual way, for example:
-
-- Short bullet points.
-- Mermaid diagrams.
-- GPEx code snippets.
-- ...
-
-This section can be split into subsections for each major aspect of the change, before the next
-subsections specified below.
-
 ### Libraries
 
 | Library | Version | Purpose    | Reason                         |
@@ -111,25 +88,27 @@ subsections specified below.
 
 ### Architecture
 
-Real folders/files with their scope, only as deep as needed by the change:
+Folders and their scope, only as deep as needed by the change:
 
 ```text
 src/
+├── lexer       # adds `@` token (changed)
 ├── parser      # builds AST from tokens (new)
-└── lexer       # adds `@` token (changed)
+└── codegen     # generates WGSL from AST (changed)
 ```
 
-Leafs don't have folder or file suffix, because this is determined during implementation.
+Only folders containing children and leaves are listed, never files. Leaves have no folder or file
+suffix, because this is determined during implementation.
 
 ### Module interactions
 
-Dependency direction between the architecture folders/files, edges labeled with passed data, new
-or changed links highlighted:
+Dependency direction between the architecture folders and leaves, edges labeled with passed data,
+new or changed links using thick arrows (`==>`):
 
 ```mermaid
 graph LR
   lexer -- tokens --> parser
-  parser -- AST --> codegen
+  parser == AST ==> codegen
 ```
 
 Each main data structure described in one line, without fields:
@@ -138,14 +117,16 @@ Each main data structure described in one line, without fields:
 
 ### Testing
 
-Test types and their location (test cases are derived at implementation from the functional
-design):
+Test cases, as exhaustive as possible, derived from the functional design (or the existing behavior
+to preserve) and the edge cases found during the interview. Ask additional questions if needed to
+refine the list:
 
-| Type        | Location                           | Covers                                    |
-|-------------|------------------------------------|-------------------------------------------|
-| Snapshot    | tests/diagnostics/missing_arg.gpex | Diagnostic message for a missing argument |
+| Type     | Location           | Case                                      |
+|----------|--------------------|-------------------------------------------|
+| Snapshot | tests/diagnostics/ | Diagnostic message for a missing argument |
+| Snapshot | tests/diagnostics/ | Diagnostic message for an extra argument  |
 
-### Platforms
+### Platform support
 
 Only changes to supported platforms, such as OSes, GPU backends or toolchain versions:
 
@@ -170,8 +151,13 @@ Measurable targets, only for performance-sensitive changes:
   of the specifications.
 ````
 
-Remove every subsection that is not relevant. Only record the chosen design, not rejected
-alternatives.
+Design sections are written in an easy-to-read and visual way (short bullet points, Mermaid
+diagrams, GPEx code snippets, ...), and can start with free subsections for each major aspect of
+the change, placed before the predefined ones.
+
+Remove every section and subsection that is not relevant (e.g. `## Functional design` for a
+refactoring, `## Technical design` for a documentation-only change). Only record the chosen design,
+not rejected alternatives.
 
 Avoid duplicating information across the specifications as much as possible, and avoid unnecessary
 verbosity without losing information.
