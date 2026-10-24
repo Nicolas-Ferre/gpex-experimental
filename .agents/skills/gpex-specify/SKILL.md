@@ -31,13 +31,7 @@ following topics, skipping the ones not relevant to the change:
 - Expected behavior.
 - All edge cases.
 - Error handling.
-- Breaking changes.
-- Architecture.
-- Module interactions.
-- Testing.
-- Platform support.
-- Safety and resources.
-- Performance.
+- Each section of the specification template below.
 - Libraries, checked against:
     - License compatibility with the project.
     - Maintenance and popularity.
@@ -118,8 +112,7 @@ Each main data structure described in one line, without fields:
 ### Testing
 
 Test cases, as exhaustive as possible, derived from the functional design (or the existing behavior
-to preserve) and the edge cases found during the interview. Ask additional questions if needed to
-refine the list:
+to preserve) and the edge cases found during the interview:
 
 | Type     | Location           | Case                                      |
 |----------|--------------------|-------------------------------------------|
