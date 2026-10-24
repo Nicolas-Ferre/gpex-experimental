@@ -14,17 +14,22 @@ untracked changes included).
 
 ## Workflow
 
+The branch label is the output of `git branch --show-current`, or `(detached HEAD)` when empty.
+
 Run these steps in order:
 
 1. Run `git fetch origin main`.
 2. If existing, delete `./tmp/review-changes-findings-accepted.md` without reading it to avoid
    bias.
-3. If there is no change in the current branch (uncommitted and untracked changes included), stop.
-4. Get the user request from the skill arguments or conversation, else from the GitHub issue
+3. If `./tmp/review-changes-findings-refused.md` exists, read only its first line (`head -n 1`).
+   If the branch label is `(detached HEAD)` or that line is not `Branch: <branch label>`, delete
+   the file without reading the rest.
+4. If there is no change in the current branch (uncommitted and untracked changes included), stop.
+5. Get the user request from the skill arguments or conversation, else from the GitHub issue
    matching the branch number prefix (`gh issue view <id> --json title,body`). If none is found,
    or the branch covers only part of the issue, ask the user for the scope. Run every review
    sub-agent in parallel, passing it the user request.
-5. Once all sub-agents are done, write in `./tmp/review-changes-findings-accepted.md` only the found
+6. Once all sub-agents are done, write in `./tmp/review-changes-findings-accepted.md` only the found
    issues the following way:
    ```markdown
    1. [<sub-agent name>] **<first finding>**
@@ -37,8 +42,8 @@ Run these steps in order:
    Merge findings describing the same issue into one entry, listing all sub-agent names.
    Illustrate the findings with snippets when possible to make it easier to understand.
    If there is no finding, stop.
-6. Run the judgment step (not in a sub-agent).
-7. Based on accepted findings, append in `./tmp/review-changes-improvements-delayed.md` all missing
+7. Run the judgment step (not in a sub-agent).
+8. Based on accepted findings, append in `./tmp/review-changes-improvements-delayed.md` all missing
    deterministic checkers that could have prevented the found issues (if not already present in the
    file). These checkers must:
     - be fully deterministic and not rely on AI.
@@ -111,7 +116,8 @@ finding:
 
 - If the judge accepts the finding, it is kept in `./tmp/review-changes-findings-accepted.md`.
 - If the judge refuses the finding, remove it from `./tmp/review-changes-findings-accepted.md` and
-  append it to `./tmp/review-changes-findings-refused.md` with the refusal reason.
+  append it to `./tmp/review-changes-findings-refused.md` with the refusal reason. When creating
+  this file, start it with a `Branch: <branch label>` line followed by an empty line.
 - If the judge corrects a finding, it is modified in `./tmp/review-changes-findings-accepted.md`.
 
 It refuses a finding when it is:
