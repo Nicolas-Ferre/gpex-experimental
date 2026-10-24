@@ -80,9 +80,11 @@ Code and/or diagnostic snippets can be used to illustrate each case when possibl
 
 ### Libraries
 
-| Library | Version | Purpose    | Reason                         |
-|---------|---------|------------|--------------------------------|
-| wgpu    | 27.0    | GPU access | Cross-platform, MIT/Apache-2.0 |
+Added, upgraded or removed libraries:
+
+| Library | Action | Version | Purpose    | Reason                         |
+|---------|--------|---------|------------|--------------------------------|
+| wgpu    | Add    | 27.0    | GPU access | Cross-platform, MIT/Apache-2.0 |
 
 ### Architecture
 
@@ -96,8 +98,9 @@ src/
 └── optimizer.rs    # merged into codegen (removed)
 ```
 
-Only parent folders and leaves are listed. Existing leaves keep their real name (e.g. `lexer.rs`).
-New leaves have no folder or file suffix, as this is decided at implementation.
+Only changed leaves and their parent folders are listed. Existing leaves keep their real name
+(e.g. `lexer.rs`). New leaves have no trailing `/` or extension, as this is decided at
+implementation.
 
 ### Module interactions
 
@@ -107,9 +110,9 @@ dotted arrows (`-.->`):
 
 ```mermaid
 graph LR
-  lexer -- tokens --> parser
+  lexer == tokens ==> parser
   parser == AST ==> codegen
-  parser -. AST .-> optimizer
+  optimizer -. optimized AST .-> codegen
 ```
 
 Each main data structure described in one line, without fields:
