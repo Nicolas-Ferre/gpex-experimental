@@ -80,11 +80,12 @@ Code and/or diagnostic snippets can be used to illustrate each case when possibl
 
 ### Libraries
 
-Added, upgraded or removed libraries:
+Added, upgraded or removed libraries (`Version` is the target one):
 
-| Library | Action | Version | Purpose    | Reason                         |
-|---------|--------|---------|------------|--------------------------------|
-| wgpu    | Add    | 27.0    | GPU access | Cross-platform, MIT/Apache-2.0 |
+| Library | Action | Version | Purpose        | Reason                         |
+|---------|--------|---------|----------------|--------------------------------|
+| wgpu    | Add    | 27.0    | GPU access     | Cross-platform, MIT/Apache-2.0 |
+| anyhow  | Remove | -       | Error handling | Replaced by thiserror          |
 
 ### Architecture
 
@@ -98,9 +99,9 @@ src/
 └── optimizer.rs    # merged into codegen (removed)
 ```
 
-Only changed leaves and their parent folders are listed. Existing leaves keep their real name
-(e.g. `lexer.rs`). New leaves have no trailing `/` or extension, as this is decided at
-implementation.
+Only changed leaves, unchanged leaves interacting with them (marked `(unchanged)`), and their parent
+folders are listed. Existing leaves keep their real name (e.g. `lexer.rs`). New leaves that are
+modules (e.g. Rust module) have no trailing `/` or extension, as this is decided at implementation.
 
 ### Module interactions
 
