@@ -35,9 +35,10 @@ Run these steps in order, without sub-agent:
 
 ## Review criteria
 
-Apply all the sub-agent definitions of the `gpex-review-changes` skill (don't run this skill) to the
-specifications instead of code changes. Also check that:
+Apply the sub-agent definitions of the `gpex-review-changes` skill (don't run this skill) to the
+specifications instead of code changes, ignoring code-only checks. Also check that:
 
+- `### Testing` covers every case of the functional design and the edge cases
 - the template defined in the `gpex-specify` skill is followed
 - there is no duplicated information or ambiguity
 - `### Architecture` and `### Module interactions` match real files and the existing organization

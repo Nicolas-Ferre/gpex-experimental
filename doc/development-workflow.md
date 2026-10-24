@@ -20,8 +20,7 @@ implemented directly (see "Implementation").
       > TO REVIEW
       ```
     - Carefully review and refine specifications (`gpex-specify` skill can be reused if needed).
-    - Run `/gpex-review-specs <step specs file>` and refine specifications (`gpex-specify` skill can
-      be reused if needed) until there is no finding.
+    - Run `/gpex-review-specs <step specs file>` and refine specifications until there is no finding.
     - Create new GitHub issues from "Out of scope" section when relevant.
 
 ## Implementation
