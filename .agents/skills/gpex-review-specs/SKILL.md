@@ -1,6 +1,6 @@
 ---
 name: gpex-review-specs
-description: Perform a light review of a specifications file.
+description: Perform review of a specifications file.
 ---
 
 ## Preconditions
