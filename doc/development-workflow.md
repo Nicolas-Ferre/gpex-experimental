@@ -20,6 +20,7 @@ implemented directly (see "Implementation").
       > TO REVIEW
       ```
     - Carefully review and refine specifications (`gpex-specify` skill can be reused if needed).
+    - Run `/gpex-review-specs <step specs file>` and refine specifications until there is no finding.
     - Create new GitHub issues from "Out of scope" section when relevant.
 
 ## Implementation
@@ -32,15 +33,17 @@ For the moment, the implementation workflow is flexible, but always uses the fol
     - To implement simple change: `/gpex-implement <description of the changes>`
 - `gpex-simplify` skill that doesn't require any argument. To be ideally run after
   implementation, and after having fixed all review findings.
-- `gpex-review` skill that doesn't require any argument. To be run after any change.
-    - Apply findings by invoking `/gpex-implement findings in ./tmp/review-findings-accepted.md`
+- `gpex-review-changes` skill that doesn't require any argument. To be run after any change.
+    - Apply findings by invoking
+      `/gpex-implement findings in ./tmp/review-changes-findings-accepted.md`
 
 In addition to generated code, several files must be manually reviewed after each skill run to
 improve development workflow, skills and quality checks:
 
-| File                                   | Description                                                       | Producer skill                        |
-|----------------------------------------|-------------------------------------------------------------------|---------------------------------------|
-| `./tmp/implement-decisions.md`         | Decisions taken by AI during an implementation                    | `gpex-implement` and  `gpex-simplify` |
-| `./tmp/review-improvements-delayed.md` | Any deterministic check that could be enforced in the CI workflow | `gpex-review`                         |
-| `./tmp/review-findings-refused.md`     | Any review finding rejected by the AI                             | `gpex-review`                         |
-| `./tmp/review-findings-accepted.md`    | Any review finding accepted by the AI                             | `gpex-review`                         |
+| File                                           | Description                                                       | Producer skill                        |
+|------------------------------------------------|-------------------------------------------------------------------|---------------------------------------|
+| `./tmp/implement-decisions.md`                 | Decisions taken by AI during an implementation                    | `gpex-implement` and  `gpex-simplify` |
+| `./tmp/review-specs-findings.md`               | Any specification review finding                                  | `gpex-review-specs`                   |
+| `./tmp/review-changes-improvements-delayed.md` | Any deterministic check that could be enforced in the CI workflow | `gpex-review-changes`                 |
+| `./tmp/review-changes-findings-refused.md`     | Any review finding rejected by the AI                             | `gpex-review-changes`                 |
+| `./tmp/review-changes-findings-accepted.md`    | Any review finding accepted by the AI                             | `gpex-review-changes`                 |
