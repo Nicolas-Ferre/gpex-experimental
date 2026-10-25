@@ -45,5 +45,5 @@ else
 fi
 run git diff "$diff_base" --check || status=$?
 run editorconfig-checker || status=$?
-run zizmor --quiet --persona=auditor . || status=$?
+run zizmor --quiet --persona=auditor --strict-collection . || status=$?
 exit "$status"
