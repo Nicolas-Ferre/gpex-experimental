@@ -30,17 +30,7 @@ Run these steps in order:
    or the branch covers only part of the issue, ask the user for the scope. Run every review
    sub-agent in parallel, passing it the user request.
 6. Once all sub-agents are done, write in `./tmp/review-changes-findings-accepted.md` only the found
-   issues the following way:
-   ```markdown
-   1. [<sub-agent name>] **<first finding>**
-      <brief details and short snippet(s) of the proposed fix>
-   2. [<sub-agent name>] **<second finding>**
-      <brief details and short snippet(s) of the proposed fix>
-      ...
-   ```
-   Do not mix multiple issues in the same finding.
-   Merge findings describing the same issue into one entry, listing all sub-agent names.
-   Illustrate the findings with snippets when possible to make it easier to understand.
+   issues, following the finding format.
    If there is no finding, stop.
 7. Run the judgment step (not in a sub-agent).
 8. Based on accepted findings, append in `./tmp/review-changes-improvements-delayed.md` all missing
@@ -54,11 +44,13 @@ Run these steps in order:
 Each subsection corresponds to a sub-agent to run during review.
 
 The sub-agents must not modify any file, must not read `./tmp/review-changes-findings-*.md`, and
-must return the full list of findings.
+must return the full list of findings, following the finding format.
+They report absolutely all possible findings, even minor or uncertain ones: the judgment step
+refuses the invalid ones.
 
 ### Bug detection
 
-- Find all real bugs, do not miss any.
+- Find all bugs, including suspected ones.
 - Take into account the following ISO/IEC 25010:2023 product-quality:
     - Reliability.
     - Security.
@@ -109,6 +101,45 @@ characteristics:
 - Maintainability at the level of the code.
 - Interaction capability.
 
+## Finding format
+
+Each finding is written as a numbered entry:
+
+````markdown
+1. [<sub-agent names>] **<short title>**
+   - Location:
+     - [<path>:<line>:<column>](../<path>#L<line>)
+   - Problem: <what is wrong>
+   - Reason: <why it is wrong>
+   - Fix: <best approach to resolve it>
+   - Diff:
+     ```diff
+     <diff snippet>
+     ```
+````
+
+- Location: one sub-bullet per place where the issue occurs.
+    - Link target is relative to `./tmp/` (findings files folder), link text is relative to the
+      repository root.
+    - Lines and columns come from the working tree. Omit the column when not meaningful
+      (`<path>:<line>`).
+    - Issue in removed code: line where the code was removed. Deleted file: its parent folder.
+    - No precise line: most relevant file or folder, without line (e.g.
+      `[tests/diagnostics/](../tests/diagnostics/)`). Omit the `Location:` bullet only when no
+      path applies.
+- One issue per finding. Findings describing the same issue are merged into one entry: it keeps
+  the best fix, all locations and all sub-agent names.
+- Fix: only the recommended approach.
+- Snippet part, by order of preference:
+    - `Diff:` with a `diff` block when the fix is a local text edit.
+    - `Before:` and `After:` blocks when a diff would be unreadable (e.g. restructuring, diagrams).
+    - Omitted when no snippet can illustrate the fix.
+    - Snippet fences are longer than any backtick run inside the snippet.
+- Refused entry: same entry, plus a last `- Refusal: <refusal reason>` bullet.
+- The judgment step completes an incomplete entry or fixes a wrong location as a correction, and
+  refuses the finding when no valid reason or fix can be stated (never only because of its
+  location).
+
 ## Judgment step
 
 This step reads `./tmp/review-changes-findings-accepted.md`, and applies a judgment on each
@@ -116,7 +147,7 @@ finding:
 
 - If the judge accepts the finding, it is kept in `./tmp/review-changes-findings-accepted.md`.
 - If the judge refuses the finding, remove it from `./tmp/review-changes-findings-accepted.md` and
-  append it to `./tmp/review-changes-findings-refused.md` with the refusal reason. When creating
+  append it to `./tmp/review-changes-findings-refused.md` as a refused entry. When creating
   this file, start it with a `Branch: <branch label>` line followed by an empty line.
 - If the judge corrects a finding, it is modified in `./tmp/review-changes-findings-accepted.md`.
 
