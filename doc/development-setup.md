@@ -6,6 +6,7 @@ This file describes the recommended development environment setup on macOS machi
 
 ```shell
 brew install editorconfig-checker
+brew install zizmor
 ```
 
 ## RustRover plugins

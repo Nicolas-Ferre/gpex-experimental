@@ -12,8 +12,7 @@ Here are relevant folders and files:
 ├── README.md
 ├── .editorconfig
 ├── .github/workflows/           # GitHub Actions workflows
-├── doc/
-│   └── specs/                   # Specifications for the different parts of the repository
+├── doc/                         # Repository documentation
 └── scripts/
     └── lint.sh                  # Run all linters
 ```
