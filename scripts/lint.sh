@@ -4,15 +4,12 @@ set -euo pipefail
 root=$(cd "$(dirname "$0")/.." && pwd)
 cd "$root"
 
-if ! command -v editorconfig-checker >/dev/null 2>&1; then
-    echo "error: editorconfig-checker is not installed" >&2
-    exit 1
-fi
-
-if ! command -v zizmor >/dev/null 2>&1; then
-    echo "error: zizmor is not installed" >&2
-    exit 1
-fi
+for tool in editorconfig-checker zizmor; do
+    if ! command -v "$tool" >/dev/null 2>&1; then
+        echo "error: $tool is not installed" >&2
+        exit 1
+    fi
+done
 
 zizmor_pinned=$(sed -n 's/^zizmor==\([^ ]*\).*/\1/p' .github/requirements-lint.txt)
 zizmor_local=$(zizmor --version | awk '{print $2}')
