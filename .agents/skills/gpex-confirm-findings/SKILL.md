@@ -20,10 +20,9 @@ Validate accepted findings of a review one by one.
    the user.
 2. For each finding in `./tmp/review-<type>-findings-accepted.md`:
     1. Read the finding location and the related code.
-    2. Display the finding details.
-    3. If the fix is necessary, obvious and without relevant alternative, keep the finding without
-       asking. Else, ask user which solution to apply: the finding solution, viable alternatives,
-       refusing the finding, or a solution they write themselves.
+    2. If the fix is necessary, obvious and without relevant alternative, keep the finding without
+       asking. Else, display its details and ask user which solution to apply: the finding
+       solution, viable alternatives, refusing the finding, or a solution they write themselves.
         1. If the finding is refused, ask for the reason unless the user already gave it, then move
            it to `./tmp/review-<type>-findings-refused.md` as a refused entry (see the finding
            format of `gpex-review-changes`). When creating this file, start it with the following
