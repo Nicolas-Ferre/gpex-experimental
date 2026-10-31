@@ -38,8 +38,9 @@ Run these steps in order:
    file). These checkers must:
     - be fully deterministic and not rely on AI.
     - generalize well (they are not put in place for specific edge cases).
-9. If an accepted finding is left, point the user to `./tmp/review-changes-findings-accepted.md`,
-   and let them know that they can refine the findings with `gpex-confirm-change-findings`.
+9. If no accepted finding is left, inform the user that the changes look good. Else, point the
+   user to `./tmp/review-changes-findings-accepted.md`, and let them know that they can refine the
+   findings with `gpex-confirm-findings changes`.
 
 ## Review sub-agents
 
