@@ -30,7 +30,8 @@ Run these steps in order:
    `[<sub-agent names>]` and locations point to the specifications file.
 7. Run the judgment step (not in a sub-agent).
 8. If no accepted finding is left, inform the user that the specifications look good and stop.
-9. Point the user to `./tmp/review-specs-findings-accepted.md`.
+9. Point the user to `./tmp/review-specs-findings-accepted.md`, and let them know that they can
+   refine the findings with `gpex-confirm-spec-findings`.
 10. If the specs path is `./tmp/specs.md`, let the user know that they can refine the
     specifications with `gpex-specify`.
 
