@@ -31,13 +31,16 @@ Run these steps in order:
    sub-agent in parallel, passing it the user request.
 6. Once all sub-agents are done, write in `./tmp/review-changes-findings-accepted.md` only the found
    issues, following the finding format.
-   If there is no finding, stop.
+   If there is no finding, inform the user that the changes look good and stop.
 7. Run the judgment step (not in a sub-agent).
 8. Based on accepted findings, append in `./tmp/review-changes-improvements-delayed.md` all missing
    deterministic checkers that could have prevented the found issues (if not already present in the
    file). These checkers must:
     - be fully deterministic and not rely on AI.
     - generalize well (they are not put in place for specific edge cases).
+9. If no accepted finding is left, inform the user that the changes look good. Else, point the
+   user to `./tmp/review-changes-findings-accepted.md`, and let them know that they can refine the
+   findings with `gpex-confirm-findings changes`.
 
 ## Review sub-agents
 
