@@ -53,6 +53,7 @@ important), ignoring code-only checks. Also check that:
 - `### Architecture` and `### Module interactions` match real files and the existing organization.
 - Listed libraries exist on their registry with the stated version, and present no risk or better
   alternative.
+- The solution is the simplest possible.
 
 You can question certain decisions if it makes sense.
 
