@@ -14,7 +14,7 @@ Validate accepted findings of a review one by one.
 ## Workflow
 
 `<type>` is the skill argument: `changes` for `gpex-review-changes` findings, or `specs` for
-`gpex-review-specs` findings. If it is missing, ask the user.
+`gpex-review-specs` findings. If it is anything else or missing, ask the user.
 
 1. If `./tmp/review-<type>-findings-accepted.md` does not exist or has no finding, stop and inform
    the user.
@@ -26,11 +26,11 @@ Validate accepted findings of a review one by one.
        refusing the finding, or a solution they write themselves.
         1. If the finding is refused, ask for the reason unless the user already gave it, then move
            it to `./tmp/review-<type>-findings-refused.md` as a refused entry (see the finding
-           format of `gpex-review-changes`, don't run this skill). When creating this file, start
-           it with the following line, followed by an empty line:
-            - `changes`: `Branch: <branch label>` (see `gpex-review-changes`, don't run this skill).
-            - `specs`: `Specs: <specs path>` (see `gpex-review-specs`, don't run this skill), where
-              the specs path is the file of the finding locations.
+           format of `gpex-review-changes`). When creating this file, start it with the following
+           line, followed by an empty line:
+            - `changes`: `Branch: <branch label>` (see `gpex-review-changes`).
+            - `specs`: `Specs: <specs path>` (see `gpex-review-specs`), where the specs path is the
+              file of the finding locations, prefixed with `./`.
         2. If the finding is accepted, replace its `Fix:` and snippet in
            `./tmp/review-<type>-findings-accepted.md` with the selected solution.
 3. List the findings kept without asking, so the user can still review them.
@@ -41,3 +41,4 @@ Validate accepted findings of a review one by one.
 - Always provide enough information, consider the user has not read the code nor the findings.
 - Each question includes a recommended option.
 - Take earlier decisions into account, and flag findings they make obsolete or conflicting.
+- Other skills are only referenced for their definitions: never run them.
