@@ -40,7 +40,7 @@ Run these steps in order:
     - generalize well (they are not put in place for specific edge cases).
 9. If no accepted finding is left, inform the user that the changes look good. Else, point the
    user to `./tmp/review-changes-findings-accepted.md`, and let them know that they can refine the
-   findings with `gpex-confirm-findings changes`.
+   findings with `/gpex-confirm-findings changes`.
 
 ## Review sub-agents
 
