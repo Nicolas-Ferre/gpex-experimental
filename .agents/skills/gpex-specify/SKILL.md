@@ -80,15 +80,16 @@ Code and/or diagnostic snippets can be used to illustrate each case when possibl
 
 ### Platform support
 
-Platforms users gain or lose:
+Platforms users gain or lose, with a migration path for lost ones:
 
 - DX12 no longer supported
+  Migration: use the Vulkan backend
 
 ### Safety and resources
 
 User-observable limits and guarantees:
 
-- Programs exceeding the device storage buffer limit are rejected with a diagnostic
+- Programs cannot access memory outside their declared buffers
 
 ### Performance
 
@@ -156,7 +157,7 @@ behavior to preserve) and the edge cases found during the interview:
 
 ### Platform support
 
-Only changes to supported platforms, such as OSes, GPU backends or toolchain versions:
+Only technical requirements of platform changes, such as toolchain versions or GPU features:
 
 - Bumps minimum Rust toolchain to 1.85: required by wgpu 27.0
 
@@ -169,7 +170,7 @@ Only when the change allocates GPU resources, runs user code, parses input or ne
 
 ### Performance
 
-Required algorithmic or resource constraints, only for performance-sensitive changes:
+Required algorithmic constraints, only for performance-sensitive changes:
 
 - Symbol lookup algorithm: O(log n)
 
