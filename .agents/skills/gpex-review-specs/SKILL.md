@@ -33,7 +33,7 @@ Run these steps in order:
 9. Point the user to `./tmp/review-specs-findings-accepted.md`, and let them know that they can
    refine the findings with `/gpex-confirm-findings specs`.
 10. If the specs path is `./tmp/specs.md`, let the user know that they can refine the
-    specifications with `gpex-specify`.
+    specifications with `/gpex-specify`.
 
 ## Review sub-agent
 
