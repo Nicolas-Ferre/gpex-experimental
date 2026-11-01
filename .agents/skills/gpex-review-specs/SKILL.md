@@ -31,7 +31,7 @@ Run these steps in order:
 7. Run the judgment step (not in a sub-agent).
 8. If no accepted finding is left, inform the user that the specifications look good and stop.
 9. Point the user to `./tmp/review-specs-findings-accepted.md`, and let them know that they can
-   refine the findings with `gpex-confirm-findings specs`.
+   refine the findings with `/gpex-confirm-findings specs`.
 10. If the specs path is `./tmp/specs.md`, let the user know that they can refine the
     specifications with `gpex-specify`.
 
@@ -50,7 +50,8 @@ important), ignoring code-only checks. Also check that:
 
 - There is no duplicated information or ambiguity.
 - Sections do not contradict each other.
-- `### Testing` covers every case of the functional design and the edge cases.
+- `### Testing` lists only automated tests, and covers every automatable case of the functional
+  design and the edge cases.
 - `### Architecture` and `### Module interactions` match real files and the existing organization.
 - Listed libraries exist on their registry with the stated version, and present no risk or better
   alternative.

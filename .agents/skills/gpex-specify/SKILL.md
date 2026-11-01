@@ -58,9 +58,9 @@ Short description of the change to perform, without entering into details.
 
 ## Functional design
 
-### <Major aspect of the change>
+### <Major functional aspect of the change>
 
-Expected behavior of this aspect of the change.
+Expected behavior of this aspect.
 
 ### Breaking changes
 
@@ -78,7 +78,29 @@ One `####` subsection per error case introduced by the change, and for each case
 
 Code and/or diagnostic snippets can be used to illustrate each case when possible.
 
+### Platform support
+
+Platforms users gain or lose:
+
+- DX12 no longer supported
+
+### Safety and resources
+
+User-observable limits and guarantees:
+
+- Programs exceeding the device storage buffer limit are rejected with a diagnostic
+
+### Performance
+
+User-observable targets, only for performance-sensitive changes:
+
+- Compiling 10k-line program: < 1s on CI runner
+
 ## Technical design
+
+### <Major technical aspect of the change>
+
+Expected technical details of this aspect.
 
 ### Libraries
 
@@ -124,8 +146,8 @@ Each main data structure described in one line, without fields:
 
 ### Testing
 
-Test cases, as exhaustive as possible, derived from the functional design (or the existing behavior
-to preserve) and the edge cases found during the interview:
+Automated test cases, as exhaustive as possible, derived from the functional design (or the existing
+behavior to preserve) and the edge cases found during the interview:
 
 | Type     | Location           | Case                                      |
 |----------|--------------------|-------------------------------------------|
@@ -136,20 +158,20 @@ to preserve) and the edge cases found during the interview:
 
 Only changes to supported platforms, such as OSes, GPU backends or toolchain versions:
 
-- Drops DX12 support: wgpu 27.0 DX12 backend lacks feature X
+- Bumps minimum Rust toolchain to 1.85: required by wgpu 27.0
 
 ### Safety and resources
 
 Only when the change allocates GPU resources, runs user code, parses input or needs `unsafe` code:
 
-- Storage buffer size capped at device `max_storage_buffer_binding_size`
+- Storage buffers released as soon as the dispatch completes
 - No `unsafe` code
 
 ### Performance
 
-Measurable targets, only for performance-sensitive changes:
+Required algorithmic or resource constraints, only for performance-sensitive changes:
 
-- Compiling 10k-line program: < 1s on CI runner
+- Symbol lookup algorithm: O(log n)
 
 ## Out of scope
 
@@ -160,6 +182,9 @@ Measurable targets, only for performance-sensitive changes:
 Design sections are written in an easy-to-read and visual way (short bullet points, Mermaid
 diagrams, GPEx code snippets, ...). Both can start with free subsections for each major aspect of
 the change, placed before the predefined ones.
+
+Functional design describes only what the user of the change observes. Anything describing how it
+is implemented (e.g. algorithms, internal strategy, ...) goes in technical design.
 
 Remove every section and subsection that is not relevant (e.g. `## Functional design` for a
 refactoring, `## Technical design` for a documentation-only change). Only record the chosen design,
