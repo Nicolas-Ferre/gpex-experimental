@@ -6,6 +6,7 @@ on:
 
 env:
   MAX_PR_SIZE: 300
+  # Git glob pathspecs relative to repository root, one per line ("**/" matches subfolders).
   EXCLUDED_FILES: |
     **/Cargo.lock
 
@@ -24,12 +25,14 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
+          # Only valid for pull_request checkouts: HEAD is the merge commit and HEAD^1 the base branch tip.
           fetch-depth: 2
           persist-credentials: false
 
       - name: Check PR size
+        shell: bash
         run: |
-          mapfile -t pathspecs < <(grep . <<< "$EXCLUDED_FILES" | sed 's/^/:(exclude,glob)/')
+          mapfile -t pathspecs < <(sed 's/^[[:space:]]*//; /^$/d; s/^/:(exclude,glob)/' <<< "$EXCLUDED_FILES")
 
           size=$(git diff --numstat --no-renames HEAD^1 HEAD -- . "${pathspecs[@]}" \
             | awk '{ size += $1 + $2 } END { print size + 0 }')
