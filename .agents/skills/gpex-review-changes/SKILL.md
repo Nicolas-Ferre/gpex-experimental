@@ -39,15 +39,16 @@ Run these steps in order:
     - be fully deterministic and not rely on AI.
     - generalize well (they are not put in place for specific edge cases).
 9. If no accepted finding is left, inform the user that the changes look good. Else, point the
-   user to `./tmp/review-changes-findings-accepted.md`, and let them know that they can refine the
-   findings with `/gpex-confirm-findings changes`.
+   user to `./tmp/review-changes-findings-accepted.md`, give the number of findings per class,
+   tell them whether the review cycle can stop (see cycle rule), and let them know that they can
+   refine the findings with `/gpex-confirm-findings changes`.
 
 ## Review sub-agents
 
 Each subsection corresponds to a sub-agent to run during review.
 
 The sub-agents must not modify any file, must not read `./tmp/review-changes-findings-*.md`, and
-must return the full list of findings, following the finding format.
+must return the full list of findings, following the finding format and finding classes.
 They report absolutely all possible findings, even minor or uncertain ones: the judgment step
 refuses the invalid ones.
 
@@ -104,23 +105,46 @@ characteristics:
 - Maintainability at the level of the code.
 - Interaction capability.
 
+## Finding classes
+
+Each finding has exactly one class. Its `Reason:` must state what the class requires:
+
+- `BLOCKER`: a concrete scenario (e.g. which input, in which state, after which steps) leading to a
+  wrong result: bug, crash, security hole, data loss/corruption, broken build or tests,
+  legal/compliance breach.
+  Must be fixed.
+- `REQUIRED`: the cited written rule that is violated (`AGENTS.md`, skill conventions, API
+  contract, "new logic must have tests", ...).
+  Must be fixed, or the rule explicitly waived.
+- `SUGGESTION`: a concrete cost the change avoids (duplication with file X, a function that will
+  need to change in N places, a misleading name that caused a bug before, ...).
+  The author accepts, or declines with one sentence. No debate.
+- `NITPICK`: taste or style with no stated cost.
+  Optional. Never blocks.
+- `QUESTION`: not a finding, but a request for information ("why is this retry needed?").
+  Must be answered. The answer may produce a finding.
+
+Cycle rule: the review cycle can stop when no `BLOCKER` nor `REQUIRED` finding is open.
+
 ## Finding format
 
 Each finding is written as a numbered entry:
 
 ````markdown
-1. [<sub-agent names>] **<short title>**
-   - Location:
-     - [<path>:<line>:<column>](../<path>#L<line>)
-   - Problem: <what is wrong>
-   - Reason: <why it is wrong>
-   - Fix: <best approach to resolve it>
-   - Diff:
-     ```diff
-     <diff snippet>
-     ```
+1. [<class>] [<sub-agent names>] **<short title>**
+    - Location:
+        - [<path>:<line>:<column>](../<path>#L<line>)
+    - Problem: <what is wrong>
+    - Reason: <why it is wrong, as required by the class>
+    - Fix: <best approach to resolve it>
+    - Diff:
+      ```diff
+      <diff snippet>
+      ```
 ````
 
+- `QUESTION` entries replace `Problem:`, `Reason:`, `Fix:` and the snippet with a single
+  `- Question: <question>` bullet.
 - Location: one sub-bullet per place where the issue occurs.
     - Link target is relative to `./tmp/` (findings files folder), link text is relative to the
       repository root.
@@ -131,7 +155,7 @@ Each finding is written as a numbered entry:
       `[tests/diagnostics/](../tests/diagnostics/)`). Omit the `Location:` bullet only when no
       path applies.
 - One issue per finding. Findings describing the same issue are merged into one entry: it keeps
-  the best fix, all locations and all sub-agent names.
+  the best fix, the highest class, all locations and all sub-agent names.
 - Fix: only the recommended approach.
 - Snippet part, by order of preference:
     - `Diff:` with a `diff` block when the fix is a local text edit.
@@ -142,6 +166,10 @@ Each finding is written as a numbered entry:
 - The judgment step completes an incomplete entry or fixes a wrong location as a correction, and
   refuses the finding when no valid reason or fix can be stated (never only because of its
   location).
+- The judgment step downgrades a class whose reason does not hold (e.g. a `BLOCKER` without a
+  concrete scenario) to the highest class whose reason holds.
+- The judgment step answers a `QUESTION` itself when the repository holds the answer: it replaces
+  the entry with the resulting finding, or removes it. Only questions needing the user are kept.
 
 ## Judgment step
 
