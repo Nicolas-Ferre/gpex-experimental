@@ -18,11 +18,12 @@ Validate accepted findings of a review one by one.
 
 1. If `./tmp/review-<type>-findings-accepted.md` does not exist or has no finding, stop and inform
    the user.
-2. If it has no `BLOCKER` nor `REQUIRED` finding (see finding classes of `gpex-review-changes`),
-   stop and inform the user that no important finding was found and the review cycle can stop.
+2. If the review cycle can stop (see cycle rule of `gpex-review-changes`), stop and inform the user.
 3. For each finding in `./tmp/review-<type>-findings-accepted.md`:
     1. Read the finding location and the related code.
-    2. If the fix is necessary, obvious and without relevant alternative, keep the finding without
+    2. If the finding is a `QUESTION`, ask it to the user, then replace the entry with the
+       resulting finding and validate it as below, or remove the entry if no finding results.
+    3. If the fix is necessary, obvious and without relevant alternative, keep the finding without
        asking. Else, display its details and ask user which solution to apply: the finding
        solution, viable alternatives, refusing the finding, or a solution they write themselves.
         1. If the finding is refused, ask for the reason unless the user already gave it, then move

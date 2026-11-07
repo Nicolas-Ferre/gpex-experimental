@@ -124,7 +124,7 @@ Each finding has exactly one class. Its `Reason:` must state what the class requ
 - `QUESTION`: not a finding, but a request for information ("why is this retry needed?").
   Must be answered. The answer may produce a finding.
 
-Cycle rule: the review cycle can stop when no `BLOCKER` nor `REQUIRED` finding is open.
+Cycle rule: the review cycle can stop when no `BLOCKER`, `REQUIRED` nor `QUESTION` finding is open.
 
 ## Finding format
 
