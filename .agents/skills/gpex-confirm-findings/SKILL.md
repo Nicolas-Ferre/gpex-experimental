@@ -18,7 +18,9 @@ Validate accepted findings of a review one by one.
 
 1. If `./tmp/review-<type>-findings-accepted.md` does not exist or has no finding, stop and inform
    the user.
-2. If the review cycle can stop (see cycle rule of `gpex-review-changes`), stop and inform the user.
+2. If the review cycle can stop (see cycle rule of `gpex-review-changes`), inform the user that
+   this is the last review cycle, then remove `NITPICK` findings unless the user wants to keep
+   them. If no finding remains, stop.
 3. For each finding in `./tmp/review-<type>-findings-accepted.md`:
     1. Read the finding location and the related code.
     2. If the finding is a `QUESTION`, ask it to the user, then replace the entry with the
