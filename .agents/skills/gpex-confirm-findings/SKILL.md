@@ -19,12 +19,15 @@ Validate accepted findings of a review one by one.
 1. If `./tmp/review-<type>-findings-accepted.md` does not exist or has no finding, stop and inform
    the user.
 2. If the review cycle can stop (see cycle rule of `gpex-review-changes`), inform the user that
-   this is the last review cycle, then remove `NITPICK` findings unless the user wants to keep
-   them. If no finding remains, stop.
+   this is the last review cycle, then move `NITPICK` findings to the refused file (see below)
+   with refusal reason `Dropped at last review cycle`, unless the user wants to keep them. If no
+   finding remains, stop.
 3. For each finding in `./tmp/review-<type>-findings-accepted.md`:
     1. Read the finding location and the related code.
-    2. If the finding is a `QUESTION`, ask it to the user, then replace the entry with the
-       resulting finding and validate it as below, or remove the entry if no finding results.
+    2. If the finding is a `QUESTION`, ask the user, with the most likely answer as recommended
+       option, then replace the entry with the resulting finding (following the finding format and
+       classes of `gpex-review-changes`) and validate it as below. If no finding results, move it
+       to the refused file (see below) with `Answered: <answer>` as refusal reason.
     3. If the fix is necessary, obvious and without relevant alternative, keep the finding without
        asking. Else, display its details and ask user which solution to apply: the finding
        solution, viable alternatives, refusing the finding, or a solution they write themselves.

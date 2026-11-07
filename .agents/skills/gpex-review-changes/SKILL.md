@@ -107,24 +107,30 @@ characteristics:
 
 ## Finding classes
 
-Each finding has exactly one class. Its `Reason:` must state what the class requires:
+Each finding has exactly one class, listed from highest to lowest. `QUESTION` is outside this
+order: never merged with another finding, nor a downgrade target. The `Reason:` of a finding must
+state what its class requires:
 
 - `BLOCKER`: a concrete scenario (e.g. which input, in which state, after which steps) leading to a
   wrong result: bug, crash, security hole, data loss/corruption, broken build or tests,
   legal/compliance breach.
   Must be fixed.
-- `REQUIRED`: the cited written rule that is violated (`AGENTS.md`, skill conventions, API
-  contract, "new logic must have tests", ...).
-  Must be fixed, or the rule explicitly waived.
+- `REQUIRED`: the cited written rule that is violated (`AGENTS.md`, skill conventions such as
+  `Conventions` of `gpex-implement`, API contract, ...). The violation must be objectively
+  checkable: citing a general principle (conciseness, simplicity, readability, style) gives at
+  most `SUGGESTION`.
+  Must be fixed, or the rule explicitly waived (refused with a reason naming the waiver).
 - `SUGGESTION`: a concrete cost the change avoids (duplication with file X, a function that will
   need to change in N places, a misleading name that caused a bug before, ...).
-  The author accepts, or declines with one sentence. No debate.
+  The user accepts, or refuses with a one-sentence reason.
 - `NITPICK`: taste or style with no stated cost.
   Optional. Never blocks.
-- `QUESTION`: not a finding, but a request for information ("why is this retry needed?").
+- `QUESTION`: a request for information that neither the repository nor the user request
+  contains ("why is this retry needed?").
   Must be answered. The answer may produce a finding.
 
-Cycle rule: the review cycle can stop when no `BLOCKER`, `REQUIRED` nor `QUESTION` finding is open.
+Cycle rule: the review cycle can stop when the accepted findings file has no `BLOCKER`,
+`REQUIRED` or `QUESTION` finding.
 
 ## Finding format
 
@@ -167,7 +173,8 @@ Each finding is written as a numbered entry:
   refuses the finding when no valid reason or fix can be stated (never only because of its
   location).
 - The judgment step downgrades a class whose reason does not hold (e.g. a `BLOCKER` without a
-  concrete scenario) to the highest class whose reason holds.
+  concrete scenario) to the highest class whose reason holds, once no refusal criterion
+  applies.
 - The judgment step answers a `QUESTION` itself when the repository holds the answer: it replaces
   the entry with the resulting finding, or removes it. Only questions needing the user are kept.
 

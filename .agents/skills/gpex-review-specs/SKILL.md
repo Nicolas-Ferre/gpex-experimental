@@ -27,8 +27,7 @@ Run these steps in order:
 5. If there is no finding, inform the user that the specifications look good and stop.
 6. Write the findings in `./tmp/review-specs-findings-accepted.md`, following the finding format and
    finding classes of the `gpex-review-changes` skill (don't run this skill), except that entries
-   omit `[<sub-agent names>]` and locations point to the specifications file. A `REQUIRED` finding
-   can also cite a rule of the `gpex-specify` skill (e.g. its template rules).
+   omit `[<sub-agent names>]` and locations point to the specifications file.
 7. Run the judgment step (not in a sub-agent).
 8. If no accepted finding is left, inform the user that the specifications look good and stop.
 9. Point the user to `./tmp/review-specs-findings-accepted.md`, give the number of findings per
@@ -59,7 +58,9 @@ important), ignoring code-only checks. Also check that:
   alternative.
 - The solution is the simplest possible.
 
-You can question certain decisions if it makes sense.
+A `REQUIRED` finding can also cite a rule of the `gpex-specify` skill (e.g. its template rules).
+
+You can challenge certain decisions if it makes sense, as `SUGGESTION` findings.
 
 ## Judgment step
 
