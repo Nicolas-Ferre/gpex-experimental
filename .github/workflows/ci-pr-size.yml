@@ -6,8 +6,11 @@ on:
 
 env:
   MAX_PR_SIZE: 300
+  EXCLUDED_FILES: |
+    **/Cargo.lock
 
-permissions: {}
+permissions:
+  contents: read
 
 concurrency:
   group: ci-${{ github.workflow }}-${{ github.ref }}
@@ -18,14 +21,32 @@ jobs:
     name: Check PR size
     runs-on: ubuntu-24.04
     steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 2
+          persist-credentials: false
+
       - name: Check PR size
         run: |
-          size=$((ADDITIONS + DELETIONS))
-          echo "PR size: $size changed lines (additions + deletions)"
+          pathspecs=()
+          while IFS= read -r glob; do
+            if [[ -n "$glob" ]]; then
+              pathspecs+=(":(exclude,glob)$glob")
+            fi
+          done <<< "$EXCLUDED_FILES"
+
+          numstat=$(git diff --numstat --no-renames HEAD^1 HEAD -- . "${pathspecs[@]}")
+
+          size=0
+          while IFS=$'\t' read -r additions deletions _; do
+            [[ "$additions" == "-" ]] && additions=0
+            [[ "$deletions" == "-" ]] && deletions=0
+            size=$((size + ${additions:-0} + ${deletions:-0}))
+          done <<< "$numstat"
+
+          echo "PR size (without excluded files): $size changed lines (additions + deletions)"
           if (( size >= MAX_PR_SIZE )); then
-            echo "::error::PR has $size changed lines (should be lower than $MAX_PR_SIZE). Please split it into smaller PRs."
+            echo "::error::PR has $size changed lines without excluded files (should be lower than $MAX_PR_SIZE). Please split it into smaller PRs."
             exit 1
           fi
-        env:
-          ADDITIONS: ${{ github.event.pull_request.additions }}
-          DELETIONS: ${{ github.event.pull_request.deletions }}
