@@ -36,14 +36,8 @@ jobs:
             fi
           done <<< "$EXCLUDED_FILES"
 
-          numstat=$(git diff --numstat --no-renames HEAD^1 HEAD -- . "${pathspecs[@]}")
-
-          size=0
-          while IFS=$'\t' read -r additions deletions _; do
-            [[ "$additions" == "-" ]] && additions=0
-            [[ "$deletions" == "-" ]] && deletions=0
-            size=$((size + ${additions:-0} + ${deletions:-0}))
-          done <<< "$numstat"
+          size=$(git diff --numstat --no-renames HEAD^1 HEAD -- . "${pathspecs[@]}" \
+            | awk '{ size += $1 + $2 } END { print size + 0 }')
 
           echo "PR size (without excluded files): $size changed lines (additions + deletions)"
           if (( size >= MAX_PR_SIZE )); then
