@@ -108,8 +108,8 @@ characteristics:
 ## Finding classes
 
 Each finding has exactly one class, listed from highest to lowest. `QUESTION` is outside this
-order: never merged with another finding, nor a downgrade target. The `Reason:` of a finding must
-state what its class requires:
+order: only merged with another `QUESTION`, and its class never changes. The `Reason:` of a
+finding must state what its class requires:
 
 - `BLOCKER`: a concrete scenario (e.g. which input, in which state, after which steps) leading to a
   wrong result: bug, crash, security hole, data loss/corruption, broken build or tests,
@@ -120,7 +120,7 @@ state what its class requires:
   checkable: citing a general principle (conciseness, simplicity, readability, style) gives at
   most `SUGGESTION`.
   Must be fixed, or the rule explicitly waived (refused with a reason naming the waiver).
-- `SUGGESTION`: a concrete cost the change avoids (duplication with file X, a function that will
+- `SUGGESTION`: a concrete cost the fix avoids (duplication with file X, a function that will
   need to change in N places, a misleading name that caused a bug before, ...).
   The user accepts, or refuses with a one-sentence reason.
 - `NITPICK`: taste or style with no stated cost.
@@ -161,7 +161,7 @@ Each finding is written as a numbered entry:
       `[tests/diagnostics/](../tests/diagnostics/)`). Omit the `Location:` bullet only when no
       path applies.
 - One issue per finding. Findings describing the same issue are merged into one entry: it keeps
-  the best fix, the highest class, all locations and all sub-agent names.
+  the best fix, the highest class with its reason, all locations and all sub-agent names.
 - Fix: only the recommended approach.
 - Snippet part, by order of preference:
     - `Diff:` with a `diff` block when the fix is a local text edit.
@@ -172,11 +172,11 @@ Each finding is written as a numbered entry:
 - The judgment step completes an incomplete entry or fixes a wrong location as a correction, and
   refuses the finding when no valid reason or fix can be stated (never only because of its
   location).
-- The judgment step downgrades a class whose reason does not hold (e.g. a `BLOCKER` without a
-  concrete scenario) to the highest class whose reason holds, once no refusal criterion
-  applies.
+- The judgment step sets each class to the highest class whose reason holds (e.g. downgrades a
+  `BLOCKER` without a concrete scenario), once no refusal criterion applies.
 - The judgment step answers a `QUESTION` itself when the repository holds the answer: it replaces
-  the entry with the resulting finding, or removes it. Only questions needing the user are kept.
+  the entry with the resulting finding, or refuses it with `Answered: <answer>` as refusal
+  reason. Only questions needing the user are kept.
 
 ## Judgment step
 

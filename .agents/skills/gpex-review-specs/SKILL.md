@@ -60,7 +60,7 @@ important), ignoring code-only checks. Also check that:
 
 A `REQUIRED` finding can also cite a rule of the `gpex-specify` skill (e.g. its template rules).
 
-You can challenge certain decisions if it makes sense, as `SUGGESTION` findings.
+You can challenge certain decisions if it makes sense.
 
 ## Judgment step
 
