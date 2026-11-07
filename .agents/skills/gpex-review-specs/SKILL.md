@@ -25,13 +25,14 @@ Run these steps in order:
 3. If the specifications file does not exist, stop and inform the user.
 4. Run a single review sub-agent, passing it the specs path.
 5. If there is no finding, inform the user that the specifications look good and stop.
-6. Write the findings in `./tmp/review-specs-findings-accepted.md`, following the finding format of
-   the `gpex-review-changes` skill (don't run this skill), except that entries omit
-   `[<sub-agent names>]` and locations point to the specifications file.
+6. Write the findings in `./tmp/review-specs-findings-accepted.md`, following the finding format and
+   finding classes of the `gpex-review-changes` skill (don't run this skill), except that entries
+   omit `[<sub-agent names>]` and locations point to the specifications file.
 7. Run the judgment step (not in a sub-agent).
 8. If no accepted finding is left, inform the user that the specifications look good and stop.
-9. Point the user to `./tmp/review-specs-findings-accepted.md`, and let them know that they can
-   refine the findings with `/gpex-confirm-findings specs`.
+9. Point the user to `./tmp/review-specs-findings-accepted.md`, give the number of findings per
+   class, tell them whether the review cycle can stop (see cycle rule of `gpex-review-changes`),
+   and let them know that they can refine the findings with `/gpex-confirm-findings specs`.
 10. If the specs path is `./tmp/specs.md`, let the user know that they can refine the
     specifications with `/gpex-specify`.
 
@@ -57,7 +58,9 @@ important), ignoring code-only checks. Also check that:
   alternative.
 - The solution is the simplest possible.
 
-You can question certain decisions if it makes sense.
+A `REQUIRED` finding can also cite a rule of the `gpex-specify` skill (e.g. its template rules).
+
+You can challenge certain decisions if it makes sense.
 
 ## Judgment step
 

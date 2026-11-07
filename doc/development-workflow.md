@@ -20,8 +20,8 @@ implemented directly (see "Implementation").
       > TO REVIEW
       ```
     - Carefully review and refine specifications (`gpex-specify` skill can be reused if needed).
-    - Run `/gpex-review-specs <step specs file>` and refine specifications until
-      `./tmp/review-specs-findings-accepted.md` has no relevant finding left.
+    - Run `/gpex-review-specs <step specs file>` and refine specifications until the skill
+      reports that the review cycle can stop.
         - Validate accepted findings one by one with `/gpex-confirm-findings specs`.
     - Create new GitHub issues from "Out of scope" section when relevant.
 
@@ -34,8 +34,9 @@ For the moment, the implementation workflow is flexible, but always uses the fol
     - To implement from specification file: `/gpex-implement specifications from <file path>`
     - To implement simple change: `/gpex-implement <description of the changes>`
 - `gpex-simplify` skill that doesn't require any argument. To be ideally run after
-  implementation, and after having fixed all review findings.
-- `gpex-review-changes` skill that doesn't require any argument. To be run after any change.
+  implementation, and once the review cycle can stop.
+- `gpex-review-changes` skill that doesn't require any argument. To be run after any change,
+  until the skill reports that the review cycle can stop.
     - Validate accepted findings one by one with `/gpex-confirm-findings changes`.
     - Apply findings by invoking
       `/gpex-implement findings in ./tmp/review-changes-findings-accepted.md`
