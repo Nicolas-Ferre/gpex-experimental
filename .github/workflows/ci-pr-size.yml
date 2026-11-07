@@ -29,12 +29,7 @@ jobs:
 
       - name: Check PR size
         run: |
-          pathspecs=()
-          while IFS= read -r glob; do
-            if [[ -n "$glob" ]]; then
-              pathspecs+=(":(exclude,glob)$glob")
-            fi
-          done <<< "$EXCLUDED_FILES"
+          mapfile -t pathspecs < <(grep . <<< "$EXCLUDED_FILES" | sed 's/^/:(exclude,glob)/')
 
           size=$(git diff --numstat --no-renames HEAD^1 HEAD -- . "${pathspecs[@]}" \
             | awk '{ size += $1 + $2 } END { print size + 0 }')
