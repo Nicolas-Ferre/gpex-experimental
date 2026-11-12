@@ -17,7 +17,8 @@ Split a specification file into more granular PR steps.
 3. Propose steps as described below.
     1. If user agrees with steps, then generate `./tmp/specs-step<step number starting from "1">.md`
        files, each adapting the specifications to its step. No requirement should be lost across the
-       set of step files.
+       set of step files. Each step file keeps the `## Decisions`, `## Accepted limitations` and
+       `## Out of scope` entries relevant to it.
     2. If user disagrees with steps, then rework with them until they agree.
 4. Stop and don't implement anything.
 

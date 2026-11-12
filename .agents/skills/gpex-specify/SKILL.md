@@ -13,7 +13,8 @@ Create functional and technical specifications for a given change.
    specifications or start over.
     1. If user wants to start over, then delete the file without reading its content to avoid being
        biased.
-    2. Else, read the file.
+    2. Else, read the file, and remove with the user the `## Decisions` and
+       `## Accepted limitations` rows made obsolete by the refinement.
 2. If `./tmp/specs.md` does not exist, delete `./tmp/review-specs-findings-refused.md` if
    existing, without reading it, as its refusals no longer apply.
 3. Ask all open questions one by one on topics defined below. Make them easy to read and as visual
@@ -34,11 +35,14 @@ Repeat until a round leaves no `BLOCKER`, `REQUIRED` or `QUESTION` finding:
 2. Fix the specifications directly for each finding whose fix is necessary, obvious and without
    relevant alternative.
 3. Ask the user about the other `BLOCKER`, `REQUIRED` and `QUESTION` findings, one by one, with a
-   recommended option. Record each resulting choice in the specifications: a challengeable choice
-   or rule waiver in `## Decisions`, an accepted risk in `## Accepted limitations`.
+   recommended option. Record each resulting choice that settles a choice, risk or scope point in
+   its matching `## Decisions`, `## Accepted limitations` or `## Out of scope` section. Move each
+   refused finding to `./tmp/review-specs-findings-refused.md` as a refused entry (see
+   `gpex-confirm-findings`).
 
-Remaining `SUGGESTION` and `NITPICK` findings are dropped. At the end, delete
-`./tmp/review-specs-findings-accepted.md`.
+Remaining `SUGGESTION` and `NITPICK` findings are moved to `./tmp/review-specs-findings-refused.md`
+with refusal reason `Dropped during self-review`. At the end, list the findings fixed without
+asking, then delete `./tmp/review-specs-findings-accepted.md`.
 
 ## Questions
 
@@ -87,12 +91,13 @@ Each break of existing behavior (CLI, language syntax, file formats) with its mi
 
 ### Diagnostics
 
-Table with one row per error case introduced by the change, and the following columns:
+One row per error case introduced by the change:
 
-- Trigger condition
-- Result on user side
+| Trigger condition | Result on user side             |
+|-------------------|---------------------------------|
+| Missing argument  | Error `E001`, compilation stops |
 
-Code and/or diagnostic snippets can be used to illustrate each case when possible.
+Multi-line code or diagnostic snippets go below the table, referencing their row.
 
 ### Platform support
 
@@ -147,9 +152,9 @@ modules (e.g. Rust module) have no trailing `/` or extension, as this is decided
 ### Module interactions
 
 Data flow representing the interactions between architecture modules (arrow from producer to
-consumer), edges labeled with high level unified description of data or operation (single row for
-multiple data passed), new or changed links using thick arrows (`==>`), removed links using dotted
-arrows (`-.->`):
+consumer), one edge per module pair labeled with a high-level summary of the passed data or
+operation, new or changed links using thick arrows (`==>`), removed links using dotted arrows
+(`-.->`):
 
 ```mermaid
 graph LR
@@ -162,8 +167,8 @@ Then each main data structure described in its own bullet point, without fields:
 
 - AST: tree of parsed source items
 
-To be noted that a module is code folder or file (highest possible code container).
-Files such as configuration and documentation files should not appear in the diagram.
+Modules are the code leaves of `### Architecture`; configuration and documentation files are
+excluded.
 
 ### Testing
 
@@ -196,7 +201,9 @@ Required algorithmic constraints, only for performance-sensitive changes:
 
 ## Decisions
 
-Each choice a reviewer could challenge (rejected alternative, version, rule waiver, ...):
+Each choice explicitly made by the user that a reviewer could challenge (rejected alternative, rule
+waiver, ...), except library choices justified in `### Libraries`. Never add a choice the user did
+not make:
 
 | Decision                                                    | Reason                           |
 |-------------------------------------------------------------|----------------------------------|
@@ -205,7 +212,7 @@ Each choice a reviewer could challenge (rejected alternative, version, rule waiv
 
 ## Accepted limitations
 
-Expected robustness level and known risks accepted as is:
+Known limitations and risks accepted by the user:
 
 | Limitation                              | Reason                        |
 |-----------------------------------------|-------------------------------|
@@ -214,8 +221,12 @@ Expected robustness level and known risks accepted as is:
 
 ## Out of scope
 
-- List of related points that are out of the change scope. Avoid mentioning these points in the rest
-  of the specifications.
+Related points left out of the change scope, not mentioned in the rest of the specifications:
+
+| Point                    | Reason                          |
+|--------------------------|---------------------------------|
+| Multi-file compilation   | Single-file programs are enough |
+| Diagnostics localization | No non-English user yet         |
 ````
 
 Design sections are written in an easy-to-read and visual way (short bullet points, Mermaid
