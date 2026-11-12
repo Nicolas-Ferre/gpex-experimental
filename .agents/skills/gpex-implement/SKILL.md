@@ -35,7 +35,8 @@ Only decisions impacting the following should be documented:
 
 ## Conventions
 
-Always apply the following conventions:
+Always apply the following conventions, except those waived in `## Decisions` of the
+specifications:
 
 - Always implement the simplest possible solution, don't over-engineer.
 - Follow existing coding style and naming in the repository.

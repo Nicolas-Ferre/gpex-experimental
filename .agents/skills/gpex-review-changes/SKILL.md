@@ -119,7 +119,8 @@ finding must state what its class requires:
   `Conventions` of `gpex-implement`, API contract, ...). The violation must be objectively
   checkable: citing a general principle (conciseness, simplicity, readability, style) gives at
   most `SUGGESTION`.
-  Must be fixed, or the rule explicitly waived (refused with a reason naming the waiver).
+  Must be fixed, or the rule explicitly waived (refused with a reason naming the waiver, or
+  waived in `## Decisions` of the specifications).
 - `SUGGESTION`: a concrete cost the fix avoids (duplication with file X, a function that will
   need to change in N places, a misleading name that caused a bug before, ...).
   The user accepts, or refuses with a one-sentence reason.
@@ -194,6 +195,9 @@ It refuses a finding when it is:
 - Already applied.
 - Incorrect.
 - Present in `./tmp/review-changes-findings-refused.md` and its refusal reason still applies.
+- Covered by `## Decisions`, `## Accepted limitations` or `## Out of scope` of the specifications
+  in the user request (refusal reason citing the entry), unless it is a `BLOCKER` describing a
+  failure that the entry's reason did not foresee.
 - Formatting the configured checks (see `./AGENTS.md`) already accept.
 - Wording that does not change meaning, unless it is a clear simplification or deduplication.
 - A rename that is a preference between two clear names. Keep a rename when the current name makes
