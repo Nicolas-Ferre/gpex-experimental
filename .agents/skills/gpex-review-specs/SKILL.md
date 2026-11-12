@@ -73,7 +73,4 @@ Apply the judgment step of the `gpex-review-changes` skill to
   file, start it with a `Specs: <specs path>` line followed by an empty line.
 - Refusal criteria are those of `gpex-review-changes`, ignoring code-only ones, reading
   `./tmp/review-specs-findings-refused.md` as the refused file.
-- A finding is also refused when covered by `## Decisions`, `## Accepted limitations` or
-  `## Out of scope` (refusal reason citing the entry), unless it is a `BLOCKER` describing a
-  failure that the entry's reason did not foresee.
 - Never append to `./tmp/review-changes-improvements-delayed.md`.
