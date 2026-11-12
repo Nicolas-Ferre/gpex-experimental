@@ -21,8 +21,24 @@ Create functional and technical specifications for a given change.
    technical ones. Before asking technical questions, explore the codebase. Each technical question
    proposes options, including a recommended one consistent with the existing organization.
 4. Save specifications in `./tmp/specs.md` following the template defined below.
-5. Let user know that they can refine the specifications if needed.
-6. Stop and don't implement anything.
+5. Run the self-review loop defined below.
+6. Let user know that they can refine the specifications if needed.
+7. Stop and don't implement anything.
+
+## Self-review loop
+
+Repeat until a round leaves no `BLOCKER`, `REQUIRED` or `QUESTION` finding:
+
+1. Run steps 1 to 7 of the `gpex-review-specs` workflow on `./tmp/specs.md` (don't run this
+   skill), then read `./tmp/review-specs-findings-accepted.md`.
+2. Fix the specifications directly for each finding whose fix is necessary, obvious and without
+   relevant alternative.
+3. Ask the user about the other `BLOCKER`, `REQUIRED` and `QUESTION` findings, one by one, with a
+   recommended option. Record each resulting choice in the specifications: a challengeable choice
+   or rule waiver in `## Decisions`, an accepted risk in `## Accepted limitations`.
+
+Remaining `SUGGESTION` and `NITPICK` findings are dropped. At the end, delete
+`./tmp/review-specs-findings-accepted.md`.
 
 ## Questions
 
@@ -71,7 +87,7 @@ Each break of existing behavior (CLI, language syntax, file formats) with its mi
 
 ### Diagnostics
 
-One `####` subsection per error case introduced by the change, and for each case:
+Table with one row per error case introduced by the change, and the following columns:
 
 - Trigger condition
 - Result on user side
@@ -130,9 +146,10 @@ modules (e.g. Rust module) have no trailing `/` or extension, as this is decided
 
 ### Module interactions
 
-Data flow between the architecture folders and leaves (arrow from producer to consumer), edges
-labeled with passed data, new or changed links using thick arrows (`==>`), removed links using
-dotted arrows (`-.->`):
+Data flow representing the interactions between architecture modules (arrow from producer to
+consumer), edges labeled with high level unified description of data or operation (single row for
+multiple data passed), new or changed links using thick arrows (`==>`), removed links using dotted
+arrows (`-.->`):
 
 ```mermaid
 graph LR
@@ -141,9 +158,12 @@ graph LR
   optimizer -. optimized AST .-> codegen
 ```
 
-Each main data structure described in one line, without fields:
+Then each main data structure described in its own bullet point, without fields:
 
 - AST: tree of parsed source items
+
+To be noted that a module is code folder or file (highest possible code container).
+Files such as configuration and documentation files should not appear in the diagram.
 
 ### Testing
 
@@ -174,6 +194,24 @@ Required algorithmic constraints, only for performance-sensitive changes:
 
 - Symbol lookup algorithm: O(log n)
 
+## Decisions
+
+Each choice a reviewer could challenge (rejected alternative, version, rule waiver, ...):
+
+| Decision                                                    | Reason                           |
+|-------------------------------------------------------------|----------------------------------|
+| Hand-written parser instead of a parser generator           | Full control over diagnostics    |
+| Debug script not tested (waives `gpex-implement` test rule) | Developer tooling, never shipped |
+
+## Accepted limitations
+
+Expected robustness level and known risks accepted as is:
+
+| Limitation                              | Reason                        |
+|-----------------------------------------|-------------------------------|
+| Compilation is single-threaded          | Programs are small for now    |
+| Only the first syntax error is reported | Error recovery not needed yet |
+
 ## Out of scope
 
 - List of related points that are out of the change scope. Avoid mentioning these points in the rest
@@ -188,8 +226,8 @@ Functional design describes only what the user of the change observes. Anything 
 is implemented (e.g. algorithms, internal strategy, ...) goes in technical design.
 
 Remove every section and subsection that is not relevant (e.g. `## Functional design` for a
-refactoring, `## Technical design` for a documentation-only change). Only record the chosen design,
-not rejected alternatives.
+refactoring, `## Technical design` for a documentation-only change). Rejected alternatives appear
+only in `## Decisions`.
 
 Avoid duplicating information across the specifications as much as possible (test cases in
 `### Testing` excepted), and avoid unnecessary verbosity without losing information.
