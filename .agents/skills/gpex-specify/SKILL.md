@@ -32,17 +32,10 @@ Repeat until a round leaves no `BLOCKER`, `REQUIRED` or `QUESTION` finding:
 
 1. Run steps 1 to 7 of the `gpex-review-specs` workflow on `./tmp/specs.md` (don't run this
    skill), then read `./tmp/review-specs-findings-accepted.md`.
-2. Fix the specifications directly for each finding whose fix is necessary, obvious and without
-   relevant alternative.
-3. Ask the user about the other `BLOCKER`, `REQUIRED` and `QUESTION` findings, one by one, with a
-   recommended option. Record each resulting choice that settles a choice, risk or scope point in
-   its matching `## Decisions`, `## Accepted limitations` or `## Out of scope` section. Move each
-   refused finding to `./tmp/review-specs-findings-refused.md` as a refused entry (see
-   `gpex-confirm-findings`).
-
-Remaining `SUGGESTION` and `NITPICK` findings are moved to `./tmp/review-specs-findings-refused.md`
-with refusal reason `Dropped during self-review`. At the end, list the findings fixed without
-asking, then delete `./tmp/review-specs-findings-accepted.md`.
+2. Run steps 3 and 4 of the `gpex-confirm-findings` workflow with type `specs` (don't run this
+   skill).
+3. Apply the remaining findings of `./tmp/review-specs-findings-accepted.md` to the
+   specifications, then delete this file.
 
 ## Questions
 
@@ -239,6 +232,9 @@ is implemented (e.g. algorithms, internal strategy, ...) goes in technical desig
 Remove every section and subsection that is not relevant (e.g. `## Functional design` for a
 refactoring, `## Technical design` for a documentation-only change). Rejected alternatives appear
 only in `## Decisions`.
+
+The `Reason` of `## Decisions`, `## Accepted limitations` and `## Out of scope` rows is the one
+given by the user. Ask for it when missing, even when the user picked a recommended option.
 
 Avoid duplicating information across the specifications as much as possible (test cases in
 `### Testing` excepted), and avoid unnecessary verbosity without losing information.

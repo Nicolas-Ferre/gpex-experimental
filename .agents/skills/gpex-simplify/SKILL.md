@@ -15,14 +15,18 @@ and untracked changes included).
 ## Workflow
 
 1. Run `git fetch origin main`.
-2. List the simplifications meeting the acceptance criteria below, limited to the changes of the
+2. Get the specifications from the skill arguments or conversation, else from the GitHub issue
+   matching the branch number prefix (`gh issue view <id> --json body`), if any.
+3. List the simplifications meeting the acceptance criteria below, limited to the changes of the
    current branch. If none qualifies, stop.
-3. Run `gpex-implement` skill with this list as the change.
+4. Run `gpex-implement` skill with this list as the change, and the specifications.
 
 ## Simplification acceptance
 
 A good simplification:
 
 - doesn't change behavior.
+- doesn't contradict `## Decisions`, `## Accepted limitations` or `## Out of scope` of the
+  specifications.
 - doesn't negatively impact maintainability and understandability.
 - makes the code significantly shorter to perform the same operation.
