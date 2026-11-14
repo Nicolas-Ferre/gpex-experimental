@@ -13,14 +13,12 @@ Implement a change autonomously.
 
 ## Workflow
 
-1. If no change is provided, use as change and specifications the body of the GitHub issue
-   matching the branch number prefix (`gh issue view <id> --json body`). If the branch has no
-   number prefix or no matching issue, stop and inform the user. If the branch covers only part
-   of the issue, ask the user for the scope.
-2. Else, if the change is a GitHub issue, use its body as change and specifications. Else, if
-   no specifications are provided, get them from the issue matching the branch number prefix,
-   if any. Specifications fetched this way are only used for their settled sections (see
-   `gpex-specify`): never implement what they describe beyond the provided change.
+1. If no change is provided, the change is the GitHub issue matching the branch number prefix
+   (`gh issue view <id> --json body`): stop and inform the user if there is none, and ask the
+   user for the scope if the branch covers only part of it.
+2. If the change is a GitHub issue, use its body as change and specifications. Else, if no
+   specifications are provided, get them from the issue matching the branch number prefix, if
+   any, using only their settled sections (see `gpex-specify`), never as part of the change.
 3. If an issue body used above still contains the `TO REVIEW` warning, ask the user before using
    it.
 4. Delete `./tmp/implement-decisions.md` if existing.
