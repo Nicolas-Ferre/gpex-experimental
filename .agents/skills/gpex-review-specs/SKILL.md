@@ -23,7 +23,7 @@ Run these steps in order:
 2. If `./tmp/review-specs-findings-refused.md` exists, read only its first line (`head -n 1`). If
    that line is not `Specs: <specs path>`, delete the file without reading the rest.
 3. If the specifications file does not exist, stop and inform the user.
-4. Review the specifications against the review criteria below.
+4. Run a single review sub-agent, passing it the specs path.
 5. If there is no finding, inform the user that the specifications look good and stop.
 6. Write the findings in `./tmp/review-specs-findings-accepted.md`, following the finding format and
    finding classes of the `gpex-review-changes` skill (don't run this skill), except that entries
@@ -36,14 +36,18 @@ Run these steps in order:
 10. If the specs path is `./tmp/specs.md`, let the user know that they can refine the
     specifications with `/gpex-specify`.
 
+## Review sub-agent
+
+The sub-agent reads the specifications, explores the codebase and reviews the specifications
+against all the criteria below, without starting other sub-agents. It follows the rules
+of the `## Review sub-agents` intro of the `gpex-review-changes` skill, with
+`./tmp/review-specs-findings-*.md` instead of `./tmp/review-changes-findings-*.md`.
+
 ## Review criteria
 
-Read the specifications, explore the codebase, and apply all the sub-agent definitions of the
-`gpex-review-changes` skill (don't run this skill) to the specifications instead of code changes,
-focused on the content itself (the form is less important), ignoring code-only checks. Follow the
-rules of the `## Review sub-agents` intro of `gpex-review-changes`, with
-`./tmp/review-specs-findings-*.md` instead of `./tmp/review-changes-findings-*.md`. Also check
-that:
+Apply all the sub-agent definitions of the `gpex-review-changes` skill (don't run this skill) to
+the specifications instead of code changes, focused on the content itself (the form is less
+important), ignoring code-only checks. Also check that:
 
 - There is no duplicated information or ambiguity.
 - Sections do not contradict each other.
