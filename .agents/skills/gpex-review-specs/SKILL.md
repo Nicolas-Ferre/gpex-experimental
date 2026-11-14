@@ -23,12 +23,13 @@ Run these steps in order:
 2. If `./tmp/review-specs-findings-refused.md` exists, read only its first line (`head -n 1`). If
    that line is not `Specs: <specs path>`, delete the file without reading the rest.
 3. If the specifications file does not exist, stop and inform the user.
-4. Run a single review sub-agent, passing it the specs path.
-5. If there is no finding, inform the user that the specifications look good and stop.
+4. Run every review sub-agent in parallel, passing it the specs path.
+5. Once all sub-agents are done, if there is no finding, inform the user that the specifications
+   look good and stop.
 6. Write the findings in `./tmp/review-specs-findings-accepted.md`, following the finding format and
-   finding classes of the `gpex-review-changes` skill (don't run this skill), except that entries
-   omit `[<sub-agent names>]` and locations point to the specifications file.
-7. Run the judgment step (not in a sub-agent).
+   finding classes of the `gpex-review-changes` skill (don't run this skill), with locations
+   pointing to the specifications file.
+7. Run the judgment step in a dedicated sub-agent, passing it the specs path, then wait for it.
 8. If no accepted finding is left, inform the user that the specifications look good and stop.
 9. Point the user to `./tmp/review-specs-findings-accepted.md`, give the number of findings per
    class, tell them whether the review cycle can stop (see cycle rule of `gpex-review-changes`),
@@ -36,27 +37,30 @@ Run these steps in order:
 10. If the specs path is `./tmp/specs.md`, let the user know that they can refine the
     specifications with `/gpex-specify`.
 
-## Review sub-agent
+## Review sub-agents
 
-The sub-agent reads the specifications, explores the codebase and reviews the specifications
-against all the criteria below, without starting other sub-agents. It follows the rules
-of the `## Review sub-agents` intro of the `gpex-review-changes` skill, with
-`./tmp/review-specs-findings-*.md` instead of `./tmp/review-changes-findings-*.md`.
+Run one sub-agent per sub-agent definition of the `gpex-review-changes` skill (don't run this
+skill), with the same name. Each sub-agent reads the specifications, explores the codebase and
+applies its definition to the specifications instead of code changes, focused on the content
+itself (the form is less important), ignoring code-only checks, without starting other
+sub-agents. It follows the rules of the `## Review sub-agents` intro of `gpex-review-changes`,
+with `./tmp/review-specs-findings-*.md` instead of `./tmp/review-changes-findings-*.md`.
 
-## Review criteria
+Additional checks per sub-agent:
 
-Apply all the sub-agent definitions of the `gpex-review-changes` skill (don't run this skill) to
-the specifications instead of code changes, focused on the content itself (the form is less
-important), ignoring code-only checks. Also check that:
+- Architecture review:
+    - `### Architecture` and `### Module interactions` match real files and the existing
+      organization.
+    - Listed libraries exist on their registry with the stated version, and present no risk or
+      better alternative.
+    - The solution is the simplest possible.
+- Tests review: `### Testing` lists only automated tests, and covers every automatable case of the
+  functional design and the edge cases.
+- Code quality check:
+    - There is no duplicated information or ambiguity.
+    - Sections do not contradict each other.
 
-- There is no duplicated information or ambiguity.
-- Sections do not contradict each other.
-- `### Testing` lists only automated tests, and covers every automatable case of the functional
-  design and the edge cases.
-- `### Architecture` and `### Module interactions` match real files and the existing organization.
-- Listed libraries exist on their registry with the stated version, and present no risk or better
-  alternative.
-- The solution is the simplest possible.
+Rules shared by all sub-agents:
 
 A `REQUIRED` finding can also cite a rule of the `gpex-specify` skill (e.g. its template rules).
 
@@ -66,6 +70,9 @@ only if the problem is not already covered by the entry's reason.
 Template rule violations of an entry (e.g. missing reason) can still be reported.
 
 ## Judgment step
+
+Its sub-agent reads the specifications and explores the codebase, without starting other
+sub-agents, so that the agent that wrote the specifications does not judge findings on them.
 
 Apply the judgment step of the `gpex-review-changes` skill to
 `./tmp/review-specs-findings-accepted.md`, with these differences:

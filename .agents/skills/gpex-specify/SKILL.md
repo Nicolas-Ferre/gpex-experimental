@@ -32,13 +32,13 @@ Create functional and technical specifications for a given change.
 Repeat until the findings confirmed in step 2 of a round contain no `BLOCKER` or `REQUIRED`
 (the round still applies them):
 
-1. Run steps 1 to 7 of the `gpex-review-specs` workflow on `./tmp/specs.md` (don't run this
-   skill; a "stop" there ends this loop only), then read
-   `./tmp/review-specs-findings-accepted.md`.
-2. Run steps 2 to 4 of the `gpex-confirm-findings` workflow with type `specs` (don't run this
-   skill; a "stop" there ends this loop only).
+1. Run the `gpex-review-specs` skill on `./tmp/specs.md`.
+2. Run the `gpex-confirm-findings` skill with type `specs`.
 3. Apply the remaining findings of `./tmp/review-specs-findings-accepted.md` to the
    specifications, then delete this file.
+
+A "stop" in these skills ends only that skill, then this workflow continues. If a skill stops
+because no finding is left, end this loop.
 
 ## Questions
 
