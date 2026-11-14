@@ -15,6 +15,8 @@ Validate accepted findings of a review one by one.
 
 `<type>` is the skill argument: `changes` for `gpex-review-changes` findings, or `specs` for
 `gpex-review-specs` findings. If it is anything else or missing, ask the user.
+For `specs`, the specs path is the reviewed specifications file, as defined in `gpex-review-specs`
+(e.g. `./tmp/specs-step1.md`), which is the file named in the link text of the finding locations.
 
 1. If `./tmp/review-<type>-findings-accepted.md` does not exist or has no finding, stop and inform
    the user.
@@ -37,8 +39,7 @@ Validate accepted findings of a review one by one.
            `gpex-review-changes`). When creating this file, start it with the following line,
            followed by an empty line:
             - `changes`: `Branch: <branch label>` (see `gpex-review-changes`).
-            - `specs`: `Specs: <specs path>` (see `gpex-review-specs`), where the specs path is the
-              file of the finding locations, prefixed with `./`.
+            - `specs`: `Specs: <specs path>` (see `gpex-review-specs`).
         2. If the finding is accepted, replace its `Fix:` and snippet in
            `./tmp/review-<type>-findings-accepted.md` with the selected solution.
     4. For `specs`, when the user's refusal, answer or selected solution settles a point a

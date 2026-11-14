@@ -15,15 +15,19 @@ Implement a change autonomously.
 
 1. If no change is provided, use as change and specifications the body of the GitHub issue
    matching the branch number prefix (`gh issue view <id> --json body`). If the branch has no
-   number prefix or no matching issue, stop and inform the user.
-2. Else, if no specifications are provided, get them from that issue, if any. Specifications
-   fetched this way are only used for their settled sections (see `gpex-specify`): never
-   implement what they describe beyond the provided change.
-3. Delete `./tmp/implement-decisions.md` if existing.
-4. Delete `./tmp/implement-plan.md` if existing.
-5. Explore the codebase and create a detailed plan of the requested change in
+   number prefix or no matching issue, stop and inform the user. If the branch covers only part
+   of the issue, ask the user for the scope.
+2. Else, if the change is a GitHub issue, use its body as change and specifications. Else, if
+   no specifications are provided, get them from the issue matching the branch number prefix,
+   if any. Specifications fetched this way are only used for their settled sections (see
+   `gpex-specify`): never implement what they describe beyond the provided change.
+3. If an issue body used above still contains the `TO REVIEW` warning, ask the user before using
+   it.
+4. Delete `./tmp/implement-decisions.md` if existing.
+5. Delete `./tmp/implement-plan.md` if existing.
+6. Explore the codebase and create a detailed plan of the requested change in
    `./tmp/implement-plan.md`.
-6. Apply the plan from `./tmp/implement-plan.md`.
+7. Apply the plan from `./tmp/implement-plan.md`.
 
 ## Taken decisions
 
