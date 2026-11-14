@@ -30,9 +30,19 @@ finding locations, prefixed with `./`.
        option, then replace the entry with the resulting finding (following the finding format and
        classes of `gpex-review-changes`) and validate it as below. If no finding results, move it
        to the refused file (see below) with `Answered: <answer>` as refusal reason.
-    3. If the fix is necessary, obvious and without relevant alternative, keep the finding without
-       asking. Else, display its details and ask user which solution to apply: the finding
-       solution, viable alternatives, refusing the finding, or a solution they write themselves.
+    3. If the fix is objectively recommended and without relevant alternative, keep the finding
+       without asking. This always applies to the categories below, unless the fix touches a
+       settled section (see `gpex-specify`) or an earlier decision:
+        - a changed fully aligned with settled section (see `gpex-specify`).
+        - a template, format or written-rule violation with a single possible fix.
+        - a duplication removed without changing meaning.
+        - a typo, line wrap, alignment or formatting fix.
+        - a wording made more precise when the rest of the reviewed content already implies it.
+
+       A fix changing behavior or design is never in these categories.
+       Else, if the finding is a `NITPICK`, leave it to step 4. Else, display its details and ask
+       user which solution to apply: the finding solution, viable alternatives, refusing the
+       finding, or a solution they write themselves.
         1. If the finding is refused, ask for the reason required by its class (see the finding
            classes of `gpex-review-changes`) unless the user already gave it, then move it to
            `./tmp/review-<type>-findings-refused.md` as a refused entry (see the finding format of
@@ -47,8 +57,13 @@ finding locations, prefixed with `./`.
        path file, in the matching settled section (see `gpex-specify`). If the specs path is a
        step file, record it in `./tmp/specs.md` and in every other `./tmp/specs-step*.md` it is
        relevant to.
-4. List the findings kept without asking, so the user can still review them.
-5. Stop and don't apply any fix.
+4. Ask in one go, with multi-select questions (split if needed), which `NITPICK` findings left by
+   step 3 to keep, one option per finding (number, title, fix summary), recommending to keep all.
+   Move unselected ones to the refused file (see step 3) with refusal reason
+   `Not selected by user`.
+5. List the findings kept without asking, with the reason or category applied, so the user can
+   still review them.
+6. Stop and don't apply any fix.
 
 ## Rules
 
