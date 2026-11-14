@@ -16,7 +16,7 @@ Validate accepted findings of a review one by one.
 `<type>` is the skill argument: `changes` for `gpex-review-changes` findings, or `specs` for
 `gpex-review-specs` findings. If it is anything else or missing, ask the user.
 For `specs`, the specs path (see `gpex-review-specs`) is the file named in the link text of the
-finding locations.
+finding locations, prefixed with `./`.
 
 1. If `./tmp/review-<type>-findings-accepted.md` does not exist or has no finding, stop and inform
    the user.
