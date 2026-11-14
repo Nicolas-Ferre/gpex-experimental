@@ -1,6 +1,6 @@
 ---
 name: gpex-confirm-findings
-description: Validate gpex-review-changes or gpex-review-specs findings one by one.
+description: Validate gpex-review-changes or gpex-review-specs findings.
 ---
 
 ## Preconditions
@@ -9,7 +9,7 @@ description: Validate gpex-review-changes or gpex-review-specs findings one by o
 
 ## Task
 
-Validate accepted findings of a review one by one.
+Validate accepted findings of a review.
 
 ## Workflow
 
@@ -69,5 +69,11 @@ finding locations, prefixed with `./`.
 
 - Always provide enough information, consider the user has not read the code nor the findings.
 - Each question includes a recommended option.
+- Merge questions when possible:
+    - Ask closely related findings (same root cause, location or decision) as one question
+      applying one solution to all of them.
+    - Group findings of the same topic (same area or kind of fix) whose choice is keep or refuse
+      into one multi-select question, one option per finding. Never group unrelated findings.
+    - Never merge when it hides a finding's details, alternatives or recommended option.
 - Take earlier decisions into account, and flag findings they make obsolete or conflicting.
 - Other skills are only referenced for their definitions: never run them.
