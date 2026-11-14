@@ -169,7 +169,8 @@ Each finding is written as a numbered entry:
     - `Before:` and `After:` blocks when a diff would be unreadable (e.g. restructuring, diagrams).
     - Omitted when no snippet can illustrate the fix.
     - Snippet fences are longer than any backtick run inside the snippet.
-- Refused entry: same entry, plus a last `- Refusal: <refusal reason>` bullet.
+- Refused entry: same entry, plus a last `- Refusal: <refusal reason>` bullet. If the refused file
+  already has an entry for the same issue, update that entry instead of adding a duplicate.
 - The judgment step completes an incomplete entry or fixes a wrong location as a correction, and
   refuses the finding when no valid reason or fix can be stated (never only because of its
   location).
@@ -186,7 +187,7 @@ finding:
 
 - If the judge accepts the finding, it is kept in `./tmp/review-changes-findings-accepted.md`.
 - If the judge refuses the finding, remove it from `./tmp/review-changes-findings-accepted.md` and
-  append it to `./tmp/review-changes-findings-refused.md` as a refused entry. When creating
+  add it to `./tmp/review-changes-findings-refused.md` as a refused entry. When creating
   this file, start it with a `Branch: <branch label>` line followed by an empty line.
 - If the judge corrects a finding, it is modified in `./tmp/review-changes-findings-accepted.md`.
 

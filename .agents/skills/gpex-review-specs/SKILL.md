@@ -70,7 +70,7 @@ Template rule violations of an entry (e.g. missing reason) can still be reported
 Apply the judgment step of the `gpex-review-changes` skill to
 `./tmp/review-specs-findings-accepted.md`, with these differences:
 
-- Refused findings are appended to `./tmp/review-specs-findings-refused.md`. When creating this
+- Refused findings are added to `./tmp/review-specs-findings-refused.md`. When creating this
   file, start it with a `Specs: <specs path>` line followed by an empty line.
 - Refusal criteria are those of `gpex-review-changes`, ignoring code-only ones, with these
   substitutions:
