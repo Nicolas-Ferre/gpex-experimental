@@ -14,8 +14,8 @@ Create functional and technical specifications for a given change.
     1. If user wants to start over, then delete the file without reading its content to avoid being
        biased.
     2. Else, read the file.
-2. If `./tmp/specs.md` does not exist, delete `./tmp/review-specs-findings-refused.md` if
-   existing, without reading it, as its refusals no longer apply.
+2. If `./tmp/specs.md` does not exist, delete `./tmp/review-specs-findings-*.md` if existing,
+   without reading them, as they no longer apply.
 3. Ask all open questions one by one on topics defined below. Make them easy to read and as visual
    as possible (diagrams, GPEx code snippets, ...). Prefer defining functional specifications before
    technical ones. Before asking technical questions, explore the codebase. Each technical question
