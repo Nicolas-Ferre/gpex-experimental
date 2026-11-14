@@ -37,9 +37,8 @@ Only decisions impacting the following should be documented:
 
 ## Conventions
 
-Respect `## Decisions`, `## Accepted limitations` and `## Out of scope` of the provided
-specifications, if any. Always apply the following conventions, except those waived in
-`## Decisions`:
+Respect the settled sections (see `gpex-specify`) of the provided specifications, if any. Always
+apply the following conventions, except those waived in `## Decisions`:
 
 - Always implement the simplest possible solution, don't over-engineer.
 - Follow existing coding style and naming in the repository.

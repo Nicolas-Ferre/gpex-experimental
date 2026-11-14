@@ -27,7 +27,6 @@ and untracked changes included).
 A good simplification:
 
 - doesn't change behavior.
-- doesn't contradict `## Decisions`, `## Accepted limitations` or `## Out of scope` of the
-  specifications.
+- doesn't contradict the settled sections (see `gpex-specify`) of the specifications.
 - doesn't negatively impact maintainability and understandability.
 - makes the code significantly shorter to perform the same operation.

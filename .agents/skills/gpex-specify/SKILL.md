@@ -21,8 +21,7 @@ Create functional and technical specifications for a given change.
    technical ones. Before asking technical questions, explore the codebase. Each technical question
    proposes options, including a recommended one consistent with the existing organization.
 4. Save specifications in `./tmp/specs.md` following the template defined below. When refining,
-   first remove with the user the `## Decisions`, `## Accepted limitations` and `## Out of scope`
-   rows made obsolete by the answers.
+   first remove with the user the settled section rows made obsolete by the answers.
 5. Run the self-review loop defined below.
 6. Let user know that they can refine the specifications if needed.
 7. Stop and don't implement anything.
@@ -233,8 +232,9 @@ Remove every section and subsection that is not relevant (e.g. `## Functional de
 refactoring, `## Technical design` for a documentation-only change). Rejected alternatives appear
 only in `## Decisions`.
 
-The `Reason` of `## Decisions`, `## Accepted limitations` and `## Out of scope` rows is the one
-given by the user. Ask for it when missing, even when the user picked a recommended option.
+`## Decisions`, `## Accepted limitations` and `## Out of scope` are the settled sections. The
+`Reason` of their rows is the one given by the user, except `Covered by step <N>` rows added by
+`gpex-split`. Ask for it when missing, even when the user picked a recommended option.
 
 Avoid duplicating information across the specifications as much as possible (test cases in
 `### Testing` excepted), and avoid unnecessary verbosity without losing information.

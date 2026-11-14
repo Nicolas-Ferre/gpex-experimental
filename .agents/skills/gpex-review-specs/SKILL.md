@@ -60,9 +60,9 @@ important), ignoring code-only checks. Also check that:
 
 A `REQUIRED` finding can also cite a rule of the `gpex-specify` skill (e.g. its template rules).
 
-You can challenge certain decisions if it makes sense. Entries of `## Decisions`,
-`## Accepted limitations` and `## Out of scope` are already agreed with the user. Only challenge
-an entry with a `BLOCKER`, and only if the problem is not already covered by the entry's reason.
+You can challenge certain decisions if it makes sense. Entries of the settled sections (see
+`gpex-specify`) are already agreed with the user. Only challenge an entry with a `BLOCKER`, and
+only if the problem is not already covered by the entry's reason.
 Template rule violations of an entry (e.g. missing reason) can still be reported.
 
 ## Judgment step
