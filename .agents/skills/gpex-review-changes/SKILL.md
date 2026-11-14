@@ -33,7 +33,7 @@ Run these steps in order:
 6. Once all sub-agents are done, write in `./tmp/review-changes-findings-accepted.md` only the found
    issues, following the finding format.
    If there is no finding, inform the user that the changes look good and stop.
-7. Run the judgment step (not in a sub-agent).
+7. Run the judgment step in a dedicated sub-agent, passing it the user request, then wait for it.
 8. Based on accepted findings, append in `./tmp/review-changes-improvements-delayed.md` all missing
    deterministic checkers that could have prevented the found issues (if not already present in the
    file). These checkers must:
@@ -182,6 +182,9 @@ Each finding is written as a numbered entry:
   reason. Only questions needing the user are kept.
 
 ## Judgment step
+
+Its sub-agent reads the changes and explores the codebase, without starting other sub-agents, so
+that the agent that wrote the changes does not judge findings on them.
 
 This step reads `./tmp/review-changes-findings-accepted.md`, and applies a judgment on each
 finding:

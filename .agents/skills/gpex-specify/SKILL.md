@@ -21,8 +21,9 @@ Create functional and technical specifications for a given change.
    technical ones. Before asking technical questions, explore the codebase. Each technical question
    proposes options, including a recommended one consistent with the existing organization.
 4. Save specifications in `./tmp/specs.md` following the template defined below. When refining,
-   first remove with the user the settled section rows made obsolete by the answers, and apply
-   the findings of `./tmp/review-specs-findings-accepted.md` located in `./tmp/specs.md`, if any.
+   first remove with the user the settled section rows made obsolete by the answers. If
+   `./tmp/review-specs-findings-accepted.md` has findings whose locations point to
+   `./tmp/specs.md`, run `gpex-confirm-findings` with type `specs`, then apply them.
 5. Run the self-review loop defined below.
 6. Let user know that they can refine the specifications if needed.
 7. Stop and don't implement anything.
