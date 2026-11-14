@@ -31,7 +31,8 @@ implemented directly (see "Implementation").
 For the moment, the implementation workflow is flexible, but always uses the following skills:
 
 - `gpex-implement` skill. Invocation depends on the context:
-    - To implement an issue: `/gpex-implement <issue URL>`
+    - To implement the issue matching the branch number prefix: `/gpex-implement`
+    - To implement another issue: `/gpex-implement <issue URL>`
     - To implement from specification file: `/gpex-implement specifications from <file path>`
     - To implement simple change: `/gpex-implement <description of the changes>`
 - `gpex-simplify` skill that doesn't require any argument. To be ideally run after

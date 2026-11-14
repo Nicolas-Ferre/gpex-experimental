@@ -13,9 +13,12 @@ Implement a change autonomously.
 
 ## Workflow
 
-1. If no change is provided, stop and inform the user.
-2. If no specifications are provided, get them from the GitHub issue matching the branch number
-   prefix (`gh issue view <id> --json body`), if any.
+1. If no change is provided, use as change and specifications the body of the GitHub issue
+   matching the branch number prefix (`gh issue view <id> --json body`). If the branch has no
+   number prefix or no matching issue, stop and inform the user.
+2. Else, if no specifications are provided, get them from that issue, if any. Specifications
+   fetched this way are only used for their settled sections (see `gpex-specify`): never
+   implement what they describe beyond the provided change.
 3. Delete `./tmp/implement-decisions.md` if existing.
 4. Delete `./tmp/implement-plan.md` if existing.
 5. Explore the codebase and create a detailed plan of the requested change in
@@ -38,7 +41,7 @@ Only decisions impacting the following should be documented:
 ## Conventions
 
 Respect the settled sections (see `gpex-specify`) of the provided specifications, if any. Always
-apply the following conventions, except those waived in `## Decisions`:
+apply the following conventions, except those waived in `## Decisions` of the specifications:
 
 - Always implement the simplest possible solution, don't over-engineer.
 - Follow existing coding style and naming in the repository.

@@ -26,7 +26,8 @@ Run these steps in order:
    the file without reading the rest.
 4. If there is no change in the current branch (uncommitted and untracked changes included), stop.
 5. Get the user request from the skill arguments or conversation, else from the GitHub issue
-   matching the branch number prefix (`gh issue view <id> --json title,body`). If none is found,
+   matching the branch number prefix (`gh issue view <id> --json title,body`), which also
+   provides the specifications when the request does not contain them. If none is found,
    or the branch covers only part of the issue, ask the user for the scope. Run every review
    sub-agent in parallel, passing it the user request.
 6. Once all sub-agents are done, write in `./tmp/review-changes-findings-accepted.md` only the found

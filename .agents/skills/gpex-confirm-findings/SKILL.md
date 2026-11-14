@@ -41,8 +41,8 @@ Validate accepted findings of a review one by one.
               file of the finding locations, prefixed with `./`.
         2. If the finding is accepted, replace its `Fix:` and snippet in
            `./tmp/review-<type>-findings-accepted.md` with the selected solution.
-    4. For `specs`, when the user's choice (refusal, answer or selected alternative) settles a
-       choice, risk or scope point, ask for its reason if not given, then record it in the specs
+    4. For `specs`, when the user's refusal, answer or selected solution settles a point a
+       reviewer could raise again, ask for its reason if not given, then record it in the specs
        path file, in the matching settled section (see `gpex-specify`). If the specs path is a
        step file, record it in `./tmp/specs.md` and in every other `./tmp/specs-step*.md` it is
        relevant to.

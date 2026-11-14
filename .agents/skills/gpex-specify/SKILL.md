@@ -21,15 +21,16 @@ Create functional and technical specifications for a given change.
    technical ones. Before asking technical questions, explore the codebase. Each technical question
    proposes options, including a recommended one consistent with the existing organization.
 4. Save specifications in `./tmp/specs.md` following the template defined below. When refining,
-   first remove with the user the settled section rows made obsolete by the answers.
+   first remove with the user the settled section rows made obsolete by the answers, and apply
+   the findings of `./tmp/review-specs-findings-accepted.md` if existing.
 5. Run the self-review loop defined below.
 6. Let user know that they can refine the specifications if needed.
 7. Stop and don't implement anything.
 
 ## Self-review loop
 
-Repeat until the findings confirmed in step 2 of a round contain no `BLOCKER`, `REQUIRED` or
-`QUESTION` (the round still applies them):
+Repeat until the findings confirmed in step 2 of a round contain no `BLOCKER` or `REQUIRED`
+(the round still applies them):
 
 1. Run steps 1 to 7 of the `gpex-review-specs` workflow on `./tmp/specs.md` (don't run this
    skill; a "stop" there ends this loop only), then read
@@ -232,9 +233,10 @@ Remove every section and subsection that is not relevant (e.g. `## Functional de
 refactoring, `## Technical design` for a documentation-only change). Rejected alternatives appear
 only in `## Decisions`.
 
-`## Decisions`, `## Accepted limitations` and `## Out of scope` are the settled sections. The
-`Reason` of their rows is the one given by the user, except `Covered by step <N>` rows added by
-`gpex-split`. Ask for it when missing, even when the user picked a recommended option.
+`## Decisions`, `## Accepted limitations`, `## Out of scope` and the library choices of
+`### Libraries` are the settled sections. The `Reason` of their rows is the one given by the
+user, except `Covered by step <N>` rows added by `gpex-split`. Ask for it when missing, even when
+the user picked a recommended option.
 
 Avoid duplicating information across the specifications as much as possible (test cases in
 `### Testing` excepted), and avoid unnecessary verbosity without losing information.
