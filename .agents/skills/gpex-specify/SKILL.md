@@ -35,8 +35,8 @@ Repeat until the findings confirmed in step 2 of a round contain no `BLOCKER` or
 1. Run steps 1 to 7 of the `gpex-review-specs` workflow on `./tmp/specs.md` (don't run this
    skill; a "stop" there ends this loop only), then read
    `./tmp/review-specs-findings-accepted.md`.
-2. Run steps 3 and 4 of the `gpex-confirm-findings` workflow with type `specs` (don't run this
-   skill).
+2. Run steps 2 to 4 of the `gpex-confirm-findings` workflow with type `specs` (don't run this
+   skill; a "stop" there ends this loop only).
 3. Apply the remaining findings of `./tmp/review-specs-findings-accepted.md` to the
    specifications, then delete this file.
 
@@ -149,8 +149,8 @@ modules (e.g. Rust module) have no trailing `/` or extension, as this is decided
 
 Data flow representing the interactions between architecture modules (code leaves of
 `### Architecture`, configuration and documentation excluded; arrow from producer to consumer),
-one edge per module pair labeled with a high-level summary of the passed data or
-operation, new or changed links using thick arrows (`==>`), removed links using dotted arrows
+one edge per direction between two modules, labeled with a high-level summary of the passed data
+or operation, new or changed links using thick arrows (`==>`), removed links using dotted arrows
 (`-.->`):
 
 ```mermaid
