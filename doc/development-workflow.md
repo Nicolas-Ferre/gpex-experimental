@@ -24,6 +24,7 @@ implemented directly (see "Implementation").
     - Run `/gpex-review-specs <step specs file>` and refine specifications until the skill
       reports that the review cycle can stop.
         - Validate accepted findings one by one with `/gpex-confirm-findings specs`.
+        - Apply them with `/gpex-specify apply accepted spec findings`.
     - Create new GitHub issues from "Out of scope" section when relevant.
 
 ## Implementation
