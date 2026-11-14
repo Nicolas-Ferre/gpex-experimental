@@ -26,7 +26,8 @@ Run these steps in order:
    the file without reading the rest.
 4. If there is no change in the current branch (uncommitted and untracked changes included), stop.
 5. Get the user request from the skill arguments or conversation, else from the GitHub issue
-   matching the branch number prefix (`gh issue view <id> --json title,body`). If none is found,
+   matching the branch number prefix (`gh issue view <id> --json title,body`). If the request
+   contains no specifications, get them from that issue body, if any. If no request is found,
    or the branch covers only part of the issue, ask the user for the scope. Run every review
    sub-agent in parallel, passing it the user request.
 6. Once all sub-agents are done, write in `./tmp/review-changes-findings-accepted.md` only the found
@@ -119,7 +120,8 @@ finding must state what its class requires:
   `Conventions` of `gpex-implement`, API contract, ...). The violation must be objectively
   checkable: citing a general principle (conciseness, simplicity, readability, style) gives at
   most `SUGGESTION`.
-  Must be fixed, or the rule explicitly waived (refused with a reason naming the waiver).
+  Must be fixed, or the rule explicitly waived (refused with a reason naming the waiver, or
+  waived in `## Decisions` of the specifications).
 - `SUGGESTION`: a concrete cost the fix avoids (duplication with file X, a function that will
   need to change in N places, a misleading name that caused a bug before, ...).
   The user accepts, or refuses with a one-sentence reason.
@@ -168,7 +170,8 @@ Each finding is written as a numbered entry:
     - `Before:` and `After:` blocks when a diff would be unreadable (e.g. restructuring, diagrams).
     - Omitted when no snippet can illustrate the fix.
     - Snippet fences are longer than any backtick run inside the snippet.
-- Refused entry: same entry, plus a last `- Refusal: <refusal reason>` bullet.
+- Refused entry: same entry, plus a last `- Refusal: <refusal reason>` bullet. If the refused file
+  already has an entry for the same issue, update that entry instead of adding a duplicate.
 - The judgment step completes an incomplete entry or fixes a wrong location as a correction, and
   refuses the finding when no valid reason or fix can be stated (never only because of its
   location).
@@ -185,7 +188,7 @@ finding:
 
 - If the judge accepts the finding, it is kept in `./tmp/review-changes-findings-accepted.md`.
 - If the judge refuses the finding, remove it from `./tmp/review-changes-findings-accepted.md` and
-  append it to `./tmp/review-changes-findings-refused.md` as a refused entry. When creating
+  add it to `./tmp/review-changes-findings-refused.md` as a refused entry. When creating
   this file, start it with a `Branch: <branch label>` line followed by an empty line.
 - If the judge corrects a finding, it is modified in `./tmp/review-changes-findings-accepted.md`.
 
@@ -194,6 +197,9 @@ It refuses a finding when it is:
 - Already applied.
 - Incorrect.
 - Present in `./tmp/review-changes-findings-refused.md` and its refusal reason still applies.
+- Covered by a settled section (see `gpex-specify`) of the specifications in the user request
+  (refusal reason citing the entry), unless it is a `BLOCKER` whose concrete scenario holds and
+  whose problem is not already covered by the entry's reason.
 - Formatting the configured checks (see `./AGENTS.md`) already accept.
 - Wording that does not change meaning, unless it is a clear simplification or deduplication.
 - A rename that is a preference between two clear names. Keep a rename when the current name makes

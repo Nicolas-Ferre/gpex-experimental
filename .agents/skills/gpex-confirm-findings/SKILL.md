@@ -15,6 +15,8 @@ Validate accepted findings of a review one by one.
 
 `<type>` is the skill argument: `changes` for `gpex-review-changes` findings, or `specs` for
 `gpex-review-specs` findings. If it is anything else or missing, ask the user.
+For `specs`, the specs path (see `gpex-review-specs`) is the file named in the link text of the
+finding locations, prefixed with `./`.
 
 1. If `./tmp/review-<type>-findings-accepted.md` does not exist or has no finding, stop and inform
    the user.
@@ -37,12 +39,16 @@ Validate accepted findings of a review one by one.
            `gpex-review-changes`). When creating this file, start it with the following line,
            followed by an empty line:
             - `changes`: `Branch: <branch label>` (see `gpex-review-changes`).
-            - `specs`: `Specs: <specs path>` (see `gpex-review-specs`), where the specs path is the
-              file of the finding locations, prefixed with `./`.
+            - `specs`: `Specs: <specs path>` (see `gpex-review-specs`).
         2. If the finding is accepted, replace its `Fix:` and snippet in
            `./tmp/review-<type>-findings-accepted.md` with the selected solution.
+    4. For `specs`, when the user's refusal, answer or selected solution settles a point a
+       reviewer could raise again, ask for its reason if not given, then record it in the specs
+       path file, in the matching settled section (see `gpex-specify`). If the specs path is a
+       step file, record it in `./tmp/specs.md` and in every other `./tmp/specs-step*.md` it is
+       relevant to.
 4. List the findings kept without asking, so the user can still review them.
-5. Stop and don't implement anything.
+5. Stop and don't apply any fix.
 
 ## Rules
 

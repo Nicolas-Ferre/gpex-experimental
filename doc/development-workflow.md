@@ -13,7 +13,8 @@ implemented directly (see "Implementation").
     - Run `gpex-split` AI skill (generally `/gpex-split`).
         - A specification file is obtained for each agreed step.
 3. For each step (or the full specifications if not split):
-    - Create a GitHub issue with specifications in description
+    - Create a GitHub issue with specifications in description, and update it after each
+      specifications change (including entries recorded by `/gpex-confirm-findings specs`)
     - Add a warning on top of the description as long as specifications are not fully reviewed:
       ```markdown
       > [!WARNING]
@@ -30,7 +31,8 @@ implemented directly (see "Implementation").
 For the moment, the implementation workflow is flexible, but always uses the following skills:
 
 - `gpex-implement` skill. Invocation depends on the context:
-    - To implement an issue: `/gpex-implement <issue URL>`
+    - To implement the issue matching the branch number prefix: `/gpex-implement`
+    - To implement another issue: `/gpex-implement <issue URL>`
     - To implement from specification file: `/gpex-implement specifications from <file path>`
     - To implement simple change: `/gpex-implement <description of the changes>`
 - `gpex-simplify` skill that doesn't require any argument. To be ideally run after
@@ -44,11 +46,11 @@ For the moment, the implementation workflow is flexible, but always uses the fol
 In addition to generated code, several files must be manually reviewed after each skill run to
 improve development workflow, skills and quality checks:
 
-| File                                           | Description                                                                 | Producer skill                                    |
-|------------------------------------------------|-----------------------------------------------------------------------------|---------------------------------------------------|
-| `./tmp/implement-decisions.md`                 | Decisions taken by AI during an implementation                              | `gpex-implement` and  `gpex-simplify`             |
-| `./tmp/review-specs-findings-refused.md`       | Any specification review finding rejected for the specs file in its header  | `gpex-review-specs` and `gpex-confirm-findings`   |
-| `./tmp/review-specs-findings-accepted.md`      | Any specification review finding accepted by the AI                         | `gpex-review-specs` and `gpex-confirm-findings`   |
-| `./tmp/review-changes-improvements-delayed.md` | Any deterministic check that could be enforced in the CI workflow           | `gpex-review-changes`                             |
-| `./tmp/review-changes-findings-refused.md`     | Any review finding rejected on the branch named in its header               | `gpex-review-changes` and `gpex-confirm-findings` |
-| `./tmp/review-changes-findings-accepted.md`    | Any review finding accepted by the AI                                       | `gpex-review-changes` and `gpex-confirm-findings` |
+| File                                           | Description                                                                | Producer skill                                                  |
+|------------------------------------------------|----------------------------------------------------------------------------|-----------------------------------------------------------------|
+| `./tmp/implement-decisions.md`                 | Decisions taken by AI during an implementation                             | `gpex-implement` and  `gpex-simplify`                           |
+| `./tmp/review-specs-findings-refused.md`       | Any specification review finding rejected for the specs file in its header | `gpex-specify`, `gpex-review-specs` and `gpex-confirm-findings` |
+| `./tmp/review-specs-findings-accepted.md`      | Any specification review finding accepted by the AI                        | `gpex-review-specs` and `gpex-confirm-findings`                 |
+| `./tmp/review-changes-improvements-delayed.md` | Any deterministic check that could be enforced in the CI workflow          | `gpex-review-changes`                                           |
+| `./tmp/review-changes-findings-refused.md`     | Any review finding rejected on the branch named in its header              | `gpex-review-changes` and `gpex-confirm-findings`               |
+| `./tmp/review-changes-findings-accepted.md`    | Any review finding accepted by the AI                                      | `gpex-review-changes` and `gpex-confirm-findings`               |

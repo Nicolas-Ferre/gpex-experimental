@@ -17,7 +17,9 @@ Split a specification file into more granular PR steps.
 3. Propose steps as described below.
     1. If user agrees with steps, then generate `./tmp/specs-step<step number starting from "1">.md`
        files, each adapting the specifications to its step. No requirement should be lost across the
-       set of step files.
+       set of step files. Each step file keeps the settled section entries (see `gpex-specify`)
+       relevant to it, and adds an `## Out of scope` row with reason `Covered by step <N>` for
+       each point left to another step.
     2. If user disagrees with steps, then rework with them until they agree.
 4. Stop and don't implement anything.
 

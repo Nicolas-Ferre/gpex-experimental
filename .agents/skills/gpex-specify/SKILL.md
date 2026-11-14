@@ -14,13 +14,16 @@ Create functional and technical specifications for a given change.
     1. If user wants to start over, then delete the file without reading its content to avoid being
        biased.
     2. Else, read the file.
-2. If `./tmp/specs.md` does not exist, delete `./tmp/review-specs-findings-refused.md` if
-   existing, without reading it, as its refusals no longer apply.
+2. If `./tmp/specs.md` does not exist, delete `./tmp/review-specs-findings-*.md` if existing,
+   without reading them, as they no longer apply.
 3. Ask all open questions one by one on topics defined below. Make them easy to read and as visual
    as possible (diagrams, GPEx code snippets, ...). Prefer defining functional specifications before
    technical ones. Before asking technical questions, explore the codebase. Each technical question
    proposes options, including a recommended one consistent with the existing organization.
-4. Save specifications in `./tmp/specs.md` following the template defined below.
+4. Save specifications in `./tmp/specs.md` following the template defined below. When refining,
+   first remove with the user the settled section rows made obsolete by the answers. If
+   `./tmp/review-specs-findings-accepted.md` has findings whose locations point to
+   `./tmp/specs.md`, run `gpex-confirm-findings` with type `specs`, then apply them.
 5. Let user know that they can refine the specifications if needed.
 6. Stop and don't implement anything.
 
@@ -71,12 +74,13 @@ Each break of existing behavior (CLI, language syntax, file formats) with its mi
 
 ### Diagnostics
 
-One `####` subsection per error case introduced by the change, and for each case:
+One row per error case introduced by the change:
 
-- Trigger condition
-- Result on user side
+| Trigger condition | Result on user side             |
+|-------------------|---------------------------------|
+| Missing argument  | Error `E001`, compilation stops |
 
-Code and/or diagnostic snippets can be used to illustrate each case when possible.
+Multi-line code or diagnostic snippets go below the table, referencing their trigger condition.
 
 ### Platform support
 
@@ -130,9 +134,11 @@ modules (e.g. Rust module) have no trailing `/` or extension, as this is decided
 
 ### Module interactions
 
-Data flow between the architecture folders and leaves (arrow from producer to consumer), edges
-labeled with passed data, new or changed links using thick arrows (`==>`), removed links using
-dotted arrows (`-.->`):
+Data flow representing the interactions between architecture modules (code leaves of
+`### Architecture`, configuration and documentation excluded; arrow from producer to consumer),
+one edge per direction between two modules, labeled with a high-level summary of the passed data
+or operation, new or changed links using thick arrows (`==>`), removed links using dotted arrows
+(`-.->`):
 
 ```mermaid
 graph LR
@@ -141,7 +147,7 @@ graph LR
   optimizer -. optimized AST .-> codegen
 ```
 
-Each main data structure described in one line, without fields:
+Then each main data structure described in its own bullet point, without fields:
 
 - AST: tree of parsed source items
 
@@ -174,10 +180,33 @@ Required algorithmic constraints, only for performance-sensitive changes:
 
 - Symbol lookup algorithm: O(log n)
 
+## Decisions
+
+Each choice explicitly made by the user that a reviewer could challenge (rejected alternative, rule
+waiver, rejected library, ...), except reasons of chosen libraries given in `### Libraries`:
+
+| Decision                                                    | Reason                           |
+|-------------------------------------------------------------|----------------------------------|
+| Hand-written parser instead of a parser generator           | Full control over diagnostics    |
+| Debug script not tested (waives `gpex-implement` test rule) | Developer tooling, never shipped |
+
+## Accepted limitations
+
+Known limitations and risks accepted by the user:
+
+| Limitation                              | Reason                        |
+|-----------------------------------------|-------------------------------|
+| Compilation is single-threaded          | Programs are small for now    |
+| Only the first syntax error is reported | Error recovery not needed yet |
+
 ## Out of scope
 
-- List of related points that are out of the change scope. Avoid mentioning these points in the rest
-  of the specifications.
+Related points left out of the change scope, not mentioned in the rest of the specifications:
+
+| Point                    | Reason                          |
+|--------------------------|---------------------------------|
+| Multi-file compilation   | Single-file programs are enough |
+| Diagnostics localization | No non-English user yet         |
 ````
 
 Design sections are written in an easy-to-read and visual way (short bullet points, Mermaid
@@ -188,8 +217,13 @@ Functional design describes only what the user of the change observes. Anything 
 is implemented (e.g. algorithms, internal strategy, ...) goes in technical design.
 
 Remove every section and subsection that is not relevant (e.g. `## Functional design` for a
-refactoring, `## Technical design` for a documentation-only change). Only record the chosen design,
-not rejected alternatives.
+refactoring, `## Technical design` for a documentation-only change). Rejected alternatives appear
+only in `## Decisions`.
+
+`## Decisions`, `## Accepted limitations`, `## Out of scope` and the library choices of
+`### Libraries` are the settled sections. The `Reason` of their rows is the one given by the
+user, except `Covered by step <N>` rows added by `gpex-split`. Ask for it when missing, even when
+the user picked a recommended option.
 
 Avoid duplicating information across the specifications as much as possible (test cases in
 `### Testing` excepted), and avoid unnecessary verbosity without losing information.
