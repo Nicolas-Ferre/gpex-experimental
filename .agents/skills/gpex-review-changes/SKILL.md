@@ -196,8 +196,8 @@ It refuses a finding when it is:
 - Incorrect.
 - Present in `./tmp/review-changes-findings-refused.md` and its refusal reason still applies.
 - Covered by `## Decisions`, `## Accepted limitations` or `## Out of scope` of the specifications
-  in the user request (refusal reason citing the entry), unless it is a `BLOCKER` describing a
-  failure that the entry's reason did not foresee.
+  in the user request (refusal reason citing the entry), unless it is a `BLOCKER` whose problem is
+  not already covered by the entry's reason.
 - Formatting the configured checks (see `./AGENTS.md`) already accept.
 - Wording that does not change meaning, unless it is a clear simplification or deduplication.
 - A rename that is a preference between two clear names. Keep a rename when the current name makes

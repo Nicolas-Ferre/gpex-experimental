@@ -13,25 +13,28 @@ Create functional and technical specifications for a given change.
    specifications or start over.
     1. If user wants to start over, then delete the file without reading its content to avoid being
        biased.
-    2. Else, read the file, and remove with the user the `## Decisions` and
-       `## Accepted limitations` rows made obsolete by the refinement.
+    2. Else, read the file.
 2. If `./tmp/specs.md` does not exist, delete `./tmp/review-specs-findings-refused.md` if
    existing, without reading it, as its refusals no longer apply.
 3. Ask all open questions one by one on topics defined below. Make them easy to read and as visual
    as possible (diagrams, GPEx code snippets, ...). Prefer defining functional specifications before
    technical ones. Before asking technical questions, explore the codebase. Each technical question
    proposes options, including a recommended one consistent with the existing organization.
-4. Save specifications in `./tmp/specs.md` following the template defined below.
+4. Save specifications in `./tmp/specs.md` following the template defined below. When refining,
+   first remove with the user the `## Decisions`, `## Accepted limitations` and `## Out of scope`
+   rows made obsolete by the answers.
 5. Run the self-review loop defined below.
 6. Let user know that they can refine the specifications if needed.
 7. Stop and don't implement anything.
 
 ## Self-review loop
 
-Repeat until a round leaves no `BLOCKER`, `REQUIRED` or `QUESTION` finding:
+Repeat until the findings confirmed in step 2 of a round contain no `BLOCKER`, `REQUIRED` or
+`QUESTION` (the round still applies them):
 
 1. Run steps 1 to 7 of the `gpex-review-specs` workflow on `./tmp/specs.md` (don't run this
-   skill), then read `./tmp/review-specs-findings-accepted.md`.
+   skill; a "stop" there ends this loop only), then read
+   `./tmp/review-specs-findings-accepted.md`.
 2. Run steps 3 and 4 of the `gpex-confirm-findings` workflow with type `specs` (don't run this
    skill).
 3. Apply the remaining findings of `./tmp/review-specs-findings-accepted.md` to the
@@ -90,7 +93,7 @@ One row per error case introduced by the change:
 |-------------------|---------------------------------|
 | Missing argument  | Error `E001`, compilation stops |
 
-Multi-line code or diagnostic snippets go below the table, referencing their row.
+Multi-line code or diagnostic snippets go below the table, referencing their trigger condition.
 
 ### Platform support
 
@@ -144,8 +147,9 @@ modules (e.g. Rust module) have no trailing `/` or extension, as this is decided
 
 ### Module interactions
 
-Data flow representing the interactions between architecture modules (arrow from producer to
-consumer), one edge per module pair labeled with a high-level summary of the passed data or
+Data flow representing the interactions between architecture modules (code leaves of
+`### Architecture`, configuration and documentation excluded; arrow from producer to consumer),
+one edge per module pair labeled with a high-level summary of the passed data or
 operation, new or changed links using thick arrows (`==>`), removed links using dotted arrows
 (`-.->`):
 
@@ -159,9 +163,6 @@ graph LR
 Then each main data structure described in its own bullet point, without fields:
 
 - AST: tree of parsed source items
-
-Modules are the code leaves of `### Architecture`; configuration and documentation files are
-excluded.
 
 ### Testing
 
@@ -195,8 +196,7 @@ Required algorithmic constraints, only for performance-sensitive changes:
 ## Decisions
 
 Each choice explicitly made by the user that a reviewer could challenge (rejected alternative, rule
-waiver, ...), except library choices justified in `### Libraries`. Never add a choice the user did
-not make:
+waiver, rejected library, ...), except reasons of chosen libraries given in `### Libraries`:
 
 | Decision                                                    | Reason                           |
 |-------------------------------------------------------------|----------------------------------|

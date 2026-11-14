@@ -61,8 +61,9 @@ important), ignoring code-only checks. Also check that:
 A `REQUIRED` finding can also cite a rule of the `gpex-specify` skill (e.g. its template rules).
 
 You can challenge certain decisions if it makes sense. Entries of `## Decisions`,
-`## Accepted limitations` and `## Out of scope` are already settled with the user: challenge one
-only with a `BLOCKER` describing a failure that the entry's reason did not foresee.
+`## Accepted limitations` and `## Out of scope` are already agreed with the user. Only challenge
+an entry with a `BLOCKER`, and only if the problem is not already covered by the entry's reason.
+Template rule violations of an entry (e.g. missing reason) can still be reported.
 
 ## Judgment step
 
@@ -71,6 +72,8 @@ Apply the judgment step of the `gpex-review-changes` skill to
 
 - Refused findings are appended to `./tmp/review-specs-findings-refused.md`. When creating this
   file, start it with a `Specs: <specs path>` line followed by an empty line.
-- Refusal criteria are those of `gpex-review-changes`, ignoring code-only ones, reading
-  `./tmp/review-specs-findings-refused.md` as the refused file.
+- Refusal criteria are those of `gpex-review-changes`, ignoring code-only ones, with these
+  substitutions:
+    - `./tmp/review-changes-findings-refused.md` → `./tmp/review-specs-findings-refused.md`.
+    - "the specifications in the user request" → the reviewed specifications file.
 - Never append to `./tmp/review-changes-improvements-delayed.md`.

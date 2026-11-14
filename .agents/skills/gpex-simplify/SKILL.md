@@ -19,7 +19,8 @@ and untracked changes included).
    matching the branch number prefix (`gh issue view <id> --json body`), if any.
 3. List the simplifications meeting the acceptance criteria below, limited to the changes of the
    current branch. If none qualifies, stop.
-4. Run `gpex-implement` skill with this list as the change, and the specifications.
+4. Run `gpex-implement` skill with this list as the change, and the specifications as
+   constraints only (not part of the change).
 
 ## Simplification acceptance
 

@@ -21,8 +21,8 @@ implemented directly (see "Implementation").
       > TO REVIEW
       ```
     - Carefully review and refine specifications (`gpex-specify` skill can be reused if needed).
-    - Run `/gpex-review-specs <step specs file>` and refine specifications until the skill
-      reports that the review cycle can stop.
+    - After a split or a manual edit, run `/gpex-review-specs <step specs file>` and refine
+      specifications until the skill reports that the review cycle can stop.
         - Validate accepted findings one by one with `/gpex-confirm-findings specs`.
     - Create new GitHub issues from "Out of scope" section when relevant.
 
@@ -49,7 +49,7 @@ improve development workflow, skills and quality checks:
 |------------------------------------------------|----------------------------------------------------------------------------|-----------------------------------------------------------------|
 | `./tmp/implement-decisions.md`                 | Decisions taken by AI during an implementation                             | `gpex-implement` and  `gpex-simplify`                           |
 | `./tmp/review-specs-findings-refused.md`       | Any specification review finding rejected for the specs file in its header | `gpex-specify`, `gpex-review-specs` and `gpex-confirm-findings` |
-| `./tmp/review-specs-findings-accepted.md`      | Any specification review finding accepted by the AI                        | `gpex-specify`, `gpex-review-specs` and `gpex-confirm-findings` |
+| `./tmp/review-specs-findings-accepted.md`      | Any specification review finding accepted by the AI                        | `gpex-review-specs` and `gpex-confirm-findings`                 |
 | `./tmp/review-changes-improvements-delayed.md` | Any deterministic check that could be enforced in the CI workflow          | `gpex-review-changes`                                           |
 | `./tmp/review-changes-findings-refused.md`     | Any review finding rejected on the branch named in its header              | `gpex-review-changes` and `gpex-confirm-findings`               |
 | `./tmp/review-changes-findings-accepted.md`    | Any review finding accepted by the AI                                      | `gpex-review-changes` and `gpex-confirm-findings`               |

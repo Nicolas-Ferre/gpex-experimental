@@ -14,11 +14,13 @@ Implement a change autonomously.
 ## Workflow
 
 1. If no change is provided, stop and inform the user.
-2. Delete `./tmp/implement-decisions.md` if existing.
-3. Delete `./tmp/implement-plan.md` if existing.
-4. Explore the codebase and create a detailed plan of the requested change in
+2. If no specifications are provided, get them from the GitHub issue matching the branch number
+   prefix (`gh issue view <id> --json body`), if any.
+3. Delete `./tmp/implement-decisions.md` if existing.
+4. Delete `./tmp/implement-plan.md` if existing.
+5. Explore the codebase and create a detailed plan of the requested change in
    `./tmp/implement-plan.md`.
-5. Apply the plan from `./tmp/implement-plan.md`.
+6. Apply the plan from `./tmp/implement-plan.md`.
 
 ## Taken decisions
 
