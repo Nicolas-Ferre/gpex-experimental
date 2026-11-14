@@ -24,22 +24,8 @@ Create functional and technical specifications for a given change.
    first remove with the user the settled section rows made obsolete by the answers. If
    `./tmp/review-specs-findings-accepted.md` has findings whose locations point to
    `./tmp/specs.md`, run `gpex-confirm-findings` with type `specs`, then apply them.
-5. Run the self-review loop defined below.
-6. Let user know that they can refine the specifications if needed.
-7. Stop and don't implement anything.
-
-## Self-review loop
-
-Repeat until the findings confirmed in step 2 of a round contain no `BLOCKER` or `REQUIRED`
-(the round still applies them):
-
-1. Run the `gpex-review-specs` skill on `./tmp/specs.md`.
-2. Run the `gpex-confirm-findings` skill with type `specs`.
-3. Apply the remaining findings of `./tmp/review-specs-findings-accepted.md` to the
-   specifications, then delete this file.
-
-A "stop" in these skills ends only that skill, then this workflow continues. If a skill stops
-because no finding is left, end this loop.
+5. Let user know that they can refine the specifications if needed.
+6. Stop and don't implement anything.
 
 ## Questions
 

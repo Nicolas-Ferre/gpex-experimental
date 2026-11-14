@@ -21,8 +21,8 @@ implemented directly (see "Implementation").
       > TO REVIEW
       ```
     - Carefully review and refine specifications (`gpex-specify` skill can be reused if needed).
-    - After a split or a manual edit, run `/gpex-review-specs <step specs file>` and refine
-      specifications until the skill reports that the review cycle can stop.
+    - Run `/gpex-review-specs <step specs file>` and refine specifications until the skill
+      reports that the review cycle can stop.
         - Validate accepted findings one by one with `/gpex-confirm-findings specs`.
     - Create new GitHub issues from "Out of scope" section when relevant.
 
