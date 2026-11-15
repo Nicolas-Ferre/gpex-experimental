@@ -23,7 +23,8 @@ implemented directly (see "Implementation").
     - Carefully review and refine specifications (`gpex-specify` skill can be reused if needed).
     - Run `/gpex-review-specs <step specs file>` and refine specifications until the skill
       reports that the review cycle can stop.
-        - Validate accepted findings one by one with `/gpex-confirm-findings specs`.
+        - Validate accepted findings with `/gpex-confirm-findings specs`.
+        - Apply them with `/gpex-specify apply accepted spec findings`.
     - Create new GitHub issues from "Out of scope" section when relevant.
 
 ## Implementation
@@ -39,7 +40,7 @@ For the moment, the implementation workflow is flexible, but always uses the fol
   implementation, and once the review cycle can stop.
 - `gpex-review-changes` skill that doesn't require any argument. To be run after any change,
   until the skill reports that the review cycle can stop.
-    - Validate accepted findings one by one with `/gpex-confirm-findings changes`.
+    - Validate accepted findings with `/gpex-confirm-findings changes`.
     - Apply findings by invoking
       `/gpex-implement findings in ./tmp/review-changes-findings-accepted.md`
 
@@ -49,7 +50,7 @@ improve development workflow, skills and quality checks:
 | File                                           | Description                                                                | Producer skill                                                  |
 |------------------------------------------------|----------------------------------------------------------------------------|-----------------------------------------------------------------|
 | `./tmp/implement-decisions.md`                 | Decisions taken by AI during an implementation                             | `gpex-implement` and  `gpex-simplify`                           |
-| `./tmp/review-specs-findings-refused.md`       | Any specification review finding rejected for the specs file in its header | `gpex-specify`, `gpex-review-specs` and `gpex-confirm-findings` |
+| `./tmp/review-specs-findings-refused.md`       | Any specification review finding rejected for the specs file in its header | `gpex-review-specs` and `gpex-confirm-findings`                 |
 | `./tmp/review-specs-findings-accepted.md`      | Any specification review finding accepted by the AI                        | `gpex-review-specs` and `gpex-confirm-findings`                 |
 | `./tmp/review-changes-improvements-delayed.md` | Any deterministic check that could be enforced in the CI workflow          | `gpex-review-changes`                                           |
 | `./tmp/review-changes-findings-refused.md`     | Any review finding rejected on the branch named in its header              | `gpex-review-changes` and `gpex-confirm-findings`               |
