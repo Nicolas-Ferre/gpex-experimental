@@ -41,3 +41,23 @@ jobs:
         env:
           BASE_REF: ${{ steps.diff-base.outputs.sha }}
           GH_TOKEN: ${{ github.token }}
+
+  test:
+    name: Test
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Install Rust toolchain
+        run: rustup toolchain install
+
+      - name: Install linters
+        uses: $/.github/actions/install-linters
+
+      - name: Run tests
+        run: cargo test --locked

@@ -1,0 +1,8 @@
+✓ git diff <BASE_SHA> --check
+✓ editorconfig-checker
+-----
+No findings to report. Good job!
+-----
+✓ zizmor --quiet --persona=auditor --strict-collection .
+
+exit code: 0

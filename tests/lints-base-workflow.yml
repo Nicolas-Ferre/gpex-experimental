@@ -1,0 +1,17 @@
+name: Base
+
+on: push
+
+permissions: {}
+
+concurrency:
+  group: base-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  base:
+    name: Base
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Print message
+        run: echo base

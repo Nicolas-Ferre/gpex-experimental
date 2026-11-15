@@ -1,0 +1,16 @@
+[package]
+name = "gpex"
+version = "0.0.0"
+edition = "2024"
+rust-version = "1.100"
+license = "MIT OR Apache-2.0"
+publish = false
+
+[dev-dependencies]
+libtest-mimic = "0.8.2"
+tempfile = "3.27.0"
+
+[[test]]
+name = "lints"
+path = "tests/lints/main.rs"
+harness = false
