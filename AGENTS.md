@@ -11,8 +11,10 @@ Here are relevant folders and files:
 .
 ├── README.md
 ├── .editorconfig
+├── .github/actions/             # Reusable composite actions
 ├── .github/workflows/           # GitHub Actions workflows
 ├── doc/                         # Repository documentation
+│   └── conventions/             # Coding conventions
 └── scripts/
     └── lint.sh                  # Run all linters
 ```

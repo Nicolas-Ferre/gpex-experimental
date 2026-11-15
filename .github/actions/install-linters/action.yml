@@ -1,5 +1,5 @@
 name: Install linters
-description: Install linters with the versions used by CI.
+description: Install pinned linters.
 
 runs:
   using: composite
