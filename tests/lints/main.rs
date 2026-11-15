@@ -1,5 +1,3 @@
-//! Snapshot tests of `scripts/lint.sh`, one per folder of `test_cases/lints/`.
-
 mod repo;
 
 use std::env;
@@ -11,34 +9,41 @@ use std::process::{Command, ExitCode};
 use libtest_mimic::{Arguments, Failed, Trial};
 use repo::TestRepo;
 
-const CASES_FOLDER: &str = "test_cases/lints";
+const ROOT: &str = env!("CARGO_MANIFEST_DIR");
+const CASES_PARENT_FOLDER: &str = "test_cases";
+const CASES_FOLDER: &str = "lints";
 const EXPECTED_FILE: &str = "expected.log";
 
 fn main() -> ExitCode {
     let args = Arguments::from_args();
-    let folders = match case_folders() {
+    let cases_folder = Path::new(CASES_PARENT_FOLDER).join(CASES_FOLDER);
+    let folders = match case_folders(&cases_folder) {
         Ok(folders) => folders,
         Err(error) => {
-            eprintln!("{CASES_FOLDER}: {error}");
+            eprintln!("{}: {error}", cases_folder.display());
             return ExitCode::FAILURE;
         }
     };
     let trials = folders
         .into_iter()
         .map(|folder| {
-            let name = format!("lints/{}", folder.file_name().unwrap_or_default().display());
+            let name = format!(
+                "{CASES_FOLDER}/{}",
+                folder.file_name().unwrap_or_default().display()
+            );
             Trial::test(name, move || check_case(&folder))
         })
         .collect();
     libtest_mimic::run(&args, trials).exit_code()
 }
 
-fn case_folders() -> std::io::Result<Vec<PathBuf>> {
+/// Returns paths relative to [`ROOT`], so that messages show short paths.
+fn case_folders(cases_folder: &Path) -> std::io::Result<Vec<PathBuf>> {
     let mut folders = Vec::new();
-    for entry in fs::read_dir(CASES_FOLDER)? {
+    for entry in fs::read_dir(absolute(cases_folder))? {
         let entry = entry?;
         if entry.file_type()?.is_dir() && !entry.file_name().as_encoded_bytes().starts_with(b".") {
-            folders.push(entry.path());
+            folders.push(cases_folder.join(entry.file_name()));
         }
     }
     folders.sort();
@@ -46,9 +51,10 @@ fn case_folders() -> std::io::Result<Vec<PathBuf>> {
 }
 
 fn check_case(case_folder: &Path) -> Result<(), Failed> {
-    let actual = run_case(case_folder)?;
+    let actual = run_case(case_folder).map_err(|e| format!("{}: {e}", case_folder.display()))?;
     let path = case_folder.join(EXPECTED_FILE);
-    let expected = fs::read_to_string(&path).map_err(|e| format!("{}: {e}", path.display()))?;
+    let expected =
+        fs::read_to_string(absolute(&path)).map_err(|e| format!("{}: {e}", path.display()))?;
     if actual != expected {
         return Err(format!("{}: unexpected output:\n{actual}", path.display()).into());
     }
@@ -57,18 +63,13 @@ fn check_case(case_folder: &Path) -> Result<(), Failed> {
 
 fn run_case(case_folder: &Path) -> Result<String, String> {
     let path_var = env::var_os("PATH").unwrap_or_default();
-    let tmp = tempfile::tempdir().map_err(|e| e.to_string())?;
+    let tmp = tempfile::tempdir().map_err(|e| format!("temp directory: {e}"))?;
     let repo = TestRepo::create(tmp.path(), &path_var, case_folder)?;
-    let mut command = Command::new("bash");
+    let mut command = repo::isolated_command("bash", &path_var, tmp.path());
     command
         .arg("scripts/lint.sh")
         .current_dir(&repo.path)
-        .env_clear()
-        .env("PATH", &path_var)
-        .env("HOME", tmp.path())
-        .env("LC_ALL", "C")
         .env("NO_COLOR", "1")
-        .env("GIT_CONFIG_NOSYSTEM", "1")
         .env("ZIZMOR_OFFLINE", "true");
     let (output, exit_code) = run_with_shared_output(command)?;
     let output = String::from_utf8_lossy(&output).replace(&repo.base_sha, "<BASE_SHA>");
@@ -77,15 +78,25 @@ fn run_case(case_folder: &Path) -> Result<String, String> {
 
 /// Runs the command with stdout and stderr written to the same pipe, to keep their write order.
 fn run_with_shared_output(mut command: Command) -> Result<(Vec<u8>, i32), String> {
-    let error = |e: std::io::Error| e.to_string();
+    let error = |e: std::io::Error| format!("bash scripts/lint.sh: {e}");
     let (mut reader, writer) = std::io::pipe().map_err(error)?;
-    command.stdout(writer.try_clone().map_err(error)?).stderr(writer);
+    command
+        .stdout(writer.try_clone().map_err(error)?)
+        .stderr(writer);
     let mut child = command.spawn().map_err(error)?;
     // Drops the command's pipe writers, so that reading ends when the child exits.
     drop(command);
     let mut output = Vec::new();
-    reader.read_to_end(&mut output).map_err(error)?;
+    let read = reader.read_to_end(&mut output);
+    // Waits even if reading failed, so that lint.sh does not outlive its temp directory.
     let status = child.wait().map_err(error)?;
-    let exit_code = status.code().ok_or_else(|| format!("lint.sh killed: {status}"))?;
+    read.map_err(error)?;
+    let exit_code = status
+        .code()
+        .ok_or_else(|| format!("lint.sh killed: {status}"))?;
     Ok((output, exit_code))
+}
+
+fn absolute(path: &Path) -> PathBuf {
+    Path::new(ROOT).join(path)
 }

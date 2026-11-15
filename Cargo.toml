@@ -15,5 +15,4 @@ tempfile = "3.27.0"
 
 [[test]]
 name = "lints"
-path = "tests/lints/main.rs"
 harness = false
