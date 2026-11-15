@@ -5,13 +5,12 @@ use std::process::Command;
 
 use crate::paths::absolute;
 
-/// Real repository files of the base commit.
-/// Must follow `lint.sh` dependencies.
+/// Copied from the real repository. Must follow `lint.sh` dependencies.
 const BASE_FILES: [&str; 2] = ["scripts/lint.sh", ".editorconfig"];
 const BASE_WORKFLOW: &str = include_str!("base-workflow.yml");
 const BASE_WORKFLOW_PATH: &str = ".github/workflows/base.yml";
 
-/// Test repository whose base commit is `origin/main` and HEAD commit adds the case input files.
+/// Base commit on `origin/main`, HEAD commit adding the case input files.
 pub struct TestRepo {
     pub path: PathBuf,
     pub base_sha: String,

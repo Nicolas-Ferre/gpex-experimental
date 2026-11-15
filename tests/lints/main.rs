@@ -77,7 +77,7 @@ fn run_case(case_folder: &Path) -> Result<String, String> {
     Ok(format!("{output}\nexit code: {exit_code}\n"))
 }
 
-/// Runs the command with stdout and stderr written to the same pipe, to keep their write order.
+/// Keeps the write order of stdout and stderr.
 fn run_with_shared_output(mut command: Command) -> Result<(Vec<u8>, i32), String> {
     let error = |e: std::io::Error| format!("bash scripts/lint.sh: {e}");
     let (mut reader, writer) = std::io::pipe().map_err(error)?;
