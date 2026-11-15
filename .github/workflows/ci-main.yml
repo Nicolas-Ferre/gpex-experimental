@@ -33,13 +33,8 @@ jobs:
         env:
           DIFF_BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
 
-      - name: Install editorconfig-checker
-        uses: editorconfig-checker/action-editorconfig-checker@51f63319f592f97930c73d9c46184d20bd206393 # v3.0.0
-        with:
-          version: v4.0.2
-
-      - name: Install zizmor
-        run: pip install --require-hashes -r .github/requirements-lint.txt
+      - name: Install linters
+        uses: $/.github/actions/install-linters
 
       - name: Run linters
         run: ./scripts/lint.sh
