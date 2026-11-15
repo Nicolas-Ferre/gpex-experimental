@@ -9,6 +9,7 @@ env:
   # Git glob pathspecs relative to repository root, one per line ("**/" matches subfolders).
   EXCLUDED_FILES: |
     **/Cargo.lock
+    doc/conventions/**
     test_cases/**/expected*
 
 permissions:
