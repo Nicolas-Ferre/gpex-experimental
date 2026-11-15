@@ -17,7 +17,8 @@ Validate accepted findings of a review.
 `gpex-review-specs` findings. If it is anything else or missing, ask the user.
 For `specs`, the specs path (see `gpex-review-specs`) is the file named in the link text of the
 finding locations, prefixed with `./`.
-For `changes`, the specifications are found as in step 5 of `gpex-review-changes`.
+For `changes`, the specifications are found as in step 5 of `gpex-review-changes`, ignoring
+the skill arguments and without asking the user.
 
 1. If `./tmp/review-<type>-findings-accepted.md` does not exist or has no finding, stop and inform
    the user.
@@ -29,20 +30,21 @@ For `changes`, the specifications are found as in step 5 of `gpex-review-changes
        option, then replace the entry with the resulting finding (following the finding format and
        classes of `gpex-review-changes`) and validate it as below. If no finding results, move it
        to the refused file (see below) with `Answered: <answer>` as refusal reason.
-    3. Keep the finding without asking when its fix is objectively recommended, has no relevant
-       alternative, changes neither behavior nor design, and modifies neither a settled section
-       (see `gpex-specify`) nor an earlier decision. This includes:
-        - a template, format or written-rule violation with a single possible fix.
-        - a duplication removed without changing meaning.
-        - a typo, line wrap, alignment or formatting fix.
-        - a wording made more precise when the rest of the reviewed content already implies it.
+    3. If the finding modifies neither a settled section (see `gpex-specify`) nor an earlier
+       decision:
+        - Keep it without asking when its fix is objectively recommended, has no relevant
+          alternative and changes neither behavior nor design. This includes:
+            - a template, format or written-rule violation with a single possible fix.
+            - a duplication removed without changing meaning.
+            - a typo, line wrap, alignment or formatting fix.
+            - a wording made more precise when the rest of the reviewed content already implies
+              it.
+        - Keep it without asking when its fix is the only way to apply a settled section entry as
+          written, even if it changes behavior or design.
+        - Else, if it is a `NITPICK`, leave it to top-level step 4.
 
-       Also keep without asking a fix applying a settled section entry without modifying it, even
-       if it changes behavior or design.
-       Else, if the finding is a `NITPICK` modifying neither a settled section nor an earlier
-       decision, leave it to step 4. Else, display its details and ask user which solution to
-       apply: the finding solution, viable alternatives, refusing the finding, or a solution they
-       write themselves.
+       Otherwise, display its details and ask user which solution to apply: the finding solution,
+       viable alternatives, refusing the finding, or a solution they write themselves.
         1. If the finding is refused, ask for the reason required by its class (see the finding
            classes of `gpex-review-changes`) unless the user already gave it, then move it to
            `./tmp/review-<type>-findings-refused.md` as a refused entry (see the finding format of
@@ -57,10 +59,10 @@ For `changes`, the specifications are found as in step 5 of `gpex-review-changes
        path file, in the matching settled section (see `gpex-specify`). If the specs path is a
        step file, record it in `./tmp/specs.md` and in every other `./tmp/specs-step*.md` it is
        relevant to.
-4. Ask in one go, with multi-select questions (split if needed), which `NITPICK` findings left by
-   step 3 to keep, one option per finding (number, title, fix summary), recommending to keep all,
-   or none at the last review cycle. Move unselected ones to the refused file (see step 3) with
-   refusal reason `Not selected by user`.
+4. Ask which `NITPICK` findings left by step 3 to keep, in one go with multi-select questions
+   (split if needed). Use one option per finding: number, title and fix summary. Recommend keeping
+   all, or none if the review cycle can now stop (see step 2). Move unselected ones to the refused
+   file (see step 3) with refusal reason `Not selected by user`.
 5. List the findings kept without asking, with the reason or category applied, so the user can
    still review them.
 6. Display the recommended command to apply the findings for `<type>` (see
@@ -75,8 +77,8 @@ For `changes`, the specifications are found as in step 5 of `gpex-review-changes
       applying one solution to all of them.
     - Group findings of the same topic (same area or kind of fix) whose choice is keep or refuse
       into one multi-select question, one option per finding, then ask the reasons of all
-      unselected ones in a single question. Never group unrelated findings, except `NITPICK`
-      findings in step 4.
+      unselected ones in a single question. Never group unrelated findings.
     - Never merge when it hides a finding's details, alternatives or recommended option.
+    - Step 4 is exempt from these merge rules.
 - Take earlier decisions into account, and flag findings they make obsolete or conflicting.
 - Other skills are only referenced for their definitions: never run them.
