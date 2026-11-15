@@ -51,7 +51,9 @@ Each subsection corresponds to a sub-agent to run during review.
 The sub-agents must not modify any file, must not read `./tmp/review-changes-findings-*.md`, and
 must return the full list of findings, following the finding format and finding classes.
 They report absolutely all possible findings, even minor or uncertain ones: the judgment step
-refuses the invalid ones.
+refuses the invalid ones. Before reporting a finding, they check its claim against the files, and
+skip it when it is covered by a settled section entry or is wording that does not change meaning
+(see refusal criteria of the judgment step).
 
 ### Bug detection
 
