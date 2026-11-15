@@ -54,4 +54,3 @@ apply the following conventions, except those waived in `## Decisions` of the sp
 - Add code comments only when strictly required: document only the "why" and details that cannot be
   understood from the code only, never "what" the code is doing. Always favor code readability and
   improvements over adding a comment. Only exception is for public interfaces such as libraries.
-- Avoid long sentences with a lot of commas.

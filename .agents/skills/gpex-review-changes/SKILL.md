@@ -51,8 +51,8 @@ Each subsection corresponds to a sub-agent to run during review.
 The sub-agents must not modify any file, must not read `./tmp/review-changes-findings-accepted.md`,
 and must return the full list of findings, following the finding format and finding classes.
 They report all possible findings, even minor or uncertain ones, after checking each claim against
-the files. They skip findings matching a refusal criterion of the judgment step, except findings
-whose only fix is new tooling.
+the files. They skip findings matching a refusal criterion of the judgment step, except remedies
+whose only form is a new test runner, linter, or dependency.
 
 ### Bug detection
 

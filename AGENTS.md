@@ -31,6 +31,7 @@ Any documentation, comment or answer you write must follow these rules:
 - Be readable and easily understandable by a human.
 - Be clear for anyone that has not checked repository content and code.
 - Do not duplicate information.
+- Keep sentences short: split a sentence chaining more than two comma-separated clauses.
 
 ## Misc
 
