@@ -1,5 +1,5 @@
 name: Install linters
-description: Install editorconfig-checker and zizmor with the versions used by CI.
+description: Install pinned linters.
 
 runs:
   using: composite

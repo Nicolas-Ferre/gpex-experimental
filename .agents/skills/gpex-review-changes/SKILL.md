@@ -94,6 +94,7 @@ Check local code quality issues, such as:
 - bad practices
 - performance improvements
 - not followed conventions defined in `AGENTS.md` files
+- not followed conventions defined in `doc/conventions/` files
 - not followed conventions defined in `Conventions` section from `gpex-implement` skill (don't run
   this skill)
 - not up-to-date documentation
@@ -116,10 +117,10 @@ finding must state what its class requires:
   wrong result: bug, crash, security hole, data loss/corruption, broken build or tests,
   legal/compliance breach.
   Must be fixed.
-- `REQUIRED`: the cited written rule that is violated (`AGENTS.md`, skill conventions such as
-  `Conventions` of `gpex-implement`, API contract, ...). The violation must be objectively
-  checkable: citing a general principle (conciseness, simplicity, readability, style) gives at
-  most `SUGGESTION`.
+- `REQUIRED`: the cited written rule that is violated (`AGENTS.md`, `doc/conventions/`,
+  skill conventions such as `Conventions` of `gpex-implement`, API contract, ...). The violation
+  must be objectively checkable: citing a general principle (conciseness, simplicity, readability,
+  style) gives at most `SUGGESTION`.
   Must be fixed, or the rule explicitly waived (refused with a reason naming the waiver, or
   waived in `## Decisions` of the specifications).
 - `SUGGESTION`: a concrete cost the fix avoids (duplication with file X, a function that will

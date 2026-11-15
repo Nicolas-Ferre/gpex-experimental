@@ -47,6 +47,7 @@ apply the following conventions, except those waived in `## Decisions` of the sp
 
 - Always implement the simplest possible solution, don't over-engineer.
 - Follow existing coding style and naming in the repository.
+- Follow the conventions defined in `doc/conventions/` files.
 - Apply Single Responsibility Principle.
 - Add or update tests covering every new or changed behavior, including edge cases.
 - Update the documentation impacted by the change.
