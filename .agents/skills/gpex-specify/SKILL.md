@@ -22,21 +22,19 @@ Create functional and technical specifications for a given change.
    proposes options, including a recommended one consistent with the existing organization.
 4. Save specifications in `./tmp/specs.md` following the template defined below. When refining,
    first remove with the user the settled section rows made obsolete by the answers.
-5. Fix `./tmp/specs.md` until every point of the self-check below holds. Settled section rows are
-   only removed with the user.
+5. Fix `./tmp/specs.md` until every point of the self-check below holds. Ask the user when a fix
+   needs their decision (e.g. waiving a test, adding or changing a settled section row).
 6. Let user know that they can refine the specifications if needed.
 7. Stop and don't implement anything.
 
 ## Self-check
 
 - Every template rule below holds.
-- No information is duplicated (see template rules). Design sections state the behavior, settled
-  sections state the user's reason.
 - No point appears in two settled sections.
-- Every functional behavior, `### Diagnostics` row and edge case has a `### Testing` row, or a
-  `## Decisions` row waiving its test.
+- Every functional behavior, `### Diagnostics` row and edge case found during the interview has a
+  `### Testing` row, or a `## Decisions` row waiving its test.
 - `### Diagnostics` trigger conditions are concrete (e.g. named variable or file, not "fails").
-- `### Architecture` lists every touched file, including configuration.
+- `### Architecture` lists every changed leaf, including configuration.
 - Each concept has a single name across the specifications.
 - Sections do not contradict each other.
 
@@ -239,4 +237,5 @@ user, except `Covered by step <N>` rows added by `gpex-split`. Ask for it when m
 the user picked a recommended option.
 
 Avoid duplicating information across the specifications as much as possible (test cases in
-`### Testing` excepted), and avoid unnecessary verbosity without losing information.
+`### Testing` excepted): design sections state the behavior, settled sections only the user's
+reason. Avoid unnecessary verbosity without losing information.
