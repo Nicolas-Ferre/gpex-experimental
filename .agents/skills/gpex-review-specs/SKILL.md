@@ -41,8 +41,7 @@ Run these steps in order:
 The sub-agent reads the specifications, explores the codebase and reviews the specifications
 against all the criteria below, without starting other sub-agents. It follows the rules
 of the `## Review sub-agents` intro of the `gpex-review-changes` skill, with
-`./tmp/review-specs-findings-accepted.md` instead of `./tmp/review-changes-findings-accepted.md`.
-Its refusal criteria are those of the judgment step below.
+`./tmp/review-specs-findings-*.md` instead of `./tmp/review-changes-findings-*.md`.
 
 ## Review criteria
 
