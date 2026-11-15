@@ -1,8 +1,11 @@
 [package]
 name = "gpex"
-version = "0.0.0"
+version = "0.1.0"
 edition = "2024"
-rust-version = "1.100"
+rust-version = "1.100.0"
+description = "GPEx language CLI"
+readme = "README.md"
+repository = "https://github.com/Nicolas-Ferre/gpex-experimental"
 license = "MIT OR Apache-2.0"
 publish = false
 
