@@ -3,7 +3,7 @@ use std::fs;
 use std::path::{Path, PathBuf};
 use std::process::Command;
 
-use crate::absolute;
+use crate::paths::absolute;
 
 /// Real repository files of the base commit.
 /// Must follow `lint.sh` dependencies.
@@ -104,7 +104,7 @@ fn copy_inputs(case_folder: &Path, repo: &Path) -> Result<(), String> {
     Ok(())
 }
 
-/// `source` is relative to [`crate::ROOT`], so that messages show short paths.
+/// `source` is relative to [`crate::paths::ROOT`], so that messages show short paths.
 fn copy_entry(source: &Path, target: &Path) -> Result<(), String> {
     if !absolute(source).is_dir() {
         return copy_file(source, target);

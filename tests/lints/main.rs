@@ -1,3 +1,4 @@
+mod paths;
 mod repo;
 
 use std::env;
@@ -7,9 +8,9 @@ use std::path::{Path, PathBuf};
 use std::process::{Command, ExitCode};
 
 use libtest_mimic::{Arguments, Failed, Trial};
+use paths::absolute;
 use repo::TestRepo;
 
-const ROOT: &str = env!("CARGO_MANIFEST_DIR");
 const CASES_PARENT_FOLDER: &str = "test_cases";
 const CASES_FOLDER: &str = "lints";
 const EXPECTED_FILE: &str = "expected.log";
@@ -37,7 +38,7 @@ fn main() -> ExitCode {
     libtest_mimic::run(&args, trials).exit_code()
 }
 
-/// Returns paths relative to [`ROOT`], so that messages show short paths.
+/// Returns paths relative to [`paths::ROOT`], so that messages show short paths.
 fn case_folders(cases_folder: &Path) -> std::io::Result<Vec<PathBuf>> {
     let mut folders = Vec::new();
     for entry in fs::read_dir(absolute(cases_folder))? {
@@ -95,8 +96,4 @@ fn run_with_shared_output(mut command: Command) -> Result<(Vec<u8>, i32), String
         .code()
         .ok_or_else(|| format!("lint.sh killed: {status}"))?;
     Ok((output, exit_code))
-}
-
-fn absolute(path: &Path) -> PathBuf {
-    Path::new(ROOT).join(path)
 }
