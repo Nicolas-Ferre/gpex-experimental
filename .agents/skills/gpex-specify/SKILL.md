@@ -37,7 +37,6 @@ Create functional and technical specifications for a given change.
 - `### Diagnostics` trigger conditions are concrete (e.g. named variable or file, not "fails").
 - `### Architecture` lists every changed leaf, including tests, fixtures, configuration and
   documentation.
-- `### Module interactions` nodes are only code leaves of `### Architecture`.
 - Each concept has a single name across the specifications.
 - Sections do not contradict each other.
 
@@ -90,9 +89,9 @@ Each break of existing behavior (CLI, language syntax, file formats) with its mi
 
 One row per error case introduced by the change:
 
-| Trigger condition | Result on user side             |
-|-------------------|---------------------------------|
-| Missing argument  | Error `E001`, compilation stops |
+| Trigger condition                   | Result on user side             |
+|-------------------------------------|---------------------------------|
+| `gpex run` without a file argument  | Error `E001`, compilation stops |
 
 Multi-line code or diagnostic snippets go below the table, referencing their trigger condition.
 
@@ -239,7 +238,6 @@ only in `## Decisions`.
 user, except `Covered by step <N>` rows added by `gpex-split`. Ask for it when missing, even when
 the user picked a recommended option.
 
-Avoid duplicating information across the specifications as much as possible (test cases in
-`### Testing` excepted): design sections state the behavior, settled section rows name their
-point and give the user's reason, without restating design details. Avoid unnecessary verbosity
-without losing information.
+No point is stated twice across the specifications (test cases in `### Testing` excepted).
+Design sections state the behavior. Settled section rows name their point and give the user's
+reason, without restating design details. Avoid unnecessary verbosity without losing information.
