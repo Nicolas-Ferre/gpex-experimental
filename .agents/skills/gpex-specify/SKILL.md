@@ -22,8 +22,23 @@ Create functional and technical specifications for a given change.
    proposes options, including a recommended one consistent with the existing organization.
 4. Save specifications in `./tmp/specs.md` following the template defined below. When refining,
    first remove with the user the settled section rows made obsolete by the answers.
-5. Let user know that they can refine the specifications if needed.
-6. Stop and don't implement anything.
+5. Fix `./tmp/specs.md` until every point of the self-check below holds. Ask the user when a fix
+   needs their decision (e.g. waiving a test, adding, changing or removing a settled section row).
+6. Let user know that they can refine the specifications if needed.
+7. Stop and don't implement anything.
+
+## Self-check
+
+- Every template rule below holds.
+- No point is stated twice (`### Testing` cases excepted), including across settled sections.
+- Functional design contains no implementation detail.
+- Every functional behavior, `### Diagnostics` row and edge case found during the interview has a
+  `### Testing` row, or a `## Decisions` row waiving its test.
+- `### Diagnostics` trigger conditions are concrete (e.g. named variable or file, not "fails").
+- `### Architecture` lists every changed leaf, including tests, fixtures, configuration and
+  documentation.
+- Each concept has a single name across the specifications.
+- Sections do not contradict each other.
 
 ## Questions
 
@@ -74,9 +89,9 @@ Each break of existing behavior (CLI, language syntax, file formats) with its mi
 
 One row per error case introduced by the change:
 
-| Trigger condition | Result on user side             |
-|-------------------|---------------------------------|
-| Missing argument  | Error `E001`, compilation stops |
+| Trigger condition                   | Result on user side             |
+|-------------------------------------|---------------------------------|
+| `gpex run` without a file argument  | Error `E001`, compilation stops |
 
 Multi-line code or diagnostic snippets go below the table, referencing their trigger condition.
 
@@ -223,5 +238,6 @@ only in `## Decisions`.
 user, except `Covered by step <N>` rows added by `gpex-split`. Ask for it when missing, even when
 the user picked a recommended option.
 
-Avoid duplicating information across the specifications as much as possible (test cases in
-`### Testing` excepted), and avoid unnecessary verbosity without losing information.
+No point is stated twice across the specifications (test cases in `### Testing` excepted).
+Design sections state the behavior. Settled section rows name their point and give the user's
+reason, without restating design details. Avoid unnecessary verbosity without losing information.

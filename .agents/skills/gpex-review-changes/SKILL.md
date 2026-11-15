@@ -48,10 +48,10 @@ Run these steps in order:
 
 Each subsection corresponds to a sub-agent to run during review.
 
-The sub-agents must not modify any file, must not read `./tmp/review-changes-findings-*.md`, and
-must return the full list of findings, following the finding format and finding classes.
-They report absolutely all possible findings, even minor or uncertain ones: the judgment step
-refuses the invalid ones.
+The sub-agents must not modify any file or read `./tmp/review-changes-findings-*.md`.
+They return the full list of findings, following the finding format and finding classes.
+They check each claim against the files and report all possible findings, even minor or uncertain
+ones: the judgment step refuses the invalid ones.
 
 ### Bug detection
 

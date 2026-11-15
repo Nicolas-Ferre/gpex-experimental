@@ -49,8 +49,7 @@ Apply all the sub-agent definitions of the `gpex-review-changes` skill (don't ru
 the specifications instead of code changes, focused on the content itself (the form is less
 important), ignoring code-only checks. Also check that:
 
-- There is no duplicated information or ambiguity.
-- Sections do not contradict each other.
+- No statement is ambiguous or contradicts another.
 - `### Testing` lists only automated tests, and covers every automatable case of the functional
   design and the edge cases.
 - `### Architecture` and `### Module interactions` match real files and the existing organization.
