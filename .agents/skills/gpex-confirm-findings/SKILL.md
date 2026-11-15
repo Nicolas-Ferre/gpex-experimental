@@ -17,8 +17,8 @@ Validate accepted findings of a review.
 `gpex-review-specs` findings. If it is anything else or missing, ask the user.
 For `specs`, the specs path (see `gpex-review-specs`) is the file named in the link text of the
 finding locations, prefixed with `./`.
-For `changes`, the specifications are found as in step 5 of `gpex-review-changes`, ignoring
-the skill arguments and without asking the user.
+For `changes`, the specifications are the body of the GitHub issue matching the branch number
+prefix, if any.
 
 1. If `./tmp/review-<type>-findings-accepted.md` does not exist or has no finding, stop and inform
    the user.
@@ -30,8 +30,8 @@ the skill arguments and without asking the user.
        option, then replace the entry with the resulting finding (following the finding format and
        classes of `gpex-review-changes`) and validate it as below. If no finding results, move it
        to the refused file (see below) with `Answered: <answer>` as refusal reason.
-    3. If the finding modifies neither a settled section (see `gpex-specify`) nor an earlier
-       decision:
+    3. If it is a `NITPICK`, leave it to top-level step 4. Else, if the finding modifies neither a
+       settled section (see `gpex-specify`) nor an earlier decision:
         - Keep it without asking when its fix is objectively recommended, has no relevant
           alternative and changes neither behavior nor design. This includes:
             - a template, format or written-rule violation with a single possible fix.
@@ -39,12 +39,13 @@ the skill arguments and without asking the user.
             - a typo, line wrap, alignment or formatting fix.
             - a wording made more precise when the rest of the reviewed content already implies
               it.
+        - Keep it without asking when it is a `BLOCKER` whose fix is necessary, obvious and has no
+          relevant alternative.
         - Keep it without asking when its fix is the only way to apply a settled section entry as
           written, even if it changes behavior or design.
-        - Else, if it is a `NITPICK`, leave it to top-level step 4.
 
-       Otherwise, display its details and ask user which solution to apply: the finding solution,
-       viable alternatives, refusing the finding, or a solution they write themselves.
+       In any other case, display its details and ask user which solution to apply: the finding
+       solution, viable alternatives, refusing the finding, or a solution they write themselves.
         1. If the finding is refused, ask for the reason required by its class (see the finding
            classes of `gpex-review-changes`) unless the user already gave it, then move it to
            `./tmp/review-<type>-findings-refused.md` as a refused entry (see the finding format of
@@ -79,6 +80,6 @@ the skill arguments and without asking the user.
       into one multi-select question, one option per finding, then ask the reasons of all
       unselected ones in a single question. Never group unrelated findings.
     - Never merge when it hides a finding's details, alternatives or recommended option.
-    - Step 4 is exempt from these merge rules.
+    - Top-level step 4 is exempt from these merge rules.
 - Take earlier decisions into account, and flag findings they make obsolete or conflicting.
 - Other skills are only referenced for their definitions: never run them.
