@@ -3,12 +3,11 @@ mod repo;
 
 use std::env;
 use std::fs;
-use std::io::Read;
+use std::io::{self, Error, Read};
 use std::path::{Path, PathBuf};
 use std::process::{Command, ExitCode};
 
 use libtest_mimic::{Arguments, Failed, Trial};
-use paths::{absolute, path_error};
 use repo::TestRepo;
 
 const CASES_PARENT_FOLDER: &str = "test_cases";
@@ -39,9 +38,9 @@ fn main() -> ExitCode {
 }
 
 /// Returns paths relative to [`paths::ROOT`], so that messages show short paths.
-fn case_folders(cases_folder: &Path) -> std::io::Result<Vec<PathBuf>> {
+fn case_folders(cases_folder: &Path) -> Result<Vec<PathBuf>, Error> {
     let mut folders = Vec::new();
-    for entry in fs::read_dir(absolute(cases_folder))? {
+    for entry in fs::read_dir(paths::absolute(cases_folder))? {
         let entry = entry?;
         if entry.file_type()?.is_dir() && !entry.file_name().as_encoded_bytes().starts_with(b".") {
             folders.push(cases_folder.join(entry.file_name()));
@@ -49,15 +48,15 @@ fn case_folders(cases_folder: &Path) -> std::io::Result<Vec<PathBuf>> {
     }
     folders.sort();
     if folders.is_empty() {
-        return Err(std::io::Error::other("no test case found"));
+        return Err(Error::other("no test case found"));
     }
     Ok(folders)
 }
 
 fn check_case(case_folder: &Path) -> Result<(), Failed> {
-    let actual = run_case(case_folder).map_err(path_error(case_folder))?;
+    let actual = run_case(case_folder).map_err(paths::error(case_folder))?;
     let path = case_folder.join(EXPECTED_FILE);
-    let expected = fs::read_to_string(absolute(&path)).map_err(path_error(&path))?;
+    let expected = fs::read_to_string(paths::absolute(&path)).map_err(paths::error(&path))?;
     if actual != expected {
         return Err(format!("{}: unexpected output:\n{actual}", path.display()).into());
     }
@@ -81,8 +80,8 @@ fn run_case(case_folder: &Path) -> Result<String, String> {
 
 /// Keeps the write order of stdout and stderr.
 fn run_with_shared_output(mut command: Command) -> Result<(Vec<u8>, i32), String> {
-    let error = |e: std::io::Error| format!("bash scripts/lint.sh: {e}");
-    let (mut reader, writer) = std::io::pipe().map_err(error)?;
+    let error = |e: Error| format!("bash scripts/lint.sh: {e}");
+    let (mut reader, writer) = io::pipe().map_err(error)?;
     command
         .stdout(writer.try_clone().map_err(error)?)
         .stderr(writer);

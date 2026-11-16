@@ -7,6 +7,6 @@ pub fn absolute(path: &Path) -> PathBuf {
     Path::new(ROOT).join(path)
 }
 
-pub fn path_error<E: Display>(path: &Path) -> impl Fn(E) -> String + '_ {
+pub fn error<E: Display>(path: &Path) -> impl Fn(E) -> String + '_ {
     move |e| format!("{}: {e}", path.display())
 }
