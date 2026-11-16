@@ -8,7 +8,7 @@ use std::path::{Path, PathBuf};
 use std::process::{Command, ExitCode};
 
 use libtest_mimic::{Arguments, Failed, Trial};
-use paths::absolute;
+use paths::{absolute, path_error};
 use repo::TestRepo;
 
 const CASES_PARENT_FOLDER: &str = "test_cases";
@@ -48,14 +48,16 @@ fn case_folders(cases_folder: &Path) -> std::io::Result<Vec<PathBuf>> {
         }
     }
     folders.sort();
+    if folders.is_empty() {
+        return Err(std::io::Error::other("no test case found"));
+    }
     Ok(folders)
 }
 
 fn check_case(case_folder: &Path) -> Result<(), Failed> {
-    let actual = run_case(case_folder).map_err(|e| format!("{}: {e}", case_folder.display()))?;
+    let actual = run_case(case_folder).map_err(path_error(case_folder))?;
     let path = case_folder.join(EXPECTED_FILE);
-    let expected =
-        fs::read_to_string(absolute(&path)).map_err(|e| format!("{}: {e}", path.display()))?;
+    let expected = fs::read_to_string(absolute(&path)).map_err(path_error(&path))?;
     if actual != expected {
         return Err(format!("{}: unexpected output:\n{actual}", path.display()).into());
     }
@@ -85,7 +87,7 @@ fn run_with_shared_output(mut command: Command) -> Result<(Vec<u8>, i32), String
         .stdout(writer.try_clone().map_err(error)?)
         .stderr(writer);
     let mut child = command.spawn().map_err(error)?;
-    // Drops the command's pipe writers, so that reading ends when the child exits.
+    // `command` holds pipe writers, which would keep reading from ending after the child exits.
     drop(command);
     let mut output = Vec::new();
     let read = reader.read_to_end(&mut output);

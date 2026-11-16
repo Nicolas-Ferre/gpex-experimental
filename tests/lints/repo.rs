@@ -3,7 +3,7 @@ use std::fs;
 use std::path::{Path, PathBuf};
 use std::process::Command;
 
-use crate::paths::absolute;
+use crate::paths::{absolute, path_error};
 
 /// Copied from the real repository. Must follow `lint.sh` dependencies.
 const BASE_FILES: [&str; 2] = ["scripts/lint.sh", ".editorconfig"];
@@ -23,7 +23,7 @@ impl TestRepo {
             path_var,
             repo: tmp.join("repo"),
         };
-        fs::create_dir(&git.repo).map_err(|e| format!("{}: {e}", git.repo.display()))?;
+        fs::create_dir(&git.repo).map_err(path_error(&git.repo))?;
         git.run(&["init", "--quiet", "--initial-branch=main"])?;
         for file in BASE_FILES {
             copy_file(Path::new(file), &git.repo.join(file))?;
@@ -93,9 +93,8 @@ impl Git<'_> {
 }
 
 fn copy_inputs(case_folder: &Path, repo: &Path) -> Result<(), String> {
-    let error = |e: std::io::Error| format!("{}: {e}", case_folder.display());
-    for entry in fs::read_dir(absolute(case_folder)).map_err(error)? {
-        let name = entry.map_err(error)?.file_name();
+    for entry in fs::read_dir(absolute(case_folder)).map_err(path_error(case_folder))? {
+        let name = entry.map_err(path_error(case_folder))?.file_name();
         if !name.to_string_lossy().starts_with("expected") {
             copy_entry(&case_folder.join(&name), &repo.join(name))?;
         }
@@ -105,13 +104,15 @@ fn copy_inputs(case_folder: &Path, repo: &Path) -> Result<(), String> {
 
 /// `source` is relative to [`crate::paths::ROOT`], so that messages show short paths.
 fn copy_entry(source: &Path, target: &Path) -> Result<(), String> {
+    if source.file_name() == Some(OsStr::new(".DS_Store")) {
+        return Ok(());
+    }
     if !absolute(source).is_dir() {
         return copy_file(source, target);
     }
-    let error = |e: std::io::Error| format!("{}: {e}", source.display());
-    fs::create_dir_all(target).map_err(|e| format!("{}: {e}", target.display()))?;
-    for entry in fs::read_dir(absolute(source)).map_err(error)? {
-        let name = entry.map_err(error)?.file_name();
+    fs::create_dir_all(target).map_err(path_error(target))?;
+    for entry in fs::read_dir(absolute(source)).map_err(path_error(source))? {
+        let name = entry.map_err(path_error(source))?.file_name();
         copy_entry(&source.join(&name), &target.join(name))?;
     }
     Ok(())
@@ -119,16 +120,16 @@ fn copy_entry(source: &Path, target: &Path) -> Result<(), String> {
 
 fn copy_file(source: &Path, target: &Path) -> Result<(), String> {
     create_parent(target)?;
-    fs::copy(absolute(source), target).map_err(|e| format!("{}: {e}", source.display()))?;
+    fs::copy(absolute(source), target).map_err(path_error(source))?;
     Ok(())
 }
 
 fn write_file(target: &Path, content: &str) -> Result<(), String> {
     create_parent(target)?;
-    fs::write(target, content).map_err(|e| format!("{}: {e}", target.display()))
+    fs::write(target, content).map_err(path_error(target))
 }
 
 fn create_parent(target: &Path) -> Result<(), String> {
     let parent = target.parent().expect("target path has a parent");
-    fs::create_dir_all(parent).map_err(|e| format!("{}: {e}", parent.display()))
+    fs::create_dir_all(parent).map_err(path_error(parent))
 }
