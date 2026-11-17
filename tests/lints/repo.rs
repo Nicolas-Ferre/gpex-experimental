@@ -6,7 +6,7 @@ use std::process::Command;
 use crate::paths;
 
 /// Copied from the real repository. Must follow `lint.sh` dependencies.
-const BASE_FILES: [&str; 2] = ["scripts/lint.sh", ".editorconfig"];
+const BASE_FILES: &[&str] = &["scripts/lint.sh", ".editorconfig"];
 const BASE_WORKFLOW: &str = include_str!("base-workflow.yml");
 const BASE_WORKFLOW_PATH: &str = ".github/workflows/base.yml";
 
@@ -95,7 +95,7 @@ impl Git<'_> {
 fn copy_inputs(case_folder: &Path, repo: &Path) -> Result<(), String> {
     for entry in fs::read_dir(paths::absolute(case_folder)).map_err(paths::error(case_folder))? {
         let name = entry.map_err(paths::error(case_folder))?.file_name();
-        if !name.to_string_lossy().starts_with("expected") {
+        if !name.as_encoded_bytes().starts_with(b"expected") {
             copy_entry(&case_folder.join(&name), &repo.join(name))?;
         }
     }

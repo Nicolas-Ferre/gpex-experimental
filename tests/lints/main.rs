@@ -5,7 +5,7 @@ use std::env;
 use std::fs;
 use std::io::{self, Error, Read};
 use std::path::{Path, PathBuf};
-use std::process::{Command, ExitCode};
+use std::process::{Command, ExitCode, Stdio};
 
 use libtest_mimic::{Arguments, Failed, Trial};
 use repo::TestRepo;
@@ -71,6 +71,7 @@ fn run_case(case_folder: &Path) -> Result<String, String> {
     command
         .arg("scripts/lint.sh")
         .current_dir(&repo.path)
+        .stdin(Stdio::null())
         .env("NO_COLOR", "1")
         .env("ZIZMOR_OFFLINE", "true");
     let (output, exit_code) = run_with_shared_output(command)?;
