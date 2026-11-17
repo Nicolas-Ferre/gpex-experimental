@@ -93,7 +93,7 @@ impl Git<'_> {
 }
 
 fn copy_inputs(case_folder: &Path, repo: &Path) -> Result<(), String> {
-    for entry in fs::read_dir(paths::absolute(case_folder)).map_err(paths::error(case_folder))? {
+    for entry in fs::read_dir(case_folder).map_err(paths::error(case_folder))? {
         let name = entry.map_err(paths::error(case_folder))?.file_name();
         if !name.as_encoded_bytes().starts_with(b"expected") {
             copy_entry(&case_folder.join(&name), &repo.join(name))?;
@@ -102,16 +102,15 @@ fn copy_inputs(case_folder: &Path, repo: &Path) -> Result<(), String> {
     Ok(())
 }
 
-/// `source` is relative to [`crate::paths::ROOT`], so that messages show short paths.
 fn copy_entry(source: &Path, target: &Path) -> Result<(), String> {
     if source.file_name() == Some(OsStr::new(".DS_Store")) {
         return Ok(());
     }
-    if !paths::absolute(source).is_dir() {
+    if !source.is_dir() {
         return copy_file(source, target);
     }
     fs::create_dir_all(target).map_err(paths::error(target))?;
-    for entry in fs::read_dir(paths::absolute(source)).map_err(paths::error(source))? {
+    for entry in fs::read_dir(source).map_err(paths::error(source))? {
         let name = entry.map_err(paths::error(source))?.file_name();
         copy_entry(&source.join(&name), &target.join(name))?;
     }
@@ -120,7 +119,7 @@ fn copy_entry(source: &Path, target: &Path) -> Result<(), String> {
 
 fn copy_file(source: &Path, target: &Path) -> Result<(), String> {
     create_parent(target)?;
-    fs::copy(paths::absolute(source), target).map_err(paths::error(source))?;
+    fs::copy(source, target).map_err(paths::error(source))?;
     Ok(())
 }
 

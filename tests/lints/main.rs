@@ -2,9 +2,10 @@ mod paths;
 mod repo;
 
 use std::env;
+use std::ffi::OsString;
 use std::fs;
 use std::io::{self, Error, Read};
-use std::path::{Path, PathBuf};
+use std::path::Path;
 use std::process::{Command, ExitCode, Stdio};
 
 use libtest_mimic::{Arguments, Failed, Trial};
@@ -16,47 +17,49 @@ const EXPECTED_FILE: &str = "expected.log";
 
 fn main() -> ExitCode {
     let args = Arguments::from_args();
+    let root = env!("CARGO_MANIFEST_DIR");
+    if let Err(error) = env::set_current_dir(root) {
+        eprintln!("{root}: {error}");
+        return ExitCode::FAILURE;
+    }
     let cases_folder = Path::new(CASES_PARENT_FOLDER).join(CASES_FOLDER);
-    let folders = match case_folders(&cases_folder) {
-        Ok(folders) => folders,
+    let names = match case_folder_names(&cases_folder) {
+        Ok(names) => names,
         Err(error) => {
             eprintln!("{}: {error}", cases_folder.display());
             return ExitCode::FAILURE;
         }
     };
-    let trials = folders
+    let trials = names
         .into_iter()
-        .map(|folder| {
-            let name = format!(
-                "{CASES_FOLDER}/{}",
-                folder.file_name().unwrap_or_default().display()
-            );
+        .map(|name| {
+            let folder = cases_folder.join(&name);
+            let name = format!("{CASES_FOLDER}/{}", name.display());
             Trial::test(name, move || check_case(&folder))
         })
         .collect();
     libtest_mimic::run(&args, trials).exit_code()
 }
 
-/// Returns paths relative to [`paths::ROOT`], so that messages show short paths.
-fn case_folders(cases_folder: &Path) -> Result<Vec<PathBuf>, Error> {
-    let mut folders = Vec::new();
-    for entry in fs::read_dir(paths::absolute(cases_folder))? {
+fn case_folder_names(cases_folder: &Path) -> Result<Vec<OsString>, Error> {
+    let mut names = Vec::new();
+    for entry in fs::read_dir(cases_folder)? {
         let entry = entry?;
         if entry.file_type()?.is_dir() && !entry.file_name().as_encoded_bytes().starts_with(b".") {
-            folders.push(cases_folder.join(entry.file_name()));
+            names.push(entry.file_name());
         }
     }
-    folders.sort();
-    if folders.is_empty() {
+    names.sort();
+    if names.is_empty() {
         return Err(Error::other("no test case found"));
     }
-    Ok(folders)
+    Ok(names)
 }
 
 fn check_case(case_folder: &Path) -> Result<(), Failed> {
     let actual = run_case(case_folder).map_err(paths::error(case_folder))?;
     let path = case_folder.join(EXPECTED_FILE);
-    let expected = fs::read_to_string(paths::absolute(&path)).map_err(paths::error(&path))?;
+    let expected = fs::read_to_string(&path).map_err(paths::error(&path))?;
     if actual != expected {
         return Err(format!("{}: unexpected output:\n{actual}", path.display()).into());
     }
