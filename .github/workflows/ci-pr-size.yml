@@ -59,16 +59,14 @@ jobs:
           echo "Other files (additions, deletions, path):"
           echo "$other_stats"
 
-          result=$(awk \
+          size=$(awk \
             -v reduced="$(count_lines "$reduced_stats")" \
             -v other="$(count_lines "$other_stats")" \
             -v weight="$REDUCED_FILES_WEIGHT" \
-            -v max="$MAX_PR_SIZE" \
-            'BEGIN { size = other + reduced * weight; printf "%d %d\n", size, (size >= max) }')
-          read -r size exceeded <<< "$result"
+            'BEGIN { printf "%d", other + reduced * weight }')
 
           echo "Counted size: $size (should be lower than $MAX_PR_SIZE)"
-          if (( exceeded )); then
+          if (( size >= MAX_PR_SIZE )); then
             if [[ "$LARGE_PR_LABEL" == true ]]; then
               echo "::warning::PR counted size is $size (should be lower than $MAX_PR_SIZE). Accepted thanks to the large-pr label."
             else
