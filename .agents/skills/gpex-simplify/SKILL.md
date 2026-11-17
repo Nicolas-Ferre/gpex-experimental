@@ -18,7 +18,8 @@ and untracked changes included).
 2. Get the specifications from the skill arguments or conversation, else from the GitHub issue
    matching the branch number prefix (`gh issue view <id> --json body`), if any.
 3. List the simplifications meeting the acceptance criteria below, limited to the changes of the
-   current branch. If none qualifies, stop.
+   current branch. Check each changed comment (doc comments included) one by one. If no
+   simplification qualifies, stop.
 4. Run `gpex-implement` skill with this list as the change, and the specifications as
    constraints only (not part of the change).
 
@@ -29,4 +30,9 @@ A good simplification:
 - doesn't change behavior.
 - doesn't contradict the settled sections (see `gpex-specify`) of the specifications.
 - doesn't negatively impact maintainability and understandability.
-- makes the code significantly shorter to perform the same operation.
+- either:
+    - makes the code significantly shorter to perform the same operation.
+    - removes the parts of a comment that restate the code (names included), keeping the rest
+      (e.g. the reason).
+    - replaces parts of a comment with code (naming, types, structure) carrying the same
+      information.

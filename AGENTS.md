@@ -41,3 +41,6 @@ Any documentation, comment or answer you write must follow these rules:
 - Some of the `gh` commands are interactive, so use `--json` when possible.
 - Run the following configured checks before finishing any change task:
     - `scripts/lint.sh`
+    - `cargo fmt --check`
+    - `cargo clippy --all-targets --locked -- -D warnings`
+    - `cargo test --locked`
