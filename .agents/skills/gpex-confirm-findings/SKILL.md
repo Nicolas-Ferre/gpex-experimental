@@ -28,8 +28,9 @@ prefix, if any.
     1. Read the finding location and the related code.
     2. If the finding is a `QUESTION`, ask the user, with the most likely answer as recommended
        option, then replace the entry with the resulting finding (following the finding format and
-       classes of `gpex-review-changes`) and validate it as below. If no finding results, move it
-       to the refused file (see below) with `Answered: <answer>` as refusal reason.
+       classes of `gpex-review-changes`, or the classes of `gpex-review-specs` for `specs`) and
+       validate it as below. If no finding results, move it to the refused file (see below) with
+       `Answered: <answer>` as refusal reason.
     3. If it is a `NITPICK`, leave it to top-level step 4. Else, if the finding modifies neither a
        settled section (see `gpex-specify`) nor an earlier decision:
         - Keep it without asking when its fix is objectively recommended, has no relevant
