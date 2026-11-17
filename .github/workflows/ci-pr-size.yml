@@ -2,13 +2,20 @@ name: CI - PR size
 
 on:
   pull_request:
-    types: [ opened, synchronize, reopened, edited ]
+    types: [ opened, synchronize, reopened, edited, labeled, unlabeled ]
 
 env:
-  MAX_PR_SIZE: 300
-  # Git glob pathspecs relative to repository root, one per line ("**/" matches subfolders).
+  MAX_PR_SIZE: 250
+  # File lists: git glob pathspecs relative to repository root, one per line ("**/" matches subfolders).
+  # Excluded files count 0. They win over reduced files.
   EXCLUDED_FILES: |
     **/Cargo.lock
+  # Reduced files count REDUCED_FILES_WEIGHT per changed line.
+  REDUCED_FILES: |
+    test_cases/**
+    doc/**
+    .agents/skills/**
+  REDUCED_FILES_WEIGHT: 0.25
 
 permissions:
   contents: read
@@ -31,14 +38,41 @@ jobs:
 
       - name: Check PR size
         shell: bash
+        env:
+          LARGE_PR_LABEL: ${{ contains(github.event.pull_request.labels.*.name, 'large-pr') }}
         run: |
-          mapfile -t pathspecs < <(sed 's/^[[:space:]]*//; /^$/d; s/^/:(exclude,glob)/' <<< "$EXCLUDED_FILES")
+          to_list() { sed 's/^[[:space:]]*//; /^$/d' <<< "$1"; }
+          mapfile -t excluded < <(to_list "$EXCLUDED_FILES")
+          mapfile -t reduced < <(to_list "$REDUCED_FILES")
 
-          size=$(git diff --numstat --no-renames HEAD^1 HEAD -- . "${pathspecs[@]}" \
-            | awk '{ size += $1 + $2 } END { print size + 0 }')
+          diff_stats() { git diff --numstat -M HEAD^1 HEAD -- "$@" "${excluded[@]/#/:(exclude,glob)}"; }
+          count_lines() { awk '{ lines += $1 + $2 } END { print lines + 0 }' <<< "$1"; }
 
-          echo "PR size (without excluded files): $size changed lines (additions + deletions)"
-          if (( size >= MAX_PR_SIZE )); then
-            echo "::error::PR has $size changed lines without excluded files (should be lower than $MAX_PR_SIZE). Please split it into smaller PRs."
-            exit 1
+          reduced_stats=""
+          if (( ${#reduced[@]} > 0 )); then
+            reduced_stats=$(diff_stats "${reduced[@]/#/:(glob)}")
+          fi
+          other_stats=$(diff_stats . "${reduced[@]/#/:(exclude,glob)}")
+
+          echo "Reduced files (additions, deletions, path), weight $REDUCED_FILES_WEIGHT:"
+          echo "$reduced_stats"
+          echo "Other files (additions, deletions, path):"
+          echo "$other_stats"
+
+          result=$(awk \
+            -v reduced="$(count_lines "$reduced_stats")" \
+            -v other="$(count_lines "$other_stats")" \
+            -v weight="$REDUCED_FILES_WEIGHT" \
+            -v max="$MAX_PR_SIZE" \
+            'BEGIN { size = other + reduced * weight; printf "%d %d\n", size, (size >= max) }')
+          read -r size exceeded <<< "$result"
+
+          echo "Counted size: $size (should be lower than $MAX_PR_SIZE)"
+          if (( exceeded )); then
+            if [[ "$LARGE_PR_LABEL" == true ]]; then
+              echo "::warning::PR counted size is $size (should be lower than $MAX_PR_SIZE). Accepted thanks to the large-pr label."
+            else
+              echo "::error::PR counted size is $size (should be lower than $MAX_PR_SIZE). Split it into smaller PRs, or add the large-pr label if it is mechanical."
+              exit 1
+            fi
           fi
