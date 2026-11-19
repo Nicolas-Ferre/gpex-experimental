@@ -31,8 +31,8 @@ prefix, if any.
        classes of `gpex-review-changes`, or the classes of `gpex-review-specs` for `specs`) and
        validate it as below. If no finding results, move it to the refused file (see below) with
        `Answered: <answer>` as refusal reason.
-    3. If it is a `NITPICK`, leave it to top-level step 4. Else, if the finding modifies neither a
-       settled section (see `gpex-specify`) nor an earlier decision:
+    3. If the finding modifies neither a settled section (see `gpex-specify`) nor an earlier
+       decision:
         - Keep it without asking when its fix is objectively recommended, has no relevant
           alternative and changes neither behavior nor design. This includes:
             - a template, format or written-rule violation with a single possible fix.
@@ -45,6 +45,7 @@ prefix, if any.
         - Keep it without asking when its fix is the only way to apply a settled section entry as
           written, even if it changes behavior or design.
 
+       Else, if it is a `NITPICK`, leave it to top-level step 4.
        In any other case, display its details and ask user which solution to apply: the finding
        solution, viable alternatives, refusing the finding, or a solution they write themselves.
         1. If the finding is refused, ask for the reason required by its class (see the finding
