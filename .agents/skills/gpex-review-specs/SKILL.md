@@ -25,9 +25,9 @@ Run these steps in order:
 3. If the specifications file does not exist, stop and inform the user.
 4. Run a single review sub-agent, passing it the specs path.
 5. If there is no finding, inform the user that the specifications look good and stop.
-6. Write the findings in `./tmp/review-specs-findings-accepted.md`, following the finding format and
-   finding classes of the `gpex-review-changes` skill (don't run this skill), except that entries
-   omit `[<sub-agent names>]` and locations point to the specifications file.
+6. Write the findings in `./tmp/review-specs-findings-accepted.md`, following the finding format of
+   the `gpex-review-changes` skill (don't run this skill) and the finding classes below, except
+   that entries omit `[<sub-agent names>]` and locations point to the specifications file.
 7. Run the judgment step (not in a sub-agent).
 8. If no accepted finding is left, inform the user that the specifications look good and stop.
 9. Point the user to `./tmp/review-specs-findings-accepted.md`, give the number of findings per
@@ -41,13 +41,13 @@ Run these steps in order:
 The sub-agent reads the specifications, explores the codebase and reviews the specifications
 against all the criteria below, without starting other sub-agents. It follows the rules
 of the `## Review sub-agents` intro of the `gpex-review-changes` skill, with
-`./tmp/review-specs-findings-*.md` instead of `./tmp/review-changes-findings-*.md`.
+`./tmp/review-specs-findings-*.md` instead of `./tmp/review-changes-findings-*.md`, and the
+finding classes below.
 
 ## Review criteria
 
 Apply all the sub-agent definitions of the `gpex-review-changes` skill (don't run this skill) to
-the specifications instead of code changes, focused on the content itself (the form is less
-important), ignoring code-only checks. Also check that:
+the specifications instead of code changes, ignoring code-only checks. Also check that:
 
 - No statement is ambiguous or contradicts another.
 - `### Testing` lists only automated tests, and covers every automatable case of the functional
@@ -57,12 +57,21 @@ important), ignoring code-only checks. Also check that:
   alternative.
 - The solution is the simplest possible.
 
-A `REQUIRED` finding can also cite a rule of the `gpex-specify` skill (e.g. its template rules).
-
 You can challenge certain decisions if it makes sense. Entries of the settled sections (see
 `gpex-specify`) are already agreed with the user. Only challenge an entry with a `BLOCKER`, and
 only if the problem is not already covered by the entry's reason.
 Template rule violations of an entry (e.g. missing reason) can still be reported.
+
+## Finding classes
+
+The finding classes are those of `gpex-review-changes`, with these differences:
+
+- A form-only issue (no impact on what is implemented, tested, decided or justified, e.g.
+  statement repeated with the same meaning, wording, formatting, section order) is at most
+  `NITPICK`, even when it violates a written rule (e.g. the `gpex-specify` self-check). A
+  duplicate or wording that diverges in meaning or is ambiguous is not form-only.
+- Other `REQUIRED` findings can also cite a rule of the `gpex-specify` skill (e.g. its template
+  rules).
 
 ## Judgment step
 

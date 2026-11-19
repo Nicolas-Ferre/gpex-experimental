@@ -19,6 +19,8 @@ For `specs`, the specs path (see `gpex-review-specs`) is the file named in the l
 finding locations, prefixed with `./`.
 For `changes`, the specifications are the body of the GitHub issue matching the branch number
 prefix, if any.
+The finding classes are those of `gpex-review-specs` for `specs`, else those of
+`gpex-review-changes`.
 
 1. If `./tmp/review-<type>-findings-accepted.md` does not exist or has no finding, stop and inform
    the user.
@@ -27,11 +29,12 @@ prefix, if any.
 3. For each finding in `./tmp/review-<type>-findings-accepted.md`:
     1. Read the finding location and the related code.
     2. If the finding is a `QUESTION`, ask the user, with the most likely answer as recommended
-       option, then replace the entry with the resulting finding (following the finding format and
-       classes of `gpex-review-changes`) and validate it as below. If no finding results, move it
-       to the refused file (see below) with `Answered: <answer>` as refusal reason.
-    3. If it is a `NITPICK`, leave it to top-level step 4. Else, if the finding modifies neither a
-       settled section (see `gpex-specify`) nor an earlier decision:
+       option, then replace the entry with the resulting finding (following the finding format of
+       `gpex-review-changes` and the finding classes) and validate it as below. If no finding
+       results, move it to the refused file (see below) with `Answered: <answer>` as refusal
+       reason.
+    3. If the finding modifies neither a settled section (see `gpex-specify`) nor an earlier
+       decision:
         - Keep it without asking when its fix is objectively recommended, has no relevant
           alternative and changes neither behavior nor design. This includes:
             - a template, format or written-rule violation with a single possible fix.
@@ -44,13 +47,13 @@ prefix, if any.
         - Keep it without asking when its fix is the only way to apply a settled section entry as
           written, even if it changes behavior or design.
 
+       If no rule above kept it and it is a `NITPICK`, leave it to top-level step 4.
        In any other case, display its details and ask user which solution to apply: the finding
        solution, viable alternatives, refusing the finding, or a solution they write themselves.
-        1. If the finding is refused, ask for the reason required by its class (see the finding
-           classes of `gpex-review-changes`) unless the user already gave it, then move it to
-           `./tmp/review-<type>-findings-refused.md` as a refused entry (see the finding format of
-           `gpex-review-changes`). When creating this file, start it with the following line,
-           followed by an empty line:
+        1. If the finding is refused, ask for the reason required by its finding class unless
+           the user already gave it, then move it to `./tmp/review-<type>-findings-refused.md` as
+           a refused entry (see the finding format of `gpex-review-changes`). When creating this
+           file, start it with the following line, followed by an empty line:
             - `changes`: `Branch: <branch label>` (see `gpex-review-changes`).
             - `specs`: `Specs: <specs path>` (see `gpex-review-specs`).
         2. If the finding is accepted, replace its `Fix:` and snippet in
