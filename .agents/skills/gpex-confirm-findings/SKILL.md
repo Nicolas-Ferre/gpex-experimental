@@ -47,7 +47,7 @@ The finding classes are those of `gpex-review-specs` for `specs`, else those of
         - Keep it without asking when its fix is the only way to apply a settled section entry as
           written, even if it changes behavior or design.
 
-       Else, if it is a `NITPICK`, leave it to top-level step 4.
+       If no rule above kept it and it is a `NITPICK`, leave it to top-level step 4.
        In any other case, display its details and ask user which solution to apply: the finding
        solution, viable alternatives, refusing the finding, or a solution they write themselves.
         1. If the finding is refused, ask for the reason required by its finding class unless
