@@ -25,9 +25,9 @@ Run these steps in order:
 3. If the specifications file does not exist, stop and inform the user.
 4. Run a single review sub-agent, passing it the specs path.
 5. If there is no finding, inform the user that the specifications look good and stop.
-6. Write the findings in `./tmp/review-specs-findings-accepted.md`, following the finding format of
-   the `gpex-review-changes` skill (don't run this skill) and the finding classes below, except
-   that entries omit `[<sub-agent names>]` and locations point to the specifications file.
+6. Write the findings in `./tmp/review-specs-findings-accepted.md`, following the finding format and
+   classes of the `gpex-review-changes` skill (don't run this skill), except that entries omit
+   `[<sub-agent names>]` and locations point to the specifications file.
 7. Run the judgment step (not in a sub-agent).
 8. If no accepted finding is left, inform the user that the specifications look good and stop.
 9. Point the user to `./tmp/review-specs-findings-accepted.md`, give the number of findings per
@@ -41,14 +41,12 @@ Run these steps in order:
 The sub-agent reads the specifications, explores the codebase and reviews the specifications
 against all the criteria below, without starting other sub-agents. It follows the rules
 of the `## Review sub-agents` intro of the `gpex-review-changes` skill, with
-`./tmp/review-specs-findings-*.md` instead of `./tmp/review-changes-findings-*.md`, and the
-finding classes below.
+`./tmp/review-specs-findings-*.md` instead of `./tmp/review-changes-findings-*.md`.
 
 ## Review criteria
 
 Apply all the sub-agent definitions of the `gpex-review-changes` skill (don't run this skill) to
-the specifications instead of code changes, focused on the content itself (the form is less
-important), ignoring code-only checks. Also check that:
+the specifications instead of code changes, ignoring code-only checks. Also check that:
 
 - No statement is ambiguous or contradicts another.
 - `### Testing` lists only automated tests, and covers every automatable case of the functional
@@ -65,11 +63,13 @@ Template rule violations of an entry (e.g. missing reason) can still be reported
 
 ## Finding classes
 
-Classes are those of the `gpex-review-changes` skill, with these differences:
+Wherever this skill or its sub-agent uses the finding classes of `gpex-review-changes`, it uses
+them with these differences:
 
-- A form-only issue is at most `NITPICK`, even when it violates a written rule (e.g. the
-  `gpex-specify` self-check). It has no impact on what is implemented, tested, decided or
-  justified (e.g. duplicated statement, wording, formatting, section order).
+- A form-only issue (no impact on what is implemented, tested, decided or justified, e.g.
+  identical duplicated statement, wording, formatting, section order) is at most `NITPICK`, even
+  when it violates a written rule (e.g. the `gpex-specify` self-check). A duplicate or wording
+  that diverges in meaning or is ambiguous is not form-only.
 - Other `REQUIRED` findings can also cite a rule of the `gpex-specify` skill (e.g. its template
   rules).
 
@@ -78,7 +78,6 @@ Classes are those of the `gpex-review-changes` skill, with these differences:
 Apply the judgment step of the `gpex-review-changes` skill to
 `./tmp/review-specs-findings-accepted.md`, with these differences:
 
-- Classes follow the finding classes above.
 - Refused findings are added to `./tmp/review-specs-findings-refused.md`. When creating this
   file, start it with a `Specs: <specs path>` line followed by an empty line.
 - Refusal criteria are those of `gpex-review-changes`, ignoring code-only ones, with these
