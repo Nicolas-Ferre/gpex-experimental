@@ -15,7 +15,7 @@ Review the specifications file, which is taken from the skill arguments or conve
 ## Workflow
 
 The specs path is the reviewed file path relative to the repository root, prefixed with `./`
-(e.g. `./tmp/specs-step1.md`).
+(e.g. `./tmp/specs.md`).
 
 Run these steps in order:
 

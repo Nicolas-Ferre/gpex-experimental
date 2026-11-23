@@ -9,25 +9,30 @@ implemented directly (see "Implementation").
 
 1. Run `gpex-specify` AI skill (generally `/gpex-specify <change description>`).
     - Developer is interviewed by AI to obtain full functional and technical specifications.
-2. If the task is complex and should be split into multiple issues:
-    - Run `gpex-split` AI skill (generally `/gpex-split`).
-        - A specification file is obtained for each agreed step.
-3. For each step (or the full specifications if not split):
-    - Create a GitHub issue with specifications in description, and update it after each
-      specifications change (including entries recorded by `/gpex-confirm-findings specs`)
-    - Add a warning on top of the description as long as specifications are not fully reviewed:
-      ```markdown
-      > [!WARNING]
-      > TO REVIEW
-      ```
-    - Carefully review and refine specifications (`gpex-specify` skill can be reused if needed).
-    - Run `/gpex-review-specs <step specs file>` and refine specifications until the skill
-      reports that the review cycle can stop.
-        - Validate accepted findings with `/gpex-confirm-findings specs`.
-        - Apply them with `/gpex-specify apply accepted spec findings`.
-    - Create new GitHub issues from "Out of scope" section when relevant.
+    - If the change needs several PRs, the specifications end with a `## Steps` section.
+2. Create a single GitHub issue with the full specifications in description, and update it after
+   each specifications change (including entries recorded by `/gpex-confirm-findings specs`).
+3. Add a warning on top of the description as long as specifications are not fully reviewed:
+   ```markdown
+   > [!WARNING]
+   > TO REVIEW
+   ```
+4. Carefully review and refine specifications (`gpex-specify` skill can be reused if needed).
+5. Run `/gpex-review-specs ./tmp/specs.md` and refine specifications until the skill reports that
+   the review cycle can stop.
+    - Validate accepted findings with `/gpex-confirm-findings specs`.
+    - Apply them with `/gpex-specify apply accepted spec findings`.
+6. Create new GitHub issues from "Out of scope" section when relevant.
 
 ## Implementation
+
+Without `## Steps`, the change is one PR. Otherwise, each step is implemented in its own PR. Step
+PRs reference the issue without a closing keyword (e.g. `Part of #<id>`). The developer closes
+the issue after the last step.
+
+When the specifications to implement or review have a `## Steps` section and no steps are given
+as argument or in the conversation, `gpex-implement` and `gpex-review-changes` ask which steps the
+branch covers.
 
 For the moment, the implementation workflow is flexible, but always uses the following skills:
 
@@ -36,10 +41,12 @@ For the moment, the implementation workflow is flexible, but always uses the fol
     - To implement another issue: `/gpex-implement <issue URL>`
     - To implement from specification file: `/gpex-implement specifications from <file path>`
     - To implement simple change: `/gpex-implement <description of the changes>`
+    - To implement given steps of the issue: `/gpex-implement step 2`
 - `gpex-simplify` skill that doesn't require any argument. To be ideally run after
   implementation, and once the review cycle can stop.
-- `gpex-review-changes` skill that doesn't require any argument. To be run after any change,
-  until the skill reports that the review cycle can stop.
+- `gpex-review-changes` skill that doesn't require any argument (covered steps can be given, e.g.
+  `/gpex-review-changes step 2`). To be run after any change, until the skill reports that the
+  review cycle can stop.
     - Validate accepted findings with `/gpex-confirm-findings changes`.
     - Apply findings by invoking
       `/gpex-implement findings in ./tmp/review-changes-findings-accepted.md`

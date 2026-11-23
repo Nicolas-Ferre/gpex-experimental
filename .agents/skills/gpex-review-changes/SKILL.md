@@ -25,11 +25,20 @@ Run these steps in order:
    If the branch label is `(detached HEAD)` or that line is not `Branch: <branch label>`, delete
    the file without reading the rest.
 4. If there is no change in the current branch (uncommitted and untracked changes included), stop.
-5. Get the user request from the skill arguments or conversation, else from the GitHub issue
-   matching the branch number prefix (`gh issue view <id> --json title,body`). If the request
-   contains no specifications, get them from that issue body, if any. If no request is found,
-   or the branch covers only part of the issue, ask the user for the scope. Run every review
-   sub-agent in parallel, passing it the user request.
+5. Steps alone (e.g. `step 2`) are not a request. Get the user request from the skill arguments
+   or conversation, else from the GitHub issue matching the branch number prefix
+   (`gh issue view <id> --json title,body`). If the request contains no specifications, get them
+   from that issue body if any, as constraints only.
+    1. If the specifications used as the request (not only as constraints) have a `## Steps`
+       section, take the steps the branch covers from the skill arguments or conversation, else
+       ask for them with multi-select questions (split if needed), one option per step title.
+       The request is then the specifications with design sections restricted to the covered
+       points of the selected steps. Settled sections and `## Steps` are kept, `## Steps`
+       stating the selected steps. Never report points covered only by other steps.
+    2. Otherwise, ask the user for the scope when no request is found or the branch covers only
+       part of the issue.
+
+   Then run every review sub-agent in parallel, passing it the user request.
 6. Once all sub-agents are done, write in `./tmp/review-changes-findings-accepted.md` only the found
    issues, following the finding format.
    If there is no finding, inform the user that the changes look good and stop.

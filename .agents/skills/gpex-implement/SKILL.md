@@ -13,19 +13,26 @@ Implement a change autonomously.
 
 ## Workflow
 
-1. If no change is provided, the change is the GitHub issue matching the branch number prefix
-   (`gh issue view <id> --json body`): stop and inform the user if there is none, and ask the
-   user for the scope if the branch covers only part of it.
+1. Steps alone (e.g. `step 2`) are not a change. If no change is provided, the change is the
+   GitHub issue matching the branch number prefix (`gh issue view <id> --json body`). Stop and
+   inform the user if there is none. Ask the user for the scope if the branch covers only part of
+   it, unless workflow step 4 applies.
 2. If the change is a GitHub issue, use its body as change and specifications. Else, if no
    specifications are provided, get them from the issue matching the branch number prefix, if
    any, using only their settled sections (see `gpex-specify`), never as part of the change.
 3. If an issue body used above still contains the `TO REVIEW` warning, ask the user before using
    it.
-4. Delete `./tmp/implement-decisions.md` if existing.
-5. Delete `./tmp/implement-plan.md` if existing.
-6. Explore the codebase and create a detailed plan of the requested change in
+4. If the specifications used as the change (not only as constraints) have a `## Steps` section,
+   take the steps the branch covers from the skill arguments or conversation, else ask for them
+   with multi-select questions (split if needed), one option per step title. The change is then
+   the specifications with design sections restricted to the covered points of the selected
+   steps. Settled sections and `## Steps` are kept, `## Steps` stating the selected steps. Never
+   implement points covered only by other steps.
+5. Delete `./tmp/implement-decisions.md` if existing.
+6. Delete `./tmp/implement-plan.md` if existing.
+7. Explore the codebase and create a detailed plan of the requested change in
    `./tmp/implement-plan.md`.
-7. Apply the plan from `./tmp/implement-plan.md`.
+8. Apply the plan from `./tmp/implement-plan.md`.
 
 ## Taken decisions
 
