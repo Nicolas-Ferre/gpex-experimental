@@ -224,7 +224,7 @@ Related points left out of the change scope, not mentioned in the rest of the sp
 
 ## Steps
 
-Ordered PRs implementing the change, only when it needs several PRs:
+Ordered PRs implementing the change, only when it needs several PRs (example abridged):
 
 1. **Support `@` on scalars**: <Major functional aspect of the change> (scalars),
    Architecture (lexer, parser), Testing (missing argument)

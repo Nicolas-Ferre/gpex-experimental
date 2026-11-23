@@ -16,17 +16,17 @@ Implement a change autonomously.
 1. Steps alone (e.g. `step 2`) are not a change. If no change is provided, the change is the
    GitHub issue matching the branch number prefix (`gh issue view <id> --json body`). Stop and
    inform the user if there is none. Ask the user for the scope if the branch covers only part of
-   it, unless the `## Steps` question of workflow step 4 applies.
+   it, unless workflow step 4 applies.
 2. If the change is a GitHub issue, use its body as change and specifications. Else, if no
    specifications are provided, get them from the issue matching the branch number prefix, if
    any, using only their settled sections (see `gpex-specify`), never as part of the change.
 3. If an issue body used above still contains the `TO REVIEW` warning, ask the user before using
    it.
-4. If the specifications used as the change (not only as constraints) have a `## Steps` section
-   and the skill arguments or conversation give no steps, ask which steps the branch covers. Use
-   multi-select questions (split if needed) with one option per step title. The change is then
+4. If the specifications used as the change (not only as constraints) have a `## Steps` section,
+   take the steps the branch covers from the skill arguments or conversation, else ask for them
+   with multi-select questions (split if needed), one option per step title. The change is then
    the specifications with design sections restricted to the covered points of the selected
-   steps. Settled sections and `## Steps` are kept, with the selected steps named. Never
+   steps. Settled sections and `## Steps` are kept, `## Steps` stating the selected steps. Never
    implement points covered only by other steps.
 5. Delete `./tmp/implement-decisions.md` if existing.
 6. Delete `./tmp/implement-plan.md` if existing.

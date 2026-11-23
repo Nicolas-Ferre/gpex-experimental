@@ -28,14 +28,13 @@ Run these steps in order:
 5. Steps alone (e.g. `step 2`) are not a request. Get the user request from the skill arguments
    or conversation, else from the GitHub issue matching the branch number prefix
    (`gh issue view <id> --json title,body`). If the request contains no specifications, get them
-   from that issue body if any. They are then constraints only, unless the request comes from
-   that issue.
+   from that issue body if any, as constraints only.
     1. If the specifications used as the request (not only as constraints) have a `## Steps`
-       section and the skill arguments or conversation give no steps, ask which steps the branch
-       covers. Use multi-select questions (split if needed) with one option per step title.
+       section, take the steps the branch covers from the skill arguments or conversation, else
+       ask for them with multi-select questions (split if needed), one option per step title.
        The request is then the specifications with design sections restricted to the covered
-       points of the selected steps. Settled sections and `## Steps` are kept, with the selected
-       steps named. Never report points covered only by other steps.
+       points of the selected steps. Settled sections and `## Steps` are kept, `## Steps`
+       stating the selected steps. Never report points covered only by other steps.
     2. Otherwise, ask the user for the scope when no request is found or the branch covers only
        part of the issue.
 

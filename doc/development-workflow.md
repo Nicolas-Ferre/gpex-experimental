@@ -44,8 +44,9 @@ For the moment, the implementation workflow is flexible, but always uses the fol
     - To implement given steps of the issue: `/gpex-implement step 2`
 - `gpex-simplify` skill that doesn't require any argument. To be ideally run after
   implementation, and once the review cycle can stop.
-- `gpex-review-changes` skill (e.g. `/gpex-review-changes step 2` to give covered steps). To be
-  run after any change, until the skill reports that the review cycle can stop.
+- `gpex-review-changes` skill that doesn't require any argument (covered steps can be given, e.g.
+  `/gpex-review-changes step 2`). To be run after any change, until the skill reports that the
+  review cycle can stop.
     - Validate accepted findings with `/gpex-confirm-findings changes`.
     - Apply findings by invoking
       `/gpex-implement findings in ./tmp/review-changes-findings-accepted.md`
