@@ -9,6 +9,7 @@ implemented directly (see "Implementation").
 
 1. Run `gpex-specify` AI skill (generally `/gpex-specify <change description>`).
     - Developer is interviewed by AI to obtain full functional and technical specifications.
+    - If the change needs several PRs, the specifications end with a `## Steps` section.
 2. Create a single GitHub issue with the full specifications in description, and update it after
    each specifications change (including entries recorded by `/gpex-confirm-findings specs`).
 3. Add a warning on top of the description as long as specifications are not fully reviewed:
@@ -23,14 +24,14 @@ implemented directly (see "Implementation").
     - Apply them with `/gpex-specify apply accepted spec findings`.
 6. Create new GitHub issues from "Out of scope" section when relevant.
 
-If the change needs several PRs, the specifications end with a `## Steps` section. Each step is
-implemented in its own PR, referencing the issue without closing it. The developer closes the issue
-after the last step.
-
 ## Implementation
 
-When the specifications have a `## Steps` section, `gpex-implement` and `gpex-review-changes` ask
-which steps the branch covers, unless given as argument.
+Each step is implemented in its own PR, referencing the issue without closing it. The developer
+closes the issue after the last step.
+
+When the issue to implement or review has a `## Steps` section, `gpex-implement` and
+`gpex-review-changes` ask which steps the branch covers, unless given as argument or in the
+conversation.
 
 For the moment, the implementation workflow is flexible, but always uses the following skills:
 
@@ -42,9 +43,8 @@ For the moment, the implementation workflow is flexible, but always uses the fol
     - To implement given steps of the issue: `/gpex-implement step 2`
 - `gpex-simplify` skill that doesn't require any argument. To be ideally run after
   implementation, and once the review cycle can stop.
-- `gpex-review-changes` skill. To be run after any change, until the skill reports that the review
-  cycle can stop. No argument is required, except to give the steps covered by the branch (e.g.
-  `/gpex-review-changes step 2`).
+- `gpex-review-changes` skill (e.g. `/gpex-review-changes step 2` to give covered steps). To be
+  run after any change, until the skill reports that the review cycle can stop.
     - Validate accepted findings with `/gpex-confirm-findings changes`.
     - Apply findings by invoking
       `/gpex-implement findings in ./tmp/review-changes-findings-accepted.md`

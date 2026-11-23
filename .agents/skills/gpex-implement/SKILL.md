@@ -13,10 +13,10 @@ Implement a change autonomously.
 
 ## Workflow
 
-1. If no change is provided, the change is the GitHub issue matching the branch number prefix
-   (`gh issue view <id> --json body`): stop and inform the user if there is none, and ask the
-   user for the scope if the branch covers only part of it and the issue has no `## Steps`
-   section.
+1. If no change is provided (steps alone, such as `step 2`, are not a change), the change is the
+   GitHub issue matching the branch number prefix (`gh issue view <id> --json body`). Stop and
+   inform the user if there is none. Ask the user for the scope if the branch covers only part of
+   it, unless step 4 applies.
 2. If the change is a GitHub issue, use its body as change and specifications. Else, if no
    specifications are provided, get them from the issue matching the branch number prefix, if
    any, using only their settled sections (see `gpex-specify`), never as part of the change.
@@ -25,7 +25,8 @@ Implement a change autonomously.
 4. If the specifications used as the change (not only as constraints) have a `## Steps` section,
    ask which steps the branch covers, unless given in the skill arguments or conversation. Use
    multi-select questions (split if needed) with one option per step title. The change is then
-   the covered points of the selected steps: never implement points covered only by other steps.
+   the specifications with design sections restricted to the covered points of the selected
+   steps (settled sections kept): never implement points covered only by other steps.
 5. Delete `./tmp/implement-decisions.md` if existing.
 6. Delete `./tmp/implement-plan.md` if existing.
 7. Explore the codebase and create a detailed plan of the requested change in

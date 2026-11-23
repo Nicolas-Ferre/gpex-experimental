@@ -25,15 +25,19 @@ Run these steps in order:
    If the branch label is `(detached HEAD)` or that line is not `Branch: <branch label>`, delete
    the file without reading the rest.
 4. If there is no change in the current branch (uncommitted and untracked changes included), stop.
-5. Get the user request from the skill arguments or conversation, else from the GitHub issue
-   matching the branch number prefix (`gh issue view <id> --json title,body`). If the request
-   contains no specifications, get them from that issue body, if any. If the specifications used
-   as the request (not only as constraints) have a `## Steps` section, ask which steps the branch
-   covers, unless given in the skill arguments or conversation. Use multi-select questions (split
-   if needed) with one option per step title. The request is then the covered points of the
-   selected steps: never report points covered only by other steps. Else, if no request is
-   found, or the branch covers only part of the issue, ask the user for the scope. Run every
-   review sub-agent in parallel, passing it the user request.
+5. Get the user request from the skill arguments or conversation (steps alone, such as `step 2`,
+   are not a request), else from the GitHub issue matching the branch number prefix
+   (`gh issue view <id> --json title,body`). If the request contains no specifications, get them
+   from that issue body, if any.
+    1. If the specifications used as the request (not only as constraints) have a `## Steps`
+       section, ask which steps the branch covers, unless given in the skill arguments or
+       conversation. Use multi-select questions (split if needed) with one option per step title.
+       The request is then the specifications with design sections restricted to the covered
+       points of the selected steps (settled sections kept): never report points covered only by
+       other steps.
+    2. Otherwise, ask the user for the scope when no request is found or the branch covers only
+       part of the issue.
+    3. Run every review sub-agent in parallel, passing it the user request.
 6. Once all sub-agents are done, write in `./tmp/review-changes-findings-accepted.md` only the found
    issues, following the finding format.
    If there is no finding, inform the user that the changes look good and stop.

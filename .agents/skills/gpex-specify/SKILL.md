@@ -226,8 +226,10 @@ Related points left out of the change scope, not mentioned in the rest of the sp
 
 Ordered PRs implementing the change, only when it needs several PRs:
 
-1. **Support `@` on scalars**: Lexer, Parser, Codegen (scalar operands only)
-2. **Support `@` on arrays**: Codegen (array operands), Diagnostics
+1. **Support `@` on scalars**: <Major functional aspect of the change> (scalars only),
+   Architecture (lexer, parser), Testing (scalars)
+2. **Support `@` on arrays**: <Major functional aspect of the change> (arrays), Architecture
+   (codegen), Testing (arrays)
 ````
 
 Design sections are written in an easy-to-read and visual way (short bullet points, Mermaid
@@ -256,8 +258,7 @@ reason, without restating design details. Avoid unnecessary verbosity without lo
 - A point shared by several steps names the part each step covers (e.g.
   `Skill changes (gpex-specify only)`).
 - Each step is a PR as granular as possible that adds value (to the final user, or to the codebase
-  for technical changes) and is testable end to end (e.g. by compiling and running a program), so
-  never limited to a single layer such as the lexer.
+  for technical changes) and is testable end to end.
 - Each step is expected to stay under the PR size limit of `.github/workflows/ci-pr-size.yml`.
 - No step depends on a later step.
 - Every point of `## Functional design` and `## Technical design` is covered by at least one step.
