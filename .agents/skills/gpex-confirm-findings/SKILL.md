@@ -57,9 +57,7 @@ prefix, if any.
            `./tmp/review-<type>-findings-accepted.md` with the selected solution.
     4. For `specs`, when the user's refusal, answer or selected solution settles a point a
        reviewer could raise again, ask for its reason if not given, then record it in the specs
-       path file, in the matching settled section (see `gpex-specify`). If the specs path is a
-       step file, record it in `./tmp/specs.md` and in every other `./tmp/specs-step*.md` it is
-       relevant to.
+       path file, in the matching settled section (see `gpex-specify`).
 4. Ask which `NITPICK` findings left by step 3 to keep, in one go with multi-select questions
    (split if needed). Use one option per finding: number, title and fix summary. Recommend keeping
    all, or none if the review cycle can now stop (see step 2). Move unselected ones to the refused

@@ -50,6 +50,7 @@ following topics, skipping the ones not relevant to the change:
 - All edge cases.
 - Error handling.
 - Each section of the specification template below.
+- Whether the change needs several PRs (see `## Steps`).
 - Libraries, checked on their package registry (existence, latest stable version) against:
     - License compatibility with the project license (ask the user if the project has none).
     - Maintenance and popularity.
@@ -220,6 +221,13 @@ Related points left out of the change scope, not mentioned in the rest of the sp
 |--------------------------|---------------------------------|
 | Multi-file compilation   | Single-file programs are enough |
 | Diagnostics localization | No non-English user yet         |
+
+## Steps
+
+Ordered PRs implementing the change, only when it needs several PRs:
+
+1. **Support `@` on scalars**: Lexer, Parser, Codegen (scalar operands only)
+2. **Support `@` on arrays**: Codegen (array operands), Diagnostics
 ````
 
 Design sections are written in an easy-to-read and visual way (short bullet points, Mermaid
@@ -235,9 +243,22 @@ only in `## Decisions`.
 
 `## Decisions`, `## Accepted limitations`, `## Out of scope` and the library choices of
 `### Libraries` are the settled sections. The `Reason` of their rows is the one given by the
-user, except `Covered by step <N>` rows added by `gpex-split`. Ask for it when missing, even when
-the user picked a recommended option.
+user. Ask for it when missing, even when the user picked a recommended option.
 
 No point is stated twice across the specifications (test cases in `### Testing` excepted).
 Design sections state the behavior. Settled section rows name their point and give the user's
 reason, without restating design details. Avoid unnecessary verbosity without losing information.
+
+`## Steps` rules:
+
+- Format: `<N>. **<PR title>**: <covered points>`.
+- Covered points name design points (e.g. subsection titles) without restating them.
+- A point shared by several steps names the part each step covers (e.g.
+  `Skill changes (gpex-specify only)`).
+- Each step is a PR as granular as possible that adds value (to the final user, or to the codebase
+  for technical changes) and is testable end to end (e.g. by compiling and running a program), so
+  never limited to a single layer such as the lexer.
+- Each step is expected to stay under the PR size limit of `.github/workflows/ci-pr-size.yml`.
+- No step depends on a later step.
+- Every point of `## Functional design` and `## Technical design` is covered by at least one step.
+- Each `### Testing` row is covered by the step introducing its behavior.
