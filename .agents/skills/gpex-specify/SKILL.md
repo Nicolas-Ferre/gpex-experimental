@@ -226,10 +226,10 @@ Related points left out of the change scope, not mentioned in the rest of the sp
 
 Ordered PRs implementing the change, only when it needs several PRs:
 
-1. **Support `@` on scalars**: <Major functional aspect of the change> (scalars only),
-   Architecture (lexer, parser), Testing (scalars)
+1. **Support `@` on scalars**: <Major functional aspect of the change> (scalars),
+   Architecture (lexer, parser), Testing (missing argument)
 2. **Support `@` on arrays**: <Major functional aspect of the change> (arrays), Architecture
-   (codegen), Testing (arrays)
+   (codegen), Testing (extra argument)
 ````
 
 Design sections are written in an easy-to-read and visual way (short bullet points, Mermaid

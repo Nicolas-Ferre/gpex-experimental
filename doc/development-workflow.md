@@ -26,12 +26,13 @@ implemented directly (see "Implementation").
 
 ## Implementation
 
-Each step is implemented in its own PR, referencing the issue without closing it. The developer
-closes the issue after the last step.
+Without `## Steps`, the change is one PR. Otherwise, each step is implemented in its own PR. Step
+PRs reference the issue without a closing keyword (e.g. `Part of #<id>`). The developer closes
+the issue after the last step.
 
-When the issue to implement or review has a `## Steps` section, `gpex-implement` and
-`gpex-review-changes` ask which steps the branch covers, unless given as argument or in the
-conversation.
+When the specifications to implement or review have a `## Steps` section and no steps are given
+as argument or in the conversation, `gpex-implement` and `gpex-review-changes` ask which steps the
+branch covers.
 
 For the moment, the implementation workflow is flexible, but always uses the following skills:
 
